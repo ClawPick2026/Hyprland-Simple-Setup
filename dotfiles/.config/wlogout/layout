@@ -1,36 +1,36 @@
 {
     "label" : "lock",
-    "action" : "loginctl lock-session",
-    "text" : "Hyprlock",
+    "action" : "\"$HOME/.config/hypr/scripts/action_exec.sh\" session.lock",
+    "text" : "Lock",
     "keybind" : "l"
 },
 {
     "label" : "hibernate",
-    "action" : "systemctl hibernate",
+    "action" : "\"$HOME/.config/hypr/scripts/action_exec.sh\" session.hibernate",
     "text" : "Hibernate",
     "keybind" : "h"
 },
 {
     "label" : "logout",
-    "action" : "loginctl terminate-user $USER",
+    "action" : "\"$HOME/.config/hypr/scripts/action_exec.sh\" session.logout",
     "text" : "Logout",
     "keybind" : "e"
 },
 {
     "label" : "shutdown",
-    "action" : "systemctl poweroff",
+    "action" : "\"$HOME/.config/hypr/scripts/action_exec.sh\" session.shutdown",
     "text" : "Shutdown",
     "keybind" : "s"
 },
 {
     "label" : "suspend",
-    "action" : "systemctl suspend",
+    "action" : "\"$HOME/.config/hypr/scripts/action_exec.sh\" session.suspend",
     "text" : "Suspend",
     "keybind" : "u"
 },
 {
     "label" : "reboot",
-    "action" : "systemctl reboot",
+    "action" : "\"$HOME/.config/hypr/scripts/action_exec.sh\" session.reboot",
     "text" : "Reboot",
     "keybind" : "r"
 }

@@ -1,0 +1,260 @@
+{
+  "schema_version": 1,
+  "owner": "D07",
+  "cases": [
+    {
+      "id": "D07-lock",
+      "option": "generic/hyprlock",
+      "capability": "session.lock",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/session_auxiliary.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Super+L and the power screen lock immediately; unlocking needs the password; no notification content is visible while locked",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D07-confirmations",
+      "option": "generic/wlogout",
+      "capability": "session.shutdown",
+      "evidence_required": "modeled-effect",
+      "tests": [
+        {
+          "path": "tests/shell/session_auxiliary.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Reboot/shutdown/logout from keys, bar menu and power screen ask No/Yes; No does nothing",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D07-logout-current-session",
+      "option": "generic/hyprland",
+      "capability": "session.logout",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/session_auxiliary.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Logout returns to SDDM; a second TTY session stays logged in",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D07-suspend",
+      "option": "generic/hypridle",
+      "capability": "session.suspend",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/session_auxiliary.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Suspend locks first and resumes with the display on",
+      "result": "not-run",
+      "limits": "Physical suspend unverified"
+    },
+    {
+      "id": "D07-hibernate",
+      "option": "generic/wlogout",
+      "capability": "session.hibernate",
+      "evidence_required": "modeled-effect",
+      "tests": [
+        {
+          "path": "tests/shell/session_auxiliary.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Without swap/resume the hibernate button is hidden and the action reports unsupported",
+      "result": "not-run",
+      "limits": "Hibernate success not certified"
+    },
+    {
+      "id": "D07-auth-agent",
+      "option": "generic/hyprpolkitagent",
+      "capability": "session.auth",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/session_auxiliary.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "One polkit prompt from hyprpolkitagent (pkexec true); with polkit-kde-agent started first, the conflict is reported and nothing is killed",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D07-power-screen",
+      "option": "generic/wlogout",
+      "capability": "session.power_screen",
+      "evidence_required": "visual",
+      "tests": [
+        {
+          "path": "tests/shell/session_auxiliary.sh",
+          "state": "delivered"
+        },
+        {
+          "path": "tests/shell/session_auxiliary_rendering.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Power screen shows Breeze icons, readable focus ring and theme colors in both variants",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D07-compositor-theme",
+      "option": "generic/hyprland",
+      "capability": "appearance.compositor",
+      "evidence_required": "visual",
+      "tests": [
+        {
+          "path": "tests/shell/session_auxiliary_rendering.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Super+Shift+T switches border/group colors; windows stay opaque",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D07-lock-theme",
+      "option": "generic/hyprlock",
+      "capability": "appearance.lock_screen",
+      "evidence_required": "visual",
+      "tests": [
+        {
+          "path": "tests/shell/session_auxiliary_rendering.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Lock screen input, checking, failure and caps-lock states readable in both variants",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D07-greeter",
+      "option": "generic/sddm",
+      "capability": "appearance.greeter",
+      "evidence_required": "documentation",
+      "tests": [],
+      "vm_check": "Greeter unchanged (Eucalyptus Drop); recorded as unsupported",
+      "result": "not-run",
+      "limits": "Privileged greeter theming blocked by design"
+    },
+    {
+      "id": "D07-btop-cava",
+      "option": "generic/btop",
+      "capability": "appearance.terminal_tools",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/session_auxiliary_rendering.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "btop and cava show Catppuccin colors after theme switch",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D07-keybind-viewer",
+      "option": "generic/tk",
+      "capability": "appearance.dialogs",
+      "evidence_required": "visual",
+      "tests": [
+        {
+          "path": "tests/shell/session_auxiliary_rendering.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Keybind viewer follows the variant; focus visible on search and buttons",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D07-wallpaper",
+      "option": "generic/hyprpaper",
+      "capability": "wallpaper.change",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/reliability_lifecycle.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Super+W changes the wallpaper on every output",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D07-nightlight",
+      "option": "generic/hyprsunset",
+      "capability": "nightlight.toggle",
+      "evidence_required": "documentation",
+      "tests": [],
+      "vm_check": "Super+Ctrl+S behavior noted; not changed",
+      "result": "not-run",
+      "limits": "No native toggle; script left unchanged"
+    },
+    {
+      "id": "D07-capture",
+      "option": "generic/hyprshot",
+      "capability": "capture.annotate",
+      "evidence_required": "real-effect",
+      "tests": [],
+      "vm_check": "Window/output/region capture opens Satty; Escape saves nothing",
+      "result": "not-run",
+      "limits": "Existing behavior preserved; no automated test"
+    },
+    {
+      "id": "D07-clipboard",
+      "option": "generic/wl-clipboard-history-git",
+      "capability": "clipboard.history",
+      "evidence_required": "argv",
+      "tests": [
+        {
+          "path": "tests/shell/roles_matrix.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Clipboard history opens floating in the selected terminal",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D07-notes",
+      "option": "generic/python",
+      "capability": "notes.open",
+      "evidence_required": "modeled-effect",
+      "tests": [
+        {
+          "path": "tests/shell/session_auxiliary.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Notes create and list inside the notes folder",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D07-music",
+      "option": "generic/ffmpeg",
+      "capability": "music.play",
+      "evidence_required": "real-effect",
+      "tests": [],
+      "vm_check": "Super+Ctrl+M plays the album when ffmpeg is installed",
+      "result": "not-run",
+      "limits": "Network stream; not automated"
+    }
+  ]
+}

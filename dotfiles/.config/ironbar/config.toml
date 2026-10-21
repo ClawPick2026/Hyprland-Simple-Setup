@@ -1,11 +1,153 @@
+# Ironbar profile for Hyprland Simple Setup (plan D01). Installer-managed: setup refreshes
+# this file. Commands are the same invocations the Waybar profile uses. Right-click menus
+# are Ironbar popups opened through its IPC (`ironbar bar main toggle-popup NAME`); with
+# several outputs the popup opens on every bar because all bars share the name "main".
+# Colors and fonts come from style.css (theme region) and the generated theme.
+name = "main"
 position = "top"
 height = 32
+popup_gap = 6
+
+[[start]]
+type = "custom"
+name = "power"
+class = "power"
+bar = [ { type = "button", name = "power-button", label = "", tooltip = "Left click: power screen\nRight click: quick actions", on_click = "!$HOME/.config/waybar/scripts/launch_power_screen.sh", on_click_right = "ironbar bar main toggle-popup power" } ]
+popup = [ { type = "box", orientation = "vertical", widgets = [
+  { type = "button", class = "menu-item", label = "Suspend", on_click = "!ironbar bar main hide-popup; $HOME/.config/hypr/scripts/action_exec.sh session.suspend" },
+  { type = "button", class = "menu-item", label = "Hibernate", on_click = "!ironbar bar main hide-popup; $HOME/.config/hypr/scripts/action_exec.sh session.hibernate" },
+  { type = "button", class = "menu-item", label = "Shutdown", on_click = "!ironbar bar main hide-popup; $HOME/.config/hypr/scripts/action_exec.sh session.shutdown" },
+  { type = "button", class = "menu-item", label = "Reboot", on_click = "!ironbar bar main hide-popup; $HOME/.config/hypr/scripts/action_exec.sh session.reboot" },
+  { type = "button", class = "menu-item", label = "Logout", on_click = "!ironbar bar main hide-popup; $HOME/.config/hypr/scripts/action_exec.sh session.logout" }
+] } ]
+
+[[start]]
+type = "custom"
+name = "menu"
+class = "menu"
+bar = [ { type = "button", name = "menu-button", label = " Menu", tooltip = "Left click: applications\nRight click: tools and keybinds", on_click = "!$HOME/.config/hypr/scripts/menu_exec.sh --toggle", on_click_right = "ironbar bar main toggle-popup menu" } ]
+popup = [ { type = "box", orientation = "vertical", widgets = [
+  { type = "button", class = "menu-item", label = "Application Launcher", on_click = "!ironbar bar main hide-popup; $HOME/.config/hypr/scripts/menu_exec.sh" },
+  { type = "button", class = "menu-item", label = "View Keybinds", on_click = "!ironbar bar main hide-popup; $HOME/.config/waybar/scripts/keybinds.py" },
+  { type = "button", class = "menu-item", label = "Open Keybind Config", on_click = "!ironbar bar main hide-popup; $HOME/.config/hypr/scripts/term_exec.sh --app-id hss-keybinds --title Keybinds -- sh -c 'editor=$(jq -r .roles.tui_editor.editor_bin \"$HOME/.config/hypr/roles.json\"); exec \"$editor\" \"$HOME/.config/hypr/sources/keybindings.lua\"'" },
+  { type = "button", class = "menu-item", label = "Take Snapshot", on_click = "!ironbar bar main hide-popup; $HOME/.config/waybar/scripts/snapshot.sh" }
+] } ]
+
+[[start]]
+type = "tray"
+icon_size = 20
 
 [[start]]
 type = "workspaces"
+name = "workspaces"
+sort = "name"
+tooltip = "Left click: switch workspace"
 
-[[center]]
-type = "clock"
+[[start]]
+type = "bindmode"
 
 [[end]]
-type = "tray"
+type = "volume"
+name = "audio"
+format = "{icon} {percentage}%"
+mute_format = "\uf6a9 muted"
+tooltip = "Left click: application volumes • Right click: device mixer"
+on_click_left = "$HOME/.config/hypr/scripts/action_exec.sh audio.streams.open"
+on_click_right = "$HOME/.config/hypr/scripts/action_exec.sh audio.hardware.open"
+
+[[end]]
+type = "custom"
+name = "backlight"
+class = "backlight"
+bar = [ { type = "button", name = "backlight-button", label = "{{2000:$HOME/.config/waybar/scripts/bar_status.sh backlight}}", tooltip = "Scroll: adjust brightness\nRight click: presets", on_click_right = "ironbar bar main toggle-popup backlight", on_scroll_up = "$HOME/.config/waybar/scripts/backlight.sh +5", on_scroll_down = "$HOME/.config/waybar/scripts/backlight.sh -5" } ]
+popup = [ { type = "box", orientation = "vertical", widgets = [
+  { type = "button", class = "menu-item", label = "Set to 100%", on_click = "!ironbar bar main hide-popup; $HOME/.config/waybar/scripts/backlight.sh 100" },
+  { type = "button", class = "menu-item", label = "Set to 75%", on_click = "!ironbar bar main hide-popup; $HOME/.config/waybar/scripts/backlight.sh 75" },
+  { type = "button", class = "menu-item", label = "Set to 50%", on_click = "!ironbar bar main hide-popup; $HOME/.config/waybar/scripts/backlight.sh 50" },
+  { type = "button", class = "menu-item", label = "Set to 25%", on_click = "!ironbar bar main hide-popup; $HOME/.config/waybar/scripts/backlight.sh 25" },
+  { type = "button", class = "menu-item", label = "Set to 10%", on_click = "!ironbar bar main hide-popup; $HOME/.config/waybar/scripts/backlight.sh 10" }
+] } ]
+
+[[end]]
+type = "script"
+name = "temperature"
+mode = "poll"
+interval = 2000
+cmd = "$HOME/.config/waybar/scripts/bar_status.sh temperature"
+tooltip = "Left click: system monitor"
+on_click_left = "$HOME/.config/waybar/scripts/sensor.sh"
+
+[[end]]
+type = "label"
+name = "locks"
+label = "{{2000:$HOME/.config/waybar/scripts/bar_status.sh locks}}"
+tooltip = "Num Lock state"
+
+[[end]]
+type = "battery"
+name = "battery"
+format = "{percentage}%"
+show_if = "! $HOME/.config/waybar/scripts/hardware_state.sh --absent battery"
+profiles.warning = { when = { percent = 30, charging = false } }
+profiles.critical = { when = { percent = 15, charging = false } }
+
+[[end]]
+type = "label"
+name = "battery-unavailable"
+label = "{{60000:$HOME/.config/waybar/scripts/hardware_state.sh --format plain battery}}"
+show_if = "$HOME/.config/waybar/scripts/hardware_state.sh --absent battery"
+tooltip = "No system battery was found; battery status is unavailable."
+
+[[end]]
+type = "network_manager"
+name = "network"
+tooltip = "Left click: choose network • Right click: edit connections"
+on_click_left = "$HOME/.config/hypr/scripts/action_exec.sh network.connect.choose"
+on_click_right = "$HOME/.config/hypr/scripts/action_exec.sh network.profile.edit"
+
+[[end]]
+type = "bluetooth"
+name = "bluetooth"
+tooltip = "Left click: devices • Right click: power"
+on_click_left = "$HOME/.config/hypr/scripts/action_exec.sh bluetooth.open"
+on_click_right = "$HOME/.config/hypr/scripts/action_exec.sh bluetooth.radio.toggle"
+format = { not_found = "\uf294 n/a", disabled = "\uf294 off", enabled = "\uf293", connected = "\uf293 {device_alias}" }
+
+[[end]]
+type = "custom"
+name = "updates"
+class = "updates"
+show_if = "command -v waybar-module-pacman-updates"
+bar = [ { type = "button", name = "updates-button", label = "{{watch:$HOME/.config/waybar/scripts/bar_status.sh --watch updates}}", tooltip = "Left click: start system update\nRight click: update options", on_click = "!$HOME/.config/waybar/scripts/confirm_system_update.sh", on_click_right = "ironbar bar main toggle-popup updates" } ]
+popup = [ { type = "box", orientation = "vertical", widgets = [
+  { type = "button", class = "menu-item", label = "Check for updates", on_click = "!ironbar bar main hide-popup; $HOME/.config/waybar/scripts/launch_system_update.sh --check" },
+  { type = "button", class = "menu-item", label = "Update System", on_click = "!ironbar bar main hide-popup; $HOME/.config/waybar/scripts/launch_system_update.sh" },
+  { type = "button", class = "menu-item", label = "Update system without AUR", on_click = "!ironbar bar main hide-popup; $HOME/.config/waybar/scripts/launch_system_update.sh --without-aur" },
+  { type = "button", class = "menu-item", label = "Update firmware", on_click = "!ironbar bar main hide-popup; $HOME/.config/waybar/scripts/launch_system_update.sh --firmware" },
+  { type = "button", class = "menu-item", label = "Review .pacnew files", on_click = "!ironbar bar main hide-popup; $HOME/.config/waybar/scripts/launch_system_update.sh --review-pacnew" },
+  { type = "button", class = "menu-item", label = "Clean package cache", on_click = "!ironbar bar main hide-popup; $HOME/.config/waybar/scripts/launch_system_update.sh --clean-cache" },
+  { type = "button", class = "menu-item", label = "Show last update log", on_click = "!ironbar bar main hide-popup; $HOME/.config/waybar/scripts/launch_system_update.sh --show-log" }
+] } ]
+
+[[end]]
+type = "script"
+name = "notifications"
+mode = "watch"
+cmd = "$HOME/.config/waybar/scripts/notification_status.sh --format plain"
+tooltip = "Left click: notifications • Right click: do not disturb"
+on_click_left = "$HOME/.config/hypr/scripts/action_exec.sh notifications.primary"
+on_click_right = "$HOME/.config/hypr/scripts/action_exec.sh notifications.dnd.toggle"
+
+[[end]]
+type = "label"
+name = "theme"
+label = "{{3000:$HOME/.config/waybar/scripts/theme_status.sh --format plain}}"
+tooltip = "Left click: switch between dark and light"
+on_click_left = "$HOME/.config/hypr/scripts/action_exec.sh theme.toggle"
+
+[[end]]
+type = "clock"
+name = "clock"
+format = "%a %d %b %Y | %H:%M"
+tooltip = "Left click: open selected calendar"
+on_click_left = "$HOME/.config/hypr/scripts/float_calendar.sh"

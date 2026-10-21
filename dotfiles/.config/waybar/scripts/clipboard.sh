@@ -2,9 +2,9 @@
 set -euo pipefail
 
 term_exec=${HSS_TERM_EXEC:-$HOME/.config/hypr/scripts/term_exec.sh}
-clipboard_command='wl-clipboard-history -l 376 | fzf --bind "ctrl-alt-y:execute-silent(echo {} | sed -E \"s/.*,(.*)/\1/\" | wl-copy)+abort"'
+script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 
-"$term_exec" --app-id hss-clipboard --title Clipboard -- sh -c "$clipboard_command" &
+"$term_exec" --app-id hss-clipboard --title Clipboard -- "$script_dir/clipboard_pick.sh" &
 terminal_pid=$!
 
 clipboard_window=""

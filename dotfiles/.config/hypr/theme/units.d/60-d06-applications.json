@@ -1,0 +1,403 @@
+{
+  "schema_version": 1,
+  "units": [
+    {
+      "id": "neovim",
+      "owner": "D06",
+      "description": "Neovim generated `hss` colorscheme loaded by a region in init.lua (no plugin bootstrap)",
+      "applies": {
+        "members": [
+          "tui_editor/neovim"
+        ]
+      },
+      "depends": [
+        "theme-core"
+      ],
+      "executables": [
+        "nvim"
+      ],
+      "outputs": [
+        {
+          "target": "theme:generated/nvim/colors/hss.lua",
+          "class": "generated",
+          "template": "d06/nvim-colors.lua.tmpl",
+          "validator": "lua"
+        },
+        {
+          "target": "config:nvim/init.lua",
+          "class": "managed-region",
+          "comment": "--",
+          "position": "append",
+          "validator": "lua",
+          "content": "do\n\tlocal dir = {{path.generated | lua}} .. \"/nvim\"\n\tif vim.uv.fs_stat(dir .. \"/colors/hss.lua\") then\n\t\tvim.opt.rtp:append(dir)\n\t\tpcall(vim.cmd.colorscheme, \"hss\")\n\tend\nend"
+        }
+      ],
+      "activation": [
+        {
+          "kind": "next-launch"
+        }
+      ]
+    },
+    {
+      "id": "helix",
+      "owner": "D06",
+      "description": "Helix built-in catppuccin_mocha/catppuccin_latte theme selection",
+      "applies": {
+        "members": [
+          "tui_editor/helix"
+        ]
+      },
+      "depends": [
+        "theme-core"
+      ],
+      "executables": [
+        "helix"
+      ],
+      "outputs": [
+        {
+          "target": "config:helix/config.toml",
+          "class": "managed-keys",
+          "format": "toml",
+          "create_if_missing": true,
+          "validator": "toml",
+          "keys": [
+            {
+              "key": "theme",
+              "value": "{{assets.helix_theme | toml}}"
+            }
+          ]
+        }
+      ],
+      "activation": [
+        {
+          "kind": "signal",
+          "process": "helix",
+          "signal": "USR1"
+        }
+      ]
+    },
+    {
+      "id": "vim",
+      "owner": "D06",
+      "description": "Vim generated `hss` colorscheme, enabled by a region in an existing ~/.config/vim/vimrc",
+      "applies": {
+        "members": [
+          "tui_editor/vim"
+        ]
+      },
+      "depends": [
+        "theme-core"
+      ],
+      "executables": [
+        "vim"
+      ],
+      "outputs": [
+        {
+          "target": "theme:generated/vim/colors/hss.vim",
+          "class": "generated",
+          "template": "d06/vim-colors.vim.tmpl",
+          "validator": "none"
+        },
+        {
+          "target": "config:vim/vimrc",
+          "class": "managed-region",
+          "comment": "\"",
+          "position": "append",
+          "content": "if isdirectory('{{path.generated}}/vim')\n  execute 'set runtimepath+=' . fnameescape('{{path.generated}}/vim')\n  silent! colorscheme hss\nendif"
+        }
+      ],
+      "activation": [
+        {
+          "kind": "next-launch"
+        }
+      ]
+    },
+    {
+      "id": "yazi",
+      "owner": "D06",
+      "description": "Yazi `hss` flavor with Blue accents, selected for dark and light terminals",
+      "applies": {
+        "members": [
+          "tui_file_manager/yazi"
+        ]
+      },
+      "depends": [
+        "theme-core"
+      ],
+      "executables": [
+        "yazi"
+      ],
+      "outputs": [
+        {
+          "target": "config:yazi/flavors/hss.yazi/flavor.toml",
+          "class": "generated",
+          "template": "d06/yazi-flavor.toml.tmpl",
+          "validator": "toml"
+        },
+        {
+          "target": "config:yazi/theme.toml",
+          "class": "managed-region",
+          "comment": "#",
+          "position": "append",
+          "create_if_missing": true,
+          "validator": "toml",
+          "content": "[flavor]\ndark = \"hss\"\nlight = \"hss\""
+        }
+      ],
+      "activation": [
+        {
+          "kind": "next-launch"
+        }
+      ]
+    },
+    {
+      "id": "mc",
+      "owner": "D06",
+      "description": "Midnight Commander true-colour skin selected in ~/.config/mc/ini",
+      "applies": {
+        "members": [
+          "tui_file_manager/mc"
+        ]
+      },
+      "depends": [
+        "theme-core"
+      ],
+      "executables": [
+        "mc"
+      ],
+      "outputs": [
+        {
+          "target": "data:mc/skins/hss-catppuccin.ini",
+          "class": "generated",
+          "template": "d06/mc-skin.ini.tmpl",
+          "validator": "none"
+        },
+        {
+          "target": "config:mc/ini",
+          "class": "managed-keys",
+          "format": "ini",
+          "create_if_missing": true,
+          "validator": "none",
+          "keys": [
+            {
+              "section": "Midnight-Commander",
+              "key": "skin",
+              "value": "hss-catppuccin"
+            }
+          ]
+        }
+      ],
+      "activation": [
+        {
+          "kind": "next-launch"
+        }
+      ]
+    },
+    {
+      "id": "vifm",
+      "owner": "D06",
+      "description": "Vifm `hss` colorscheme (ANSI cterm values, Catppuccin gui values for -direct terminals)",
+      "applies": {
+        "members": [
+          "tui_file_manager/vifm"
+        ]
+      },
+      "depends": [
+        "theme-core"
+      ],
+      "executables": [
+        "vifm"
+      ],
+      "outputs": [
+        {
+          "target": "config:vifm/colors/hss.vifm",
+          "class": "generated",
+          "template": "d06/vifm-colors.vifm.tmpl",
+          "validator": "none"
+        },
+        {
+          "target": "config:vifm/vifmrc",
+          "class": "managed-region",
+          "comment": "\"",
+          "position": "append",
+          "content": "colorscheme hss"
+        }
+      ],
+      "activation": [
+        {
+          "kind": "next-launch"
+        }
+      ]
+    },
+    {
+      "id": "calcurse",
+      "owner": "D06",
+      "description": "Calcurse interface colour pair using the Blue accent ANSI slot",
+      "applies": {
+        "members": [
+          "calendar/calcurse"
+        ]
+      },
+      "depends": [
+        "theme-core"
+      ],
+      "executables": [
+        "calcurse"
+      ],
+      "outputs": [
+        {
+          "target": "config:calcurse/conf",
+          "class": "managed-keys",
+          "format": "kv",
+          "create_if_missing": true,
+          "validator": "none",
+          "keys": [
+            {
+              "key": "appearance.theme",
+              "value": "blue on default"
+            }
+          ]
+        }
+      ],
+      "activation": [
+        {
+          "kind": "next-launch"
+        }
+      ]
+    },
+    {
+      "id": "khal",
+      "owner": "D06",
+      "description": "ikhal built-in dark/light theme matching the variant (existing khal configuration only)",
+      "applies": {
+        "members": [
+          "calendar/khal"
+        ]
+      },
+      "depends": [
+        "theme-core"
+      ],
+      "executables": [
+        "ikhal"
+      ],
+      "outputs": [
+        {
+          "target": "config:khal/config",
+          "class": "managed-keys",
+          "format": "ini",
+          "validator": "none",
+          "keys": [
+            {
+              "section": "view",
+              "key": "theme",
+              "value": "{{variant}}"
+            }
+          ]
+        }
+      ],
+      "activation": [
+        {
+          "kind": "next-launch"
+        }
+      ]
+    },
+    {
+      "id": "kde-color-scheme",
+      "owner": "D06",
+      "description": "HSSCatppuccin KDE colour scheme pinned by KDE applications that use KColorSchemeManager; always generated because kdeglobals names it as the KDE colour scheme",
+      "applies": {
+        "always": true
+      },
+      "depends": [
+        "theme-core"
+      ],
+      "outputs": [
+        {
+          "target": "data:color-schemes/HSSCatppuccin.colors",
+          "class": "generated",
+          "template": "d06/kde-colorscheme.colors.tmpl",
+          "validator": "ini"
+        }
+      ],
+      "activation": [
+        {
+          "kind": "next-launch"
+        }
+      ]
+    },
+    {
+      "id": "dolphin",
+      "owner": "D06",
+      "description": "Dolphin window colour scheme key only ([UiSettings] ColorScheme)",
+      "applies": {
+        "members": [
+          "file_manager/dolphin"
+        ]
+      },
+      "depends": [
+        "kde-color-scheme"
+      ],
+      "executables": [
+        "dolphin"
+      ],
+      "outputs": [
+        {
+          "target": "config:dolphinrc",
+          "class": "managed-keys",
+          "format": "ini",
+          "create_if_missing": true,
+          "validator": "ini",
+          "keys": [
+            {
+              "section": "UiSettings",
+              "key": "ColorScheme",
+              "value": "HSSCatppuccin"
+            }
+          ]
+        }
+      ],
+      "activation": [
+        {
+          "kind": "next-launch"
+        }
+      ]
+    },
+    {
+      "id": "kate",
+      "owner": "D06",
+      "description": "Kate window colour scheme key only ([UiSettings] ColorScheme); editor theme follows it automatically",
+      "applies": {
+        "members": [
+          "gui_editor/kate"
+        ]
+      },
+      "depends": [
+        "kde-color-scheme"
+      ],
+      "executables": [
+        "kate"
+      ],
+      "outputs": [
+        {
+          "target": "config:katerc",
+          "class": "managed-keys",
+          "format": "ini",
+          "create_if_missing": true,
+          "validator": "ini",
+          "keys": [
+            {
+              "section": "UiSettings",
+              "key": "ColorScheme",
+              "value": "HSSCatppuccin"
+            }
+          ]
+        }
+      ],
+      "activation": [
+        {
+          "kind": "next-launch"
+        }
+      ]
+    }
+  ]
+}

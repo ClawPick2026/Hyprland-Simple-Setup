@@ -116,7 +116,10 @@
       "timeshift",
       "grub-btrfs",
       "inotify-tools",
-      "satty"
+      "satty",
+      "gvfs",
+      "thunar-archive-plugin",
+      "nemo-fileroller"
     ],
     "shell": [
       "fish",
@@ -158,6 +161,7 @@
       "ttf-jetbrains-mono-nerd",
       "ttf-nerd-fonts-symbols",
       "ttf-nerd-fonts-symbols-common",
+      "noto-fonts",
       "otf-font-awesome",
       "cava",
       "breeze",
@@ -185,6 +189,7 @@
       "psensor",
       "konsole",
       "playerctl",
+      "ffmpeg",
       "brightnessctl",
       "reflector",
       "libnotify",
@@ -203,7 +208,8 @@
       "gnome-calendar",
       "korganizer",
       "calcurse",
-      "khal"
+      "khal",
+      "qalculate-gtk"
     ]
   },
   "aur_packages": {
@@ -222,7 +228,8 @@
     ],
     "theming": [
       "waypaper-git",
-      "rose-pine-hyprcursor"
+      "rose-pine-hyprcursor",
+      "rose-pine-cursor"
     ],
     "system_integration": [
       "xwaylandvideobridge",
@@ -361,6 +368,7 @@
     "ttf-jetbrains-mono-nerd": "JetBrains Mono Nerd Font",
     "ttf-nerd-fonts-symbols": "Nerd Fonts symbols",
     "ttf-nerd-fonts-symbols-common": "Nerd Fonts common symbols",
+    "noto-fonts": "Noto Sans GUI font used by the harmonized theme",
     "otf-font-awesome": "Font Awesome",
     "cava": "Audio visualizer",
     "breeze": "Breeze theme",
@@ -387,6 +395,7 @@
     "psensor": "Hardware sensors monitor",
     "konsole": "KDE/Qt terminal with tabs, split views and profiles; fits KDE-themed desktops.",
     "playerctl": "Media player control",
+    "ffmpeg": "Media framework; provides ffplay for the Music helper",
     "brightnessctl": "Brightness control utility",
     "reflector": "Arch mirrorlist updater",
     "libnotify": "Desktop notifications library",
@@ -410,6 +419,7 @@
     "wlogout": "Wayland logout menu",
     "waypaper-git": "Wallpaper manager",
     "rose-pine-hyprcursor": "Rose Pine cursor theme",
+    "rose-pine-cursor": "Rose Pine Xcursor theme (BreezeX-RosePine-Linux) for non-Hyprland toolkits",
     "xwaylandvideobridge": "XWayland capture bridge",
     "wl-clipboard-history-git": "Clipboard history manager",
     "waybar-module-pacman-updates-git": "Waybar pacman updates module",
@@ -430,6 +440,7 @@
     "korganizer": "Full KDE organizer for calendars, tasks and scheduling; integrates with the Kontact suite.",
     "calcurse": "Keyboard-driven terminal calendar with appointments and tasks; lighter than a desktop organizer.",
     "khal": "Terminal calendar using ikhal and local calendar files; online sync can be added with vdirsyncer.",
+    "qalculate-gtk": "GTK calculator opened by the Super+Enter shortcut",
     "bluetui": "Keyboard-driven terminal Bluetooth manager focused on pairing and connecting devices.",
     "bluetuith": "Terminal Bluetooth manager with mouse support and OBEX file transfers, beyond basic pairing.",
     "ncpamixer": "Terminal mixer for PulseAudio-compatible devices and app streams; unlike ALSAmixer, supports per-app control.",
@@ -442,7 +453,10 @@
     "opencode": "Terminal coding agent with multiple provider integrations and a local client/server architecture.",
     "claude-code": "Anthropic terminal coding agent for repository exploration, editing and development workflows.",
     "codex-cli": "OpenAI terminal coding agent with interactive workflows and configurable sandbox modes.",
-    "cursor-cli": "Cursor terminal coding agent for codebase questions and changes; account authentication is completed manually."
+    "cursor-cli": "Cursor terminal coding agent for codebase questions and changes; account authentication is completed manually.",
+    "gvfs": "GIO virtual filesystem for trash, mounts and remote locations in GTK file managers",
+    "thunar-archive-plugin": "Thunar context-menu actions for creating and extracting archives",
+    "nemo-fileroller": "Nemo context-menu actions for creating and extracting archives"
   },
   "required": {
     "pacman": [
@@ -640,7 +654,11 @@
           "package": "thunar",
           "source": "pacman",
           "executable": "thunar",
-          "args": []
+          "args": [],
+          "extra_packages": [
+            "gvfs",
+            "thunar-archive-plugin"
+          ]
         },
         {
           "package": "nautilus",
@@ -652,13 +670,19 @@
           "package": "nemo",
           "source": "pacman",
           "executable": "nemo",
-          "args": []
+          "args": [],
+          "extra_packages": [
+            "nemo-fileroller"
+          ]
         },
         {
           "package": "pcmanfm-qt",
           "source": "pacman",
           "executable": "pcmanfm-qt",
-          "args": []
+          "args": [],
+          "extra_packages": [
+            "gvfs"
+          ]
         }
       ]
     },
@@ -761,10 +785,10 @@
         {
           "package": "helix",
           "source": "pacman",
-          "executable": "hx",
+          "executable": "helix",
           "args": [],
           "terminal": true,
-          "editor_bin": "hx"
+          "editor_bin": "helix"
         },
         {
           "package": "vim",
@@ -807,7 +831,7 @@
             "--enable-features=UseOzonePlatform"
           ],
           "editor_bin": "code",
-          "desktop_file": "visual-studio-code.desktop"
+          "desktop_file": "code.desktop"
         },
         {
           "package": "cursor-bin",

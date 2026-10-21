@@ -1,0 +1,22 @@
+# Fnott notifications: {{variant_label}} (managed keys; fnott has no include directive).
+[main]
+title-font={{font.ui_family}}:size={{font.ui_size_pt}}
+summary-font={{font.ui_family}}:size={{font.ui_size_pt}}:weight=bold
+body-font={{font.ui_family}}:size={{font.ui_size_pt}}
+background={{color.bg | nohash}}ff
+border-color={{color.accent | nohash}}ff
+border-size={{metrics.border}}
+border-radius={{metrics.radius_large}}
+title-color={{color.fg_muted | nohash}}ff
+summary-color={{color.fg | nohash}}ff
+body-color={{color.fg | nohash}}ff
+progress-color={{color.accent | nohash}}ff
+
+[low]
+border-color={{color.border | nohash}}ff
+
+[normal]
+border-color={{color.accent | nohash}}ff
+
+[critical]
+border-color={{color.critical | nohash}}ff

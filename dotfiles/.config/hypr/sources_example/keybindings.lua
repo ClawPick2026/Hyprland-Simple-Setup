@@ -48,6 +48,7 @@ bind(main_mod .. " + " .. home_key, "Take Screenshot of Monitor", hl.dsp.exec_cm
 bind(home_key, "Take Screenshot of Region", hl.dsp.exec_cmd(apps.screenshot .. " region --raw | satty --filename -"))
 
 bind(main_mod .. " + H", "Toggle Selected Bar", hl.dsp.exec_cmd(apps.hyprscripts .. "/toggle_waybar.sh"))
+bind(main_mod .. " + SHIFT + T", "Toggle Dark/Light Theme", hl.dsp.exec_cmd(apps.hyprscripts .. "/action_exec.sh theme.toggle")) -- hss-theme:toggle-binding
 bind(main_mod .. " + V", "Toggle Floating", hl.dsp.exec_cmd(apps.hyprscripts .. "/toggle_floating.sh"))
 bind(main_mod .. " + W", "Change Wallpaper", hl.dsp.exec_cmd(apps.hyprscripts .. "/change_wallpaper.sh"))
 bind(main_mod .. " + CTRL + S", "Start Hyprsunset", hl.dsp.exec_cmd(apps.hyprscripts .. "/hyprsunset.sh"))

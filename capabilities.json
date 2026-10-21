@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "description": "Desktop harmonization capability ledger (plan F01). This base document plus every capabilities.d/*.json fragment form one logical ledger. Each role option, None state, capability, evidence record and generic catalog package is defined in exactly one fragment. packages.json stays authoritative for package identity, sources, defaults and launch argv; this ledger never enables, disables or substitutes a choice. Option summaries are one line of at most 160 characters; supported and partial capability claims need evidence and a native mechanism.",
+  "vocabulary": {
+    "option_support": {
+      "full": "Every required capability listed for the option is natively supported (or not applicable) and backed by evidence; at least one capability is listed and the theme is not unsupported or partial.",
+      "limited": "At least one required capability (or the native theme surface) is natively unsupported or only partial; needs at least one user-facing limitation. The option stays selectable and reports unsupported operations honestly.",
+      "unverified": "Evidence is missing or only obtainable in the Arch VM; no parity claim is made."
+    },
+    "capability_support": {
+      "supported": "The option provides the capability natively; requires evidence.",
+      "partial": "The option provides part of the observable outcome natively; requires evidence and a note.",
+      "unsupported": "The option has no native mechanism; requires a note explaining the gap. The action reports the unsupported outcome (exit 5).",
+      "unverified": "Not yet checked; no claim is made.",
+      "not-applicable": "The capability does not apply to this option."
+    },
+    "mechanism": {
+      "native-cli": "A command-line interface shipped by the application.",
+      "native-config": "The application's own configuration files.",
+      "native-api": "A native IPC/D-Bus/socket API of the application.",
+      "native-ui": "Only the application's own user interface provides it.",
+      "none": "No native mechanism."
+    },
+    "family": {
+      "gtk3": "GTK 3 toolkit.",
+      "gtk4": "GTK 4 toolkit without libadwaita styling.",
+      "libadwaita": "GTK 4 with libadwaita.",
+      "qt5": "Qt 5 toolkit.",
+      "qt6": "Qt 6 toolkit without KDE Frameworks styling.",
+      "kde": "Qt with KDE Frameworks (Breeze/kdeglobals aware).",
+      "electron": "Electron/Chromium-embedded interface.",
+      "custom": "Application-rendered interface (own renderer or toolkit).",
+      "tui": "Full-screen terminal interface.",
+      "cli": "Line-oriented terminal program."
+    },
+    "startup": {
+      "on-demand": "Started by a user action and exits when closed.",
+      "daemon": "Long-running process started with the session.",
+      "dbus-activated": "Started by D-Bus activation when its bus name is requested.",
+      "session-service": "Started as a systemd user service.",
+      "terminal": "Runs inside the selected terminal."
+    },
+    "evidence_kind": {
+      "documentation": "Authoritative upstream or installed documentation (cite source and version).",
+      "static": "Static inspection of shipped files or configuration.",
+      "argv": "Exact command line recorded by a test double; command is required.",
+      "modeled-effect": "Effect observed against a stateful test double; command is required.",
+      "real-effect": "Effect observed with the real application; environment and command are required.",
+      "visual": "Reviewed screenshot or manual visual check; environment is required."
+    },
+    "requirement": {
+      "required": "Mandatory for a full support label.",
+      "optional": "Native extra; never required for a full support label."
+    },
+    "failure_state": {
+      "failed": "The provider or a required command failed (exit 1).",
+      "usage": "Invalid action, arguments or request (exit 2).",
+      "cancelled": "The user dismissed a chooser, confirmation or prompt (exit 3).",
+      "disabled": "The role is set to None (exit 4).",
+      "unsupported": "The selected application has no native capability (exit 5).",
+      "missing-dependency": "A required executable or asset is not installed (exit 6).",
+      "unavailable": "Hardware, session, service or display is absent (exit 7).",
+      "timeout": "A bounded wait expired; the result is unknown (exit 8).",
+      "denied": "Authorization was refused (exit 9).",
+      "conflict": "A foreign owner or user-owned configuration prevents the operation (exit 10)."
+    },
+    "generic_class": {
+      "themed-interface": "Visible GUI/TUI surface that needs theme coverage.",
+      "integrated-action": "Command invoked by desktop workflows (capture, clipboard, wallpaper, media, brightness, administration).",
+      "backend-dependency": "Service, runtime, library or theme asset supporting other components.",
+      "outside-visual-scope": "Driver, kernel, build/protocol tooling or unrelated CLI infrastructure; no dedicated renderer."
+    }
+  },
+  "identifiers": {
+    "option": "<role>/<package>, for example notifications/fnott; role and package come from packages.json.",
+    "capability": "<domain>.<name>[.<detail>] matching ^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$; the first segment equals the capability's domain.",
+    "action": "Action ID matching ^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$; dispatched to hss_action_<id with dots replaced by underscores> in providers/<first segment>.sh.",
+    "evidence": "E-<owner>-<NNN>, for example E-D03-001; the owner equals the defining fragment's owner.",
+    "theme_unit": "Unit ID from dotfiles/.config/hypr/theme/units.json or units.d/*.json."
+  },
+  "fragments": "capabilities.d/*.json"
+}

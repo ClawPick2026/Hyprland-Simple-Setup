@@ -56,7 +56,7 @@ IconSize=32
 Plugins=appimagethumbnail,audiothumbnail,windowsexethumbnail,imagethumbnail,comicbookthumbnail,cursorthumbnail,djvuthumbnail,ebookthumbnail,exrthumbnail,jpegthumbnail,kraorathumbnail,windowsimagethumbnail,directorythumbnail,fontthumbnail,svgthumbnail,textthumbnail,gdk-pixbuf-thumbnailer
 
 [UiSettings]
-ColorScheme=BreezeDark
+ColorScheme=HSSCatppuccin
 
 [VersionControl]
 enabledPlugins=Git

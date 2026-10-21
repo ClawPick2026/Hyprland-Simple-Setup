@@ -1,0 +1,260 @@
+{
+  "layer": "top",
+  "spacing": 6,
+  "reload_style_on_change": true,
+  "on-sigusr1": "toggle",
+  "on-sigusr2": "reload",
+  "modules-left": [
+    "custom/power",
+    "custom/menu",
+    "tray",
+    "hyprland/workspaces",
+    "hyprland/submap"
+  ],
+  "modules-right": [
+    "pulseaudio",
+    "backlight",
+    "custom/temperature",
+    "keyboard-state",
+    "battery",
+    "network",
+    "bluetooth",
+    "custom/updates",
+    "custom/notification",
+    "clock"
+  ],
+  "keyboard-state": {
+    "numlock": true,
+    "capslock": false,
+    "format": "{icon}{name}",
+    "format-icons": {
+      "locked": "\uf023 ",
+      "unlocked": "\uf09c "
+    }
+  },
+  "wlr/taskbar": {
+    "format": "{icon}",
+    "icon-size": 30,
+    "icon-theme": "Numix-Circle",
+    "tooltip-format": "{title}",
+    "on-click": "activate",
+    "on-click-middle": "close",
+    "ignore-list": [
+      "hss-scratchpad",
+      "hss-clipboard",
+      "hss-audio",
+      "xwaylandvideobridge"
+    ],
+    "app_ids-mapping": {
+      "firefoxdeveloperedition": "firefox-developer-edition"
+    },
+    "rewrite": {
+      "Firefox Web Browser": "Firefox",
+      "Foot Server": "Terminal"
+    }
+  },
+  "hyprland/submap": {
+    "format": "<span style=\"italic\">{}</span>"
+  },
+  "hyprland/workspaces": {
+    "format": "{id}",
+    "on-click": "activate",
+    "sort-by": "number",
+    "tooltips": {
+      "default": "Workspace {name}\nLeft click: switch • Scroll: previous/next"
+    }
+  },
+  "tray": {
+    "icon-size": 21,
+    "spacing": 5,
+    "show-passive-items": true
+  },
+  "clock": {
+    "timezone": "Europe/Zurich",
+    "format": "{:%a %d %b %Y | %H:%M}",
+    "tooltip-format": "<big><tt><small>{calendar}</small></tt></big>\n<small>Left click: open selected calendar</small>",
+    "on-click": "$HOME/.config/hypr/scripts/float_calendar.sh"
+  },
+  "custom/temperature": {
+    "exec": "$HOME/.config/waybar/scripts/temperature_status.sh",
+    "return-type": "json",
+    "interval": 2,
+    "tooltip": true,
+    "on-click": "bash -lc '$HOME/.config/waybar/scripts/sensor.sh'"
+  },
+  "battery": {
+    "states": {
+      "good": 80,
+      "warning": 30,
+      "critical": 15
+    },
+    "format": "{capacity}% {icon}",
+    "format-full": "{capacity}% {icon}",
+    "format-charging": "{capacity}% \uf5e7",
+    "format-plugged": "{capacity}% \uf1e6",
+    "format-alt": "{time} {icon}",
+    "tooltip-format": "Battery: {capacity}%\nStatus: {timeTo}\nPower: {power} W\nLeft click: show time remaining",
+    "format-icons": [
+      "\uf244",
+      "\uf243",
+      "\uf242",
+      "\uf241",
+      "\uf240"
+    ]
+  },
+  "power-profiles-daemon": {
+    "format": "{icon}",
+    "tooltip-format": "Power profile: {profile}\nDriver: {driver}",
+    "tooltip": true,
+    "format-icons": {
+      "default": "\uf0e7",
+      "performance": "\uf0e7 Max",
+      "balanced": "\uf24e Mid",
+      "power-saver": "\uf06c Low"
+    }
+  },
+  "pulseaudio": {
+    "on-click": "$HOME/.config/waybar/scripts/audio_control.sh",
+    "on-click-right": "$HOME/.config/waybar/scripts/alsamixer.sh",
+    "tooltip-format": "Output: {desc}\nVolume: {volume}%\nMicrophone: {source_volume}%\nLeft or right click: selected audio control",
+    "format": "{volume}% {icon} {format_source}",
+    "format-bluetooth": "{volume}% {icon}\uf294 {format_source}",
+    "format-bluetooth-muted": "\uf6a9 {icon}\uf294 {format_source}",
+    "format-muted": "\uf6a9 {format_source}",
+    "format-source": "{volume}% \uf130",
+    "format-source-muted": "\uf131",
+    "format-icons": {
+      "headphone": "\uf025",
+      "hands-free": "\uf590",
+      "headset": "\uf590",
+      "phone": "\uf095",
+      "portable": "\uf095",
+      "car": "\uf1b9",
+      "default": [
+        "\uf026",
+        "\uf027",
+        "\uf028"
+      ]
+    }
+  },
+  "bluetooth": {
+    "format": "\uf293",
+    "format-off": "\uf294",
+    "format-on": "\uf293",
+    "format-no-controller": "Bluetooth unavailable",
+    "format-connected": "\uf293 {device_alias}",
+    "format-connected-battery": "\uf293 {device_alias} {device_battery_percentage}%",
+    "tooltip": true,
+    "tooltip-format": "Bluetooth: {status}\nLeft click: devices • Right click: power",
+    "tooltip-format-connected": "Connected: {device_alias}\nDevices: {num_connections}\nLeft click: devices • Right click: power",
+    "tooltip-format-connected-battery": "Connected: {device_alias}\nBattery: {device_battery_percentage}%\nLeft click: devices • Right click: power",
+    "tooltip-format-off": "Bluetooth is off\nRight click: turn on",
+    "tooltip-format-no-controller": "No Bluetooth controller found",
+    "on-click": "$HOME/.config/waybar/scripts/bluetooth_manager.sh",
+    "on-click-right": "$HOME/.config/hypr/scripts/toggle_bluetooth.sh"
+  },
+  "network": {
+    "format-wifi": "{signalStrength}% \uf1eb",
+    "format-ethernet": "\udb81\udd9f",
+    "format-linked": "{ifname} (No IP) \uf796",
+    "format-disconnected": "Disconnected \u26a0",
+    "format-disabled": "Wi-Fi off",
+    "tooltip-format": "Network: {ifname}\nAddress: {ipaddr}\nGateway: {gwaddr}\nLeft click: network picker • Right click: connection editor",
+    "tooltip-format-wifi": "Wi-Fi: {essid}\nSignal: {signalStrength}%\nAddress: {ipaddr}\nLeft click: network picker • Right click: connection editor",
+    "tooltip-format-ethernet": "Ethernet: {ifname}\nAddress: {ipaddr}\nGateway: {gwaddr}\nLeft click: network picker • Right click: connection editor",
+    "tooltip-format-disconnected": "Network disconnected\nLeft click: network picker • Right click: connection editor",
+    "tooltip-format-disabled": "Wi-Fi is disabled\nLeft click: network picker • Right click: connection editor",
+    "on-click-right": "bash -lc '$HOME/.config/waybar/scripts/nmtui.sh'",
+    "on-click": "bash -lc '$HOME/.config/waybar/scripts/nmtui-connect.sh'"
+  },
+  "backlight": {
+    "format": "{icon} {percent}%",
+    "tooltip-format": "Brightness: {percent}%\nScroll: adjust • Right click: presets",
+    "format-icons": [
+      "\uf522",
+      "\uf51f",
+      "\uf519"
+    ],
+    "menu": "on-click-right",
+    "menu-file": "$HOME/.config/waybar/backlight_menu.xml",
+    "menu-actions": {
+      "set-to-100": "$HOME/.config/waybar/scripts/backlight.sh 100",
+      "set-to-75": "$HOME/.config/waybar/scripts/backlight.sh 75",
+      "set-to-50": "$HOME/.config/waybar/scripts/backlight.sh 50",
+      "set-to-25": "$HOME/.config/waybar/scripts/backlight.sh 25",
+      "set-to-10": "$HOME/.config/waybar/scripts/backlight.sh 10"
+    }
+  },
+  "custom/updates": {
+    "format": "{text}{icon}",
+    "return-type": "json",
+    "format-icons": {
+      "has-updates": " \udb84\udf77",
+      "updated": "\uf058"
+    },
+    "exec-if": "which waybar-module-pacman-updates",
+    "exec": "$HOME/.config/waybar/scripts/updates_status.sh",
+    "on-click": "$HOME/.config/waybar/scripts/confirm_system_update.sh",
+    "menu": "on-click-right",
+    "menu-file": "~/.config/waybar/update_menu.xml",
+    "menu-actions": {
+      "check": "$HOME/.config/waybar/scripts/launch_system_update.sh --check",
+      "update": "$HOME/.config/waybar/scripts/launch_system_update.sh",
+      "update-no-aur": "$HOME/.config/waybar/scripts/launch_system_update.sh --without-aur",
+      "firmware": "$HOME/.config/waybar/scripts/launch_system_update.sh --firmware",
+      "review-pacnew": "$HOME/.config/waybar/scripts/launch_system_update.sh --review-pacnew",
+      "clean-cache": "$HOME/.config/waybar/scripts/launch_system_update.sh --clean-cache",
+      "show-log": "$HOME/.config/waybar/scripts/launch_system_update.sh --show-log"
+    }
+  },
+  "custom/notification": {
+    "format": "{text} {icon}",
+    "format-icons": {
+      "notification": "\uf0a2<span foreground='red'><sup>\uf444</sup></span>",
+      "none": "\uf0a2",
+      "dnd-notification": "\uf1f7<span foreground='red'><sup>\uf444</sup></span>",
+      "dnd-none": "\uf1f7",
+      "inhibited-notification": "\uf0a2<span foreground='red'><sup>\uf444</sup></span>",
+      "inhibited-none": "\uf0a2",
+      "dnd-inhibited-notification": "\uf1f7<span foreground='red'><sup>\uf444</sup></span>",
+      "dnd-inhibited-none": "\uf1f7"
+    },
+    "return-type": "json",
+    "exec": "$HOME/.config/waybar/scripts/notification_status.sh",
+    "on-click": "$HOME/.config/hypr/scripts/notification_control.sh toggle",
+    "on-click-right": "$HOME/.config/hypr/scripts/notification_control.sh dnd",
+    "escape": true
+  },
+  "custom/power": {
+    "format": " \u23fb ",
+    "tooltip": true,
+    "tooltip-format": "Left click: power screen\nRight click: quick actions",
+    "on-click": "$HOME/.config/waybar/scripts/launch_power_screen.sh",
+    "menu": "on-click-right",
+    "menu-file": "$HOME/.config/waybar/power_menu.xml",
+    "menu-actions": {
+      "shutdown": "~/.config/waybar/scripts/power_action.sh shutdown",
+      "reboot": "~/.config/waybar/scripts/power_action.sh reboot",
+      "suspend": "~/.config/waybar/scripts/power_action.sh suspend",
+      "hibernate": "~/.config/waybar/scripts/power_action.sh hibernate",
+      "logout": "~/.config/waybar/scripts/power_action.sh logout"
+    }
+  },
+  "custom/menu": {
+    "format": "{icon} Menu",
+    "format-icons": [
+      "\uf313"
+    ],
+    "tooltip": true,
+    "tooltip-format": "Left click: applications\nRight click: tools and keybinds",
+    "on-click": "$HOME/.config/hypr/scripts/menu_exec.sh --toggle",
+    "menu": "on-click-right",
+    "menu-file": "$HOME/.config/waybar/options_menu.xml",
+    "menu-actions": {
+      "keybinds": "$HOME/.config/waybar/scripts/keybinds.py",
+      "drun": "$HOME/.config/hypr/scripts/menu_exec.sh",
+      "open_keybinds": "$HOME/.config/hypr/scripts/term_exec.sh --app-id hss-keybinds --title Keybinds -- sh -c 'editor=$(jq -r .roles.tui_editor.editor_bin \"$HOME/.config/hypr/roles.json\"); exec \"$editor\" \"$HOME/.config/hypr/sources/keybindings.lua\"'",
+      "snapshot": "$HOME/.config/waybar/scripts/snapshot.sh"
+    }
+  }
+}

@@ -24,6 +24,9 @@ Changes since `v0.6.0`.
 
 - Added `--list-runs` and `--rollback <run-id>`, with per-run manifests, backups, and file-change checks before rollback.
 - Added atomic managed-file updates and stricter failure reporting for configuration writes, run metadata, and rollback.
+- Dry-run rollback no longer deletes files, validated privileged deletions use sudo, and manifests whose final row lacks a newline are read correctly.
+- Generated Lua commands keep argument boundaries and literal characters.
+- Unselected role alternatives are removed from explicit and user-added package lists, and registry token checks match the Rust validator.
 - Application choosers now show descriptions, support scrolling, and prevent installation with empty required groups.
 - Live output supports mouse and keyboard scrolling, a scrollbar, compact/detail views, and a Follow control. Full output is saved separately.
 
@@ -38,6 +41,7 @@ Changes since `v0.6.0`.
 ### Tests and maintenance
 
 - Added Rust, shell, Python, and package-registry regression coverage, with separate Rust, shell, and JSON CI jobs.
+- Hosted CI, live pacman/AUR availability, and interactive or privileged-system checks were not run before release.
 
 ## Breaking Changes
 

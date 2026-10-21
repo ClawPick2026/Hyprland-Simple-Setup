@@ -1,0 +1,287 @@
+{
+  "schema_version": 1,
+  "owner": "D02",
+  "capabilities": {
+    "menu.applications": {
+      "domain": "menu",
+      "requirement": "required",
+      "outcome": "The standard launcher action opens the selected launcher's native desktop-application list and starts the chosen entry; Super+Space keeps opening the same catalog command.",
+      "failure_states": ["cancelled", "unsupported", "missing-dependency", "unavailable", "failed", "usage"],
+      "actions": ["menu.applications"]
+    },
+    "menu.commands": {
+      "domain": "menu",
+      "requirement": "required",
+      "outcome": "A separate action opens the launcher's native executable search and starts the chosen PATH executable.",
+      "failure_states": ["cancelled", "unsupported", "missing-dependency", "unavailable", "failed", "usage"],
+      "actions": ["menu.commands"]
+    },
+    "menu.choose": {
+      "domain": "menu",
+      "requirement": "required",
+      "outcome": "menu_choose.sh shows sanitized, collision-free labels through the launcher's dmenu mode and prints exactly one offered record ID (exit 0), or exits 3 on cancel, 1 on launcher failure or unoffered output, 2 on an invalid request.",
+      "failure_states": ["cancelled", "failed", "usage"]
+    },
+    "menu.confirm": {
+      "domain": "menu",
+      "requirement": "required",
+      "outcome": "menu_choose.sh --confirm offers No first and Yes second and exits 0 only when Yes is selected; cancel, No, typed text or launcher errors never confirm.",
+      "failure_states": ["cancelled", "failed", "usage"]
+    }
+  },
+  "options": {
+    "launcher/wofi": {
+      "support": "full",
+      "summary": "Applications (drun), command search (run), shared chooser and Catppuccin theme all work natively.",
+      "limitations": [
+        "Wofi reports both Escape and internal errors with exit status 1, so a crashed chooser is reported as cancelled."
+      ],
+      "family": "gtk3",
+      "startup": "on-demand",
+      "data_boundary": "Wofi keeps its own drun/run usage caches under ~/.cache; chooser labels are never cached (cache file /dev/null) or logged; nothing is migrated.",
+      "capabilities": {
+        "menu.applications": {"support": "supported", "mechanism": "native-cli", "evidence": ["E-D02-001", "E-D02-006"], "note": "wofi --show drun honors NoDisplay, Hidden, TryExec, OnlyShowIn and desktop-ID shadowing."},
+        "menu.commands": {"support": "supported", "mechanism": "native-cli", "evidence": ["E-D02-001", "E-D02-006"], "note": "wofi --show run with the catalog style."},
+        "menu.choose": {"support": "supported", "mechanism": "native-cli", "evidence": ["E-D02-002", "E-D02-003", "E-D02-004", "E-D02-005", "E-D02-007"], "note": "Text output with exact label matching; markup and image escapes forced off; no_custom_entry and print_line_num are not used because they select or print the wrong row for typed text."},
+        "menu.confirm": {"support": "supported", "mechanism": "native-cli", "evidence": ["E-D02-002"], "note": ""}
+      },
+      "theme": {"support": "supported", "units": ["wofi"], "note": "Rendered region in the shipped menu.css (GTK 3 discards the whole stylesheet when an @import target is missing, E-D02-019); verified in both variants (E-D02-020)."}
+    },
+    "launcher/rofi": {
+      "support": "full",
+      "summary": "Applications (drun), command search (run), shared chooser by index and a generated rasi theme are native rofi features.",
+      "limitations": [
+        "Rofi reports both Escape and internal errors with exit status 1, so a crashed chooser is reported as cancelled.",
+        "The verified rofi 1.7.5 build is X11-only and runs through Xwayland; keyboard behavior is checked in the VM."
+      ],
+      "family": "custom",
+      "startup": "on-demand",
+      "data_boundary": "Rofi keeps its own drun/run history caches under ~/.cache; the chooser uses dmenu mode, which keeps no history; nothing is migrated.",
+      "capabilities": {
+        "menu.applications": {"support": "supported", "mechanism": "native-cli", "evidence": ["E-D02-008"], "note": "rofi -show drun; real desktop-entry filtering is checked in the VM."},
+        "menu.commands": {"support": "supported", "mechanism": "native-cli", "evidence": ["E-D02-008"], "note": "rofi -show run."},
+        "menu.choose": {"support": "supported", "mechanism": "native-cli", "evidence": ["E-D02-008", "E-D02-009"], "note": "-format i -no-custom -no-markup-rows: 0-based index output, custom entries refused natively."},
+        "menu.confirm": {"support": "supported", "mechanism": "native-cli", "evidence": ["E-D02-008"], "note": ""}
+      },
+      "theme": {"support": "supported", "units": ["rofi"], "note": "Generated theme loaded with @theme by absolute path from a managed region of config.rasi; parsed by rofi -dump-theme in both variants (E-D02-010)."}
+    },
+    "launcher/fuzzel": {
+      "support": "full",
+      "summary": "Applications, command search with PATH executables, chooser by index and include-based theme are native fuzzel features.",
+      "limitations": [
+        "Fuzzel has no executables-only mode: command search lists PATH executables together with applications.",
+        "Fuzzel shows entries restricted with OnlyShowIn to other desktops unless filter-desktop is enabled in its own configuration."
+      ],
+      "family": "custom",
+      "startup": "on-demand",
+      "data_boundary": "Fuzzel keeps its application launch counts in ~/.cache/fuzzel; chooser entries are not cached (cache /dev/null); nothing is migrated.",
+      "capabilities": {
+        "menu.applications": {"support": "supported", "mechanism": "native-cli", "evidence": ["E-D02-011", "E-D02-013"], "note": "Default fuzzel mode hides NoDisplay, Hidden and failing TryExec entries and applies desktop-ID shadowing."},
+        "menu.commands": {"support": "supported", "mechanism": "native-cli", "evidence": ["E-D02-011", "E-D02-013"], "note": "fuzzel --list-executables-in-path adds PATH executables to the application list (no separate executables-only list)."},
+        "menu.choose": {"support": "supported", "mechanism": "native-cli", "evidence": ["E-D02-011", "E-D02-012"], "note": "--index --only-match; Escape exits 2, which is mapped to cancelled."},
+        "menu.confirm": {"support": "supported", "mechanism": "native-cli", "evidence": ["E-D02-012"], "note": ""}
+      },
+      "theme": {"support": "supported", "units": ["fuzzel"], "note": "include= of a generated file from a managed region at the top of fuzzel.ini; fuzzel --check-config accepts both variants (E-D02-014)."}
+    },
+    "launcher/bemenu": {
+      "support": "limited",
+      "summary": "Command search (bemenu-run), shared chooser and native color options work; Bemenu has no desktop-application mode.",
+      "limitations": [
+        "Bemenu has no native desktop-application mode: the Applications action explains this and opens nothing; Super+Space keeps opening bemenu-run (executable search).",
+        "Bemenu cannot refuse typed text and reports Escape and errors with the same exit status; the chooser rejects unoffered text and treats status 1 as cancelled."
+      ],
+      "family": "custom",
+      "startup": "on-demand",
+      "data_boundary": "Bemenu keeps no history; nothing is migrated.",
+      "capabilities": {
+        "menu.applications": {"support": "unsupported", "mechanism": "none", "evidence": ["E-D02-015"], "note": "bemenu(1) documents only dmenu input and bemenu-run over PATH executables; no desktop-entry mode exists and none is emulated."},
+        "menu.commands": {"support": "supported", "mechanism": "native-cli", "evidence": ["E-D02-015", "E-D02-016"], "note": "bemenu-run with the Wayland backend (catalog command)."},
+        "menu.choose": {"support": "supported", "mechanism": "native-cli", "evidence": ["E-D02-015", "E-D02-016"], "note": "Text output with exact label matching; typed text is rejected as unoffered."},
+        "menu.confirm": {"support": "supported", "mechanism": "native-cli", "evidence": ["E-D02-016"], "note": ""}
+      },
+      "theme": {"support": "supported", "units": ["bemenu"], "note": "Native --fn and color options from a generated file exported as BEMENU_OPTS by menu_exec.sh unless the user set BEMENU_OPTS (E-D02-017)."}
+    },
+    "launcher/tofi": {
+      "support": "unverified",
+      "summary": "Documented upstream: applications (tofi-drun), command search (tofi-run), chooser and include-based theme; not testable locally.",
+      "limitations": [
+        "tofi is an AUR package that was not available in the test environment; its behavior is verified only from upstream documentation until the VM check.",
+        "tofi-run only prints the chosen executable; the command action starts exactly that PATH executable without arguments."
+      ],
+      "family": "custom",
+      "startup": "on-demand",
+      "data_boundary": "tofi-run and tofi-drun keep usage counts in ~/.local/state (tofi-history, tofi-drun-history); dmenu mode keeps none; nothing is migrated.",
+      "capabilities": {
+        "menu.applications": {"support": "unverified", "mechanism": "native-cli", "evidence": ["E-D02-018"], "note": "tofi-drun --drun-launch=true (catalog command); documented, not run."},
+        "menu.commands": {"support": "unverified", "mechanism": "native-cli", "evidence": ["E-D02-018"], "note": "tofi-run --require-match=true prints the executable; the provider starts it as one argv element after resolving it on PATH."},
+        "menu.choose": {"support": "unverified", "mechanism": "native-cli", "evidence": ["E-D02-018"], "note": "--prompt-text and --require-match=true with exact label matching."},
+        "menu.confirm": {"support": "unverified", "mechanism": "native-cli", "evidence": ["E-D02-018"], "note": ""}
+      },
+      "theme": {"support": "unverified", "units": ["tofi"], "note": "include of a generated file from a managed region of ~/.config/tofi/config; syntax from upstream tofi(5) and doc/config, not executed."}
+    }
+  },
+  "none_states": {},
+  "generic_packages": {},
+  "evidence": {
+    "E-D02-001": {
+      "kind": "documentation",
+      "source": "wofi --help, wofi(1), wofi(5), wofi(7); wofi 1.5.3",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot",
+      "command": "wofi --help; man wofi; man 5 wofi; man 7 wofi",
+      "result": "Modes run, drun, dmenu; --prompt, --define KEY=VALUE, --cache-file; config keys allow_markup and allow_images (default false), dmenu-print_line_num and dmenu-parse_action; config and style files layer /usr/etc, /etc, then XDG_CONFIG_HOME; 'set the cache file to /dev/null to effectively disable it'."
+    },
+    "E-D02-002": {
+      "kind": "real-effect",
+      "source": "wofi 1.5.3 dmenu mode driven with wtype",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway 1.12 (pixman), private D-Bus session, wtype virtual keyboard",
+      "command": "printf 'alpha\\nbeta\\n' | wofi --dmenu --prompt Pick; keys Escape | 'beta' Return | 'zzz' Return | Return with empty stdin",
+      "result": "Escape: exit 1, no output. Typed beta + Return: prints 'beta', exit 0. Typed zzz + Return: prints 'zzz' (custom entry), exit 0. Empty stdin + Return: exit 0 with no output."
+    },
+    "E-D02-003": {
+      "kind": "real-effect",
+      "source": "wofi 1.5.3 dmenu with no_custom_entry",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway 1.12, wtype",
+      "command": "wofi --dmenu -D no_custom_entry=true (with and without -D dmenu-print_line_num=true); keys 'zzz' Return",
+      "result": "With no matching row, Return returned the first row ('alpha' / index 0) instead of nothing, so no_custom_entry is not safe for identity selection."
+    },
+    "E-D02-004": {
+      "kind": "real-effect",
+      "source": "wofi 1.5.3 dmenu with dmenu-print_line_num",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway 1.12, wtype",
+      "command": "wofi --dmenu -D dmenu-print_line_num=true; keys Down Down Return | 'zzz' Return",
+      "result": "Third row printed '2' (0-based); typed custom text was printed verbatim ('zzz'), so a typed number would be indistinguishable from an index: index output is not used for wofi."
+    },
+    "E-D02-005": {
+      "kind": "visual",
+      "source": "wofi 1.5.3 screenshots (grim) with a config enabling allow_markup and allow_images",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway 1.12, grim",
+      "command": "wofi --conf (allow_markup=true, allow_images=true) --dmenu < rows with <b>bold</b> and img:/usr/share/icons/...:text:imgtxt; again with --define=allow_markup=false --define=allow_images=false",
+      "result": "Without overrides the row rendered bold markup and an image; with the --define overrides both rows were shown literally, proving command-line defines override the shipped config."
+    },
+    "E-D02-006": {
+      "kind": "real-effect",
+      "source": "wofi 1.5.3 drun and run modes with synthetic desktop entries",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway 1.12, wtype, grim; XDG_DATA_HOME and XDG_DATA_DIRS fixture directories",
+      "command": "wofi --show drun --cache-file /dev/null (type Hss; select HssVisible; select HssShadow); wofi --show run --search grim",
+      "result": "Listed HssVisible, HssTerm, HssLocEnglish and HssShadowUser; hid NoDisplay=true, Hidden=true, missing TryExec and OnlyShowIn=KDE entries; the user entry shadowed the system entry with the same desktop ID; selecting entries ran their Exec lines; run mode listed the grim executable."
+    },
+    "E-D02-007": {
+      "kind": "real-effect",
+      "source": "wofi 1.5.3 dmenu cache file",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway 1.12",
+      "command": "wofi --dmenu (default) then wofi --dmenu --cache-file /dev/null; ls ~/.cache",
+      "result": "Default dmenu runs created ~/.cache/wofi-dmenu with the selected rows; runs with --cache-file /dev/null left it untouched. The legacy menu_exec.sh --dmenu route therefore caches selections; the shared chooser does not."
+    },
+    "E-D02-008": {
+      "kind": "documentation",
+      "source": "rofi(1), rofi-dmenu(5), rofi-theme(5); rofi 1.7.5",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot",
+      "command": "man rofi-dmenu; man rofi; man rofi-theme",
+      "result": "Modes drun and run; dmenu -p, -format i (0..N-1), -no-custom (only return a selected item), -markup-rows off by default; boolean options are disabled with -no-<option>; return value 0 selected, 1 cancelled, 10-28 custom keys; @theme discards the current theme and loads a file by name or full path, @import adds one."
+    },
+    "E-D02-009": {
+      "kind": "visual",
+      "source": "rofi 1.7.5 dmenu under Xwayland",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway 1.12 with Xwayland 24.1.14, grim",
+      "command": "ldd /usr/bin/rofi; DISPLAY=:0 rofi -dmenu -p Pick < rows",
+      "result": "The Arch Linux ARM rofi 1.7.5 build links only xcb (no Wayland backend) and rendered the dmenu window with the 'Pick:' prompt through Xwayland; wtype keystrokes did not reach the Xwayland window, so selection and Escape exit codes remain documentation-only here."
+    },
+    "E-D02-010": {
+      "kind": "real-effect",
+      "source": "rofi 1.7.5 configuration parsing of the generated theme",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway 1.12 with Xwayland",
+      "command": "XDG_CONFIG_HOME=<rendered home> rofi -dump-theme (config.rasi region: @theme \"<absolute generated path>/rofi/theme.rasi\") for dark and light",
+      "result": "rofi resolved hss-bg to rgba(30,30,46,100%) for dark and rgba(239,241,245,100%) for light and font \"Noto Sans 10\" without parse errors."
+    },
+    "E-D02-011": {
+      "kind": "documentation",
+      "source": "fuzzel --help and fuzzel(1); fuzzel 1.15.0",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot",
+      "command": "fuzzel --help; man fuzzel",
+      "result": "--dmenu, --index (0-based, dmenu only), --only-match, --prompt, --cache (dmenu entries are cached only when --cache is given; /dev/null disables caching), --list-executables-in-path (application mode only), --check-config, --filter-desktop off by default, single-instance lock file."
+    },
+    "E-D02-012": {
+      "kind": "real-effect",
+      "source": "fuzzel 1.15.0 dmenu mode driven with wtype",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway 1.12, wtype",
+      "command": "fuzzel --dmenu --prompt 'Pick: ' --cache /dev/null [--index --only-match]; keys Escape | Down Down Return | 'zzz' Return",
+      "result": "Escape exits 2 with no output; --index --only-match third row prints '2'; with --only-match typed non-matching text + Return keeps the menu open (Escape then exits 2); --index without --only-match prints -1 for typed text."
+    },
+    "E-D02-013": {
+      "kind": "real-effect",
+      "source": "fuzzel 1.15.0 application mode with synthetic desktop entries",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway 1.12, wtype, grim; fixture XDG data directories, XDG_CURRENT_DESKTOP=Hyprland",
+      "command": "fuzzel --cache /dev/null (type Hss; select HssVisible; select HssShadow); fuzzel --list-executables-in-path --search grim",
+      "result": "Hid NoDisplay, Hidden and missing-TryExec entries, showed the OnlyShowIn=KDE entry (no filter-desktop), user entry shadowed the system entry; selecting entries ran their Exec lines; --list-executables-in-path listed grim among applications."
+    },
+    "E-D02-014": {
+      "kind": "real-effect",
+      "source": "fuzzel 1.15.0 configuration check and rendering of the generated theme",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway 1.12, grim",
+      "command": "XDG_CONFIG_HOME=<rendered home> fuzzel --check-config (fuzzel.ini region include=<absolute generated path>/fuzzel/theme.ini), dark and light; fuzzel --dmenu screenshot",
+      "result": "--check-config exit 0 for both variants; the dark screenshot shows Mocha background, Blue border, prompt and selection."
+    },
+    "E-D02-015": {
+      "kind": "documentation",
+      "source": "bemenu --help, bemenu-run --help, bemenu(1); bemenu 0.6.23",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot",
+      "command": "bemenu --help; bemenu-run --help; man bemenu",
+      "result": "bemenu reads newline-separated items and prints selections; bemenu-run lists executables under PATH and executes the selection; no desktop-entry mode exists; -I only highlights an index (no index output); Shift+Return prints the filter text; exit 1 means the user exited without selecting or an error occurred; BEMENU_OPTS passes options; --fn, --tb ... --bdr and -B set font, colors and border."
+    },
+    "E-D02-016": {
+      "kind": "real-effect",
+      "source": "bemenu 0.6.23 Wayland backend driven with wtype",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway 1.12, BEMENU_BACKEND=wayland, wtype",
+      "command": "bemenu -p Pick -l 10 < rows; keys Escape | Down Down Return | 'zzz' Return",
+      "result": "Escape exits 1 with no output; the third row printed 'beta'; typed 'zzz' + Return printed 'zzz' with exit 0 (custom text cannot be refused natively)."
+    },
+    "E-D02-017": {
+      "kind": "visual",
+      "source": "bemenu 0.6.23 with BEMENU_OPTS",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway 1.12, grim",
+      "command": "BEMENU_OPTS=\"--fn 'Noto Sans 14' --tb '#1e1e2e' ... --bdr '#89b4fa' -B 2\" bemenu -p Pick -l 10; then the rendered light bemenu.opts line",
+      "result": "bemenu parsed the single-quoted font name with spaces and applied colors and the border in both runs; the light screenshot shows Latte colors and a Blue highlight."
+    },
+    "E-D02-018": {
+      "kind": "documentation",
+      "source": "tofi upstream documentation: doc/tofi.1.md, doc/tofi.5.md, doc/config and README.md at https://github.com/philj56/tofi (master; current release 0.9.1)",
+      "date": "2026-10-20",
+      "environment": "Web documentation; tofi is AUR-only and not installed in the test environment",
+      "command": "WebFetch of raw.githubusercontent.com/philj56/tofi/master/doc/{tofi.1.md,tofi.5.md,config} and README.md",
+      "result": "tofi reads stdin and prints the selection; tofi-run lists PATH executables and prints the selection (README: tofi-run | xargs swaymsg exec --); tofi-drun lists desktop entries and launches with --drun-launch=true; exit 0 selection, 1 error or no selection (Escape); --prompt-text, --require-match, --print-index (1-based), history files only for run/drun modes; 'include' inserts another config file; '#' comments; colors RGB/RGBA/RRGGBB/RRGGBBAA."
+    },
+    "E-D02-019": {
+      "kind": "real-effect",
+      "source": "GTK 3.24.52 Gtk.CssProvider (python-gobject 3.58.1)",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot",
+      "command": "python3: Gtk.CssProvider().load_from_path() on stylesheets with @import before/after rules, redefined @define-color and a missing @import target; inspect parsing-error and to_string()",
+      "result": "@import is accepted after rules and @define-color; the last @define-color wins; a missing @import target raises an error and the provider keeps no rules at all, so wofi would lose its whole stylesheet. The wofi unit therefore renders its colors into a region of menu.css instead of importing a generated file."
+    },
+    "E-D02-020": {
+      "kind": "visual",
+      "source": "wofi 1.5.3 with the rendered menu.css region",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway 1.12, grim",
+      "command": "hss_theme.py plan --variant dark|light --units wofi --adopt; wofi --dmenu --style <rendered menu.css>",
+      "result": "Dark shows Mocha base, surface0 input, Blue border and Blue selected row with base text; light shows Latte base and Blue accents; Noto Sans text; the dark render is byte-identical to the shipped region (planner reports unchanged)."
+    }
+  }
+}

@@ -1,0 +1,1287 @@
+{
+  "schema_version": 1,
+  "owner": "D01",
+  "cases": [
+    {
+      "id": "D01-bar-waybar-outputs",
+      "option": "bar/waybar",
+      "capability": "bar.outputs",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Connect a second monitor (or add a virtual output) and confirm the bar appears on both; unplug it again",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-waybar-power-screen",
+      "option": "bar/waybar",
+      "capability": "bar.power_screen",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Left-click the power control; the power screen opens",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-waybar-power-menu",
+      "option": "bar/waybar",
+      "capability": "bar.power_menu",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Right-click the power control; choose each entry and cancel the confirmation for shutdown/reboot/logout; suspend directly",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-waybar-app-menu",
+      "option": "bar/waybar",
+      "capability": "bar.app_menu",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Left-click Menu twice: the launcher opens and closes",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-waybar-tools-menu",
+      "option": "bar/waybar",
+      "capability": "bar.tools_menu",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Right-click Menu; open each entry (snapshot only when Timeshift is configured)",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-waybar-tray",
+      "option": "bar/waybar",
+      "capability": "bar.tray",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Start nm-applet or another tray app; its icon appears and opens its menu",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-waybar-workspaces",
+      "option": "bar/waybar",
+      "capability": "bar.workspaces",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Open windows on workspaces 1, 2 and 10; click each workspace in the bar",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-waybar-submap",
+      "option": "bar/waybar",
+      "capability": "bar.submap",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Enter a Hyprland submap; its name appears and disappears on exit",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-waybar-audio",
+      "option": "bar/waybar",
+      "capability": "bar.audio",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Change volume and mute with keys; left click opens application volumes, right click the device mixer",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-waybar-backlight",
+      "option": "bar/waybar",
+      "capability": "bar.backlight",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "On a laptop scroll over brightness; in the VM confirm the n/a state",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-waybar-backlight-presets",
+      "option": "bar/waybar",
+      "capability": "bar.backlight_presets",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Right-click brightness and choose 50%",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-waybar-temperature",
+      "option": "bar/waybar",
+      "capability": "bar.temperature",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Hover for sensors; left click opens the system monitor",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-waybar-lock-keys",
+      "option": "bar/waybar",
+      "capability": "bar.lock_keys",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Toggle Num Lock; the indicator follows (or shows the explicit unreadable state)",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-waybar-battery",
+      "option": "bar/waybar",
+      "capability": "bar.battery",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "In the VM confirm battery n/a; on a laptop check charging and low states",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-waybar-network",
+      "option": "bar/waybar",
+      "capability": "bar.network",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Left click: choose a network; right click: edit connections; disable Wi-Fi and check the state",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-waybar-bluetooth",
+      "option": "bar/waybar",
+      "capability": "bar.bluetooth",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Without an adapter the bar shows n/a; with one, right click toggles power",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-waybar-updates",
+      "option": "bar/waybar",
+      "capability": "bar.updates",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Wait for the update count; left click asks for confirmation",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-waybar-updates-menu",
+      "option": "bar/waybar",
+      "capability": "bar.updates_menu",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Right-click updates; run Check and Show log",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-waybar-notifications",
+      "option": "bar/waybar",
+      "capability": "bar.notifications",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Send notifications, toggle DND with right click, open notifications with left click; stop the daemon and check the state",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-waybar-theme-control",
+      "option": "bar/waybar",
+      "capability": "bar.theme_control",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        },
+        {
+          "path": "tests/shell/panel_themes.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Click the theme control: dark/light switches and the icon follows",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-waybar-clock",
+      "option": "bar/waybar",
+      "capability": "bar.clock",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Left click opens the selected calendar; check the time format",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-waybar-unavailable-hardware",
+      "option": "bar/waybar",
+      "capability": "bar.unavailable_hardware",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "In the VM, battery/backlight show n/a pills, not empty space",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-waybar-appearance",
+      "option": "bar/waybar",
+      "capability": "bar.appearance",
+      "evidence_required": "visual",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        },
+        {
+          "path": "tests/shell/panel_themes.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Switch dark/light with Super+Shift+T and the bar control; inspect normal, hover, focused workspace, warning, critical, muted and n/a states and the menus/tooltips",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-ironbar-outputs",
+      "option": "bar/ironbar",
+      "capability": "bar.outputs",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Connect a second monitor (or add a virtual output) and confirm the bar appears on both; unplug it again",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-ironbar-power-screen",
+      "option": "bar/ironbar",
+      "capability": "bar.power_screen",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Left-click the power control; the power screen opens",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-ironbar-power-menu",
+      "option": "bar/ironbar",
+      "capability": "bar.power_menu",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Right-click the power control; choose each entry and cancel the confirmation for shutdown/reboot/logout; suspend directly",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-ironbar-app-menu",
+      "option": "bar/ironbar",
+      "capability": "bar.app_menu",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Left-click Menu twice: the launcher opens and closes",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-ironbar-tools-menu",
+      "option": "bar/ironbar",
+      "capability": "bar.tools_menu",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Right-click Menu; open each entry (snapshot only when Timeshift is configured)",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-ironbar-tray",
+      "option": "bar/ironbar",
+      "capability": "bar.tray",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Start nm-applet or another tray app; its icon appears and opens its menu",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-ironbar-workspaces",
+      "option": "bar/ironbar",
+      "capability": "bar.workspaces",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Open windows on workspaces 1, 2 and 10; click each workspace in the bar",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-ironbar-submap",
+      "option": "bar/ironbar",
+      "capability": "bar.submap",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Enter a Hyprland submap; its name appears and disappears on exit",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-ironbar-audio",
+      "option": "bar/ironbar",
+      "capability": "bar.audio",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Change volume and mute with keys; left click opens application volumes, right click the device mixer",
+      "result": "not-run",
+      "limits": "Output volume and both gestures are native; the microphone level is not shown on the bar"
+    },
+    {
+      "id": "D01-bar-ironbar-backlight",
+      "option": "bar/ironbar",
+      "capability": "bar.backlight",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "On a laptop scroll over brightness; in the VM confirm the n/a state",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-ironbar-backlight-presets",
+      "option": "bar/ironbar",
+      "capability": "bar.backlight_presets",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Right-click brightness and choose 50%",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-ironbar-temperature",
+      "option": "bar/ironbar",
+      "capability": "bar.temperature",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Hover for sensors; left click opens the system monitor",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-ironbar-lock-keys",
+      "option": "bar/ironbar",
+      "capability": "bar.lock_keys",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Toggle Num Lock; the indicator follows (or shows the explicit unreadable state)",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-ironbar-battery",
+      "option": "bar/ironbar",
+      "capability": "bar.battery",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "In the VM confirm battery n/a; on a laptop check charging and low states",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-ironbar-network",
+      "option": "bar/ironbar",
+      "capability": "bar.network",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Left click: choose a network; right click: edit connections; disable Wi-Fi and check the state",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-ironbar-bluetooth",
+      "option": "bar/ironbar",
+      "capability": "bar.bluetooth",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Without an adapter the bar shows n/a; with one, right click toggles power",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-ironbar-updates",
+      "option": "bar/ironbar",
+      "capability": "bar.updates",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Wait for the update count; left click asks for confirmation",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-ironbar-updates-menu",
+      "option": "bar/ironbar",
+      "capability": "bar.updates_menu",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Right-click updates; run Check and Show log",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-ironbar-notifications",
+      "option": "bar/ironbar",
+      "capability": "bar.notifications",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Send notifications, toggle DND with right click, open notifications with left click; stop the daemon and check the state",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-ironbar-theme-control",
+      "option": "bar/ironbar",
+      "capability": "bar.theme_control",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        },
+        {
+          "path": "tests/shell/panel_themes.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Click the theme control: dark/light switches and the icon follows",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-ironbar-clock",
+      "option": "bar/ironbar",
+      "capability": "bar.clock",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Left click opens the selected calendar; check the time format",
+      "result": "not-run",
+      "limits": "Left click opens the selected calendar; the clock follows the system time zone (no time-zone option)"
+    },
+    {
+      "id": "D01-bar-ironbar-unavailable-hardware",
+      "option": "bar/ironbar",
+      "capability": "bar.unavailable_hardware",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "In the VM, battery/backlight show n/a pills, not empty space",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-ironbar-appearance",
+      "option": "bar/ironbar",
+      "capability": "bar.appearance",
+      "evidence_required": "visual",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        },
+        {
+          "path": "tests/shell/panel_themes.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Switch dark/light with Super+Shift+T and the bar control; inspect normal, hover, focused workspace, warning, critical, muted and n/a states and the menus/tooltips",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-nwg-panel-outputs",
+      "option": "bar/nwg-panel",
+      "capability": "bar.outputs",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Connect a second monitor (or add a virtual output) and confirm the bar appears on both; unplug it again",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-nwg-panel-power-screen",
+      "option": "bar/nwg-panel",
+      "capability": "bar.power_screen",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Left-click the power control; the power screen opens",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-nwg-panel-power-menu",
+      "option": "bar/nwg-panel",
+      "capability": "bar.power_menu",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Right-click the power control; choose each entry and cancel the confirmation for shutdown/reboot/logout; suspend directly",
+      "result": "not-run",
+      "limits": "nwg-panel buttons and executors have no right-click menus; the controls popup is not used because it adds a SwayNC widget"
+    },
+    {
+      "id": "D01-bar-nwg-panel-app-menu",
+      "option": "bar/nwg-panel",
+      "capability": "bar.app_menu",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Left-click Menu twice: the launcher opens and closes",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-nwg-panel-tools-menu",
+      "option": "bar/nwg-panel",
+      "capability": "bar.tools_menu",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Right-click Menu; open each entry (snapshot only when Timeshift is configured)",
+      "result": "not-run",
+      "limits": "No right-click menus in nwg-panel 0.12.1"
+    },
+    {
+      "id": "D01-bar-nwg-panel-tray",
+      "option": "bar/nwg-panel",
+      "capability": "bar.tray",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Start nm-applet or another tray app; its icon appears and opens its menu",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-nwg-panel-workspaces",
+      "option": "bar/nwg-panel",
+      "capability": "bar.workspaces",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Open windows on workspaces 1, 2 and 10; click each workspace in the bar",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-nwg-panel-submap",
+      "option": "bar/nwg-panel",
+      "capability": "bar.submap",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Enter a Hyprland submap; its name appears and disappears on exit",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-nwg-panel-audio",
+      "option": "bar/nwg-panel",
+      "capability": "bar.audio",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Change volume and mute with keys; left click opens application volumes, right click the device mixer",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-nwg-panel-backlight",
+      "option": "bar/nwg-panel",
+      "capability": "bar.backlight",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "On a laptop scroll over brightness; in the VM confirm the n/a state",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-nwg-panel-backlight-presets",
+      "option": "bar/nwg-panel",
+      "capability": "bar.backlight_presets",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Right-click brightness and choose 50%",
+      "result": "not-run",
+      "limits": "Executors have no menus"
+    },
+    {
+      "id": "D01-bar-nwg-panel-temperature",
+      "option": "bar/nwg-panel",
+      "capability": "bar.temperature",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Hover for sensors; left click opens the system monitor",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-nwg-panel-lock-keys",
+      "option": "bar/nwg-panel",
+      "capability": "bar.lock_keys",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Toggle Num Lock; the indicator follows (or shows the explicit unreadable state)",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-nwg-panel-battery",
+      "option": "bar/nwg-panel",
+      "capability": "bar.battery",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "In the VM confirm battery n/a; on a laptop check charging and low states",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-nwg-panel-network",
+      "option": "bar/nwg-panel",
+      "capability": "bar.network",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Left click: choose a network; right click: edit connections; disable Wi-Fi and check the state",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-nwg-panel-bluetooth",
+      "option": "bar/nwg-panel",
+      "capability": "bar.bluetooth",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Without an adapter the bar shows n/a; with one, right click toggles power",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-nwg-panel-updates",
+      "option": "bar/nwg-panel",
+      "capability": "bar.updates",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Wait for the update count; left click asks for confirmation",
+      "result": "not-run",
+      "limits": "Left click starts the confirmed update; the update count needs a streaming widget, which executors are not"
+    },
+    {
+      "id": "D01-bar-nwg-panel-updates-menu",
+      "option": "bar/nwg-panel",
+      "capability": "bar.updates_menu",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Right-click updates; run Check and Show log",
+      "result": "not-run",
+      "limits": "Executors have no menus"
+    },
+    {
+      "id": "D01-bar-nwg-panel-notifications",
+      "option": "bar/nwg-panel",
+      "capability": "bar.notifications",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Send notifications, toggle DND with right click, open notifications with left click; stop the daemon and check the state",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-nwg-panel-theme-control",
+      "option": "bar/nwg-panel",
+      "capability": "bar.theme_control",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        },
+        {
+          "path": "tests/shell/panel_themes.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Click the theme control: dark/light switches and the icon follows",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-nwg-panel-clock",
+      "option": "bar/nwg-panel",
+      "capability": "bar.clock",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Left click opens the selected calendar; check the time format",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-nwg-panel-unavailable-hardware",
+      "option": "bar/nwg-panel",
+      "capability": "bar.unavailable_hardware",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "In the VM, battery/backlight show n/a pills, not empty space",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-nwg-panel-appearance",
+      "option": "bar/nwg-panel",
+      "capability": "bar.appearance",
+      "evidence_required": "visual",
+      "tests": [
+        {
+          "path": "tests/shell/bars_parity.sh",
+          "state": "delivered"
+        },
+        {
+          "path": "tests/shell/panel_themes.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Switch dark/light with Super+Shift+T and the bar control; inspect normal, hover, focused workspace, warning, critical, muted and n/a states and the menus/tooltips",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-dock-nwg-dock-hyprland-pins",
+      "option": "dock/nwg-dock-hyprland",
+      "capability": "dock.pins",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/docks_behavior.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Fresh install: pins show terminal, browser, file manager and GUI editor; add a pin, restart the dock, it stays",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-dock-nwg-dock-hyprland-running",
+      "option": "dock/nwg-dock-hyprland",
+      "capability": "dock.running",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/docks_behavior.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Start an unpinned app; it appears in the dock",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-dock-nwg-dock-hyprland-launch-focus",
+      "option": "dock/nwg-dock-hyprland",
+      "capability": "dock.launch_focus",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/docks_behavior.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Click a pinned app twice: first launches, second focuses the same window",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-dock-nwg-dock-hyprland-active-indicator",
+      "option": "dock/nwg-dock-hyprland",
+      "capability": "dock.active_indicator",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/docks_behavior.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Switch between windows; the indicator follows focus",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-dock-nwg-dock-hyprland-follow-focus",
+      "option": "dock/nwg-dock-hyprland",
+      "capability": "dock.follow_focus",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/docks_behavior.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "With two outputs, focus the second output; the dock stays on the primary output (expected limitation)",
+      "result": "not-run",
+      "limits": "The dock stays on the output where it started (fixed primary output)"
+    },
+    {
+      "id": "D01-dock-nwg-dock-hyprland-appearance",
+      "option": "dock/nwg-dock-hyprland",
+      "capability": "dock.appearance",
+      "evidence_required": "visual",
+      "tests": [
+        {
+          "path": "tests/shell/docks_behavior.sh",
+          "state": "delivered"
+        },
+        {
+          "path": "tests/shell/panel_themes.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Switch dark/light, restart the dock if the option needs it, and inspect the focused-app indicator and hover",
+      "result": "not-run",
+      "limits": "CSS is read only at startup; running-indicator images keep their upstream colors"
+    },
+    {
+      "id": "D01-dock-nwg-panel-pins",
+      "option": "dock/nwg-panel",
+      "capability": "dock.pins",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/docks_behavior.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Fresh install: pins show terminal, browser, file manager and GUI editor; add a pin, restart the dock, it stays",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-dock-nwg-panel-running",
+      "option": "dock/nwg-panel",
+      "capability": "dock.running",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/docks_behavior.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Start an unpinned app; it appears in the dock",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-dock-nwg-panel-launch-focus",
+      "option": "dock/nwg-panel",
+      "capability": "dock.launch_focus",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/docks_behavior.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Click a pinned app twice: first launches, second focuses the same window",
+      "result": "not-run",
+      "limits": "Pins always launch a new instance; a running window is focused through its taskbar button"
+    },
+    {
+      "id": "D01-dock-nwg-panel-active-indicator",
+      "option": "dock/nwg-panel",
+      "capability": "dock.active_indicator",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/docks_behavior.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Switch between windows; the indicator follows focus",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-dock-nwg-panel-follow-focus",
+      "option": "dock/nwg-panel",
+      "capability": "dock.follow_focus",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/docks_behavior.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "With two outputs, focus the second output; the dock stays on the primary output (expected limitation)",
+      "result": "not-run",
+      "limits": "The dock panel stays on output 0 (fixed primary output)"
+    },
+    {
+      "id": "D01-dock-nwg-panel-appearance",
+      "option": "dock/nwg-panel",
+      "capability": "dock.appearance",
+      "evidence_required": "visual",
+      "tests": [
+        {
+          "path": "tests/shell/docks_behavior.sh",
+          "state": "delivered"
+        },
+        {
+          "path": "tests/shell/panel_themes.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Switch dark/light, restart the dock if the option needs it, and inspect the focused-app indicator and hover",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-dock-none",
+      "option": "dock/none",
+      "capability": "dock.none",
+      "evidence_required": "modeled-effect",
+      "tests": [
+        {
+          "path": "tests/shell/docks_behavior.sh",
+          "state": "delivered"
+        },
+        {
+          "path": "tests/shell/panel_themes.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Select None for Dock: no dock appears after login, Super+H still hides only the bar, and no dock theme unit is listed in the setup report",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D01-bar-dock-combinations",
+      "option": null,
+      "capability": null,
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/docks_behavior.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Log in with each of the nine bar/dock combinations; with nwg-panel as bar and dock only one nwg-panel process runs; Super+H hides only the bar",
+      "result": "not-run",
+      "limits": "Hermetic test covers process starts with stub programs; real compositor behavior is the VM check"
+    }
+  ]
+}

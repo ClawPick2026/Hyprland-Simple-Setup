@@ -1,0 +1,704 @@
+{
+  "schema_version": 1,
+  "owner": "D06",
+  "cases": [
+    {
+      "id": "D06-firefox-handlers",
+      "option": "browser/firefox",
+      "capability": "handlers.url",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/application_handlers.sh",
+          "state": "delivered"
+        },
+        {
+          "path": "tests/shell/application_workflows.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Select firefox as primary, run setup, then `xdg-open https://example.org` and open an .html file from the file manager",
+      "result": "not-run",
+      "limits": "Desktop IDs from package file lists; effective dispatch in a session is a VM check"
+    },
+    {
+      "id": "D06-chromium-handlers",
+      "option": "browser/chromium",
+      "capability": "handlers.url",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/application_handlers.sh",
+          "state": "delivered"
+        },
+        {
+          "path": "tests/shell/application_workflows.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Select chromium as primary, run setup, then `xdg-open https://example.org` and open an .html file from the file manager",
+      "result": "not-run",
+      "limits": "Desktop IDs from package file lists; effective dispatch in a session is a VM check"
+    },
+    {
+      "id": "D06-vivaldi-handlers",
+      "option": "browser/vivaldi",
+      "capability": "handlers.url",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/application_handlers.sh",
+          "state": "delivered"
+        },
+        {
+          "path": "tests/shell/application_workflows.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Select vivaldi as primary, run setup, then `xdg-open https://example.org` and open an .html file from the file manager",
+      "result": "not-run",
+      "limits": "Desktop IDs from package file lists; effective dispatch in a session is a VM check"
+    },
+    {
+      "id": "D06-zen-browser-bin-handlers",
+      "option": "browser/zen-browser-bin",
+      "capability": "handlers.url",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/application_handlers.sh",
+          "state": "delivered"
+        },
+        {
+          "path": "tests/shell/application_workflows.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Select zen-browser-bin as primary, run setup, then `xdg-open https://example.org` and open an .html file from the file manager",
+      "result": "not-run",
+      "limits": "Desktop IDs from package file lists; effective dispatch in a session is a VM check"
+    },
+    {
+      "id": "D06-brave-bin-handlers",
+      "option": "browser/brave-bin",
+      "capability": "handlers.url",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/application_handlers.sh",
+          "state": "delivered"
+        },
+        {
+          "path": "tests/shell/application_workflows.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Select brave-bin as primary, run setup, then `xdg-open https://example.org` and open an .html file from the file manager",
+      "result": "not-run",
+      "limits": "Desktop IDs from package file lists; effective dispatch in a session is a VM check"
+    },
+    {
+      "id": "D06-dolphin-folder-handler",
+      "option": "file_manager/dolphin",
+      "capability": "handlers.folder",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/application_handlers.sh",
+          "state": "delivered"
+        },
+        {
+          "path": "tests/shell/file_manager.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Select dolphin: `xdg-open ~/Documents` opens it; the GTK file chooser still opens from a browser download dialog",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D06-dolphin-workflows",
+      "option": "file_manager/dolphin",
+      "capability": "files.trash",
+      "evidence_required": "real-effect",
+      "tests": [],
+      "vm_check": "In dolphin: open a text file in the editor, browse a mounted USB image or second disk, delete and restore a file from trash, extract a .zip",
+      "result": "not-run",
+      "limits": "Manual VM check; gvfs and the Thunar/Nemo archive plugins are installed with their file managers"
+    },
+    {
+      "id": "D06-thunar-folder-handler",
+      "option": "file_manager/thunar",
+      "capability": "handlers.folder",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/application_handlers.sh",
+          "state": "delivered"
+        },
+        {
+          "path": "tests/shell/file_manager.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Select thunar: `xdg-open ~/Documents` opens it; the GTK file chooser still opens from a browser download dialog",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D06-thunar-workflows",
+      "option": "file_manager/thunar",
+      "capability": "files.trash",
+      "evidence_required": "real-effect",
+      "tests": [],
+      "vm_check": "In thunar: open a text file in the editor, browse a mounted USB image or second disk, delete and restore a file from trash, extract a .zip",
+      "result": "not-run",
+      "limits": "Manual VM check; gvfs and the Thunar/Nemo archive plugins are installed with their file managers"
+    },
+    {
+      "id": "D06-nautilus-folder-handler",
+      "option": "file_manager/nautilus",
+      "capability": "handlers.folder",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/application_handlers.sh",
+          "state": "delivered"
+        },
+        {
+          "path": "tests/shell/file_manager.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Select nautilus: `xdg-open ~/Documents` opens it; the GTK file chooser still opens from a browser download dialog",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D06-nautilus-workflows",
+      "option": "file_manager/nautilus",
+      "capability": "files.trash",
+      "evidence_required": "real-effect",
+      "tests": [],
+      "vm_check": "In nautilus: open a text file in the editor, browse a mounted USB image or second disk, delete and restore a file from trash, extract a .zip",
+      "result": "not-run",
+      "limits": "Manual VM check; gvfs and the Thunar/Nemo archive plugins are installed with their file managers"
+    },
+    {
+      "id": "D06-nemo-folder-handler",
+      "option": "file_manager/nemo",
+      "capability": "handlers.folder",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/application_handlers.sh",
+          "state": "delivered"
+        },
+        {
+          "path": "tests/shell/file_manager.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Select nemo: `xdg-open ~/Documents` opens it; the GTK file chooser still opens from a browser download dialog",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D06-nemo-workflows",
+      "option": "file_manager/nemo",
+      "capability": "files.trash",
+      "evidence_required": "real-effect",
+      "tests": [],
+      "vm_check": "In nemo: open a text file in the editor, browse a mounted USB image or second disk, delete and restore a file from trash, extract a .zip",
+      "result": "not-run",
+      "limits": "Manual VM check; gvfs and the Thunar/Nemo archive plugins are installed with their file managers"
+    },
+    {
+      "id": "D06-pcmanfm-qt-folder-handler",
+      "option": "file_manager/pcmanfm-qt",
+      "capability": "handlers.folder",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/application_handlers.sh",
+          "state": "delivered"
+        },
+        {
+          "path": "tests/shell/file_manager.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Select pcmanfm-qt: `xdg-open ~/Documents` opens it; the GTK file chooser still opens from a browser download dialog",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D06-pcmanfm-qt-workflows",
+      "option": "file_manager/pcmanfm-qt",
+      "capability": "files.trash",
+      "evidence_required": "real-effect",
+      "tests": [],
+      "vm_check": "In pcmanfm-qt: open a text file in the editor, browse a mounted USB image or second disk, delete and restore a file from trash, extract a .zip",
+      "result": "not-run",
+      "limits": "Manual VM check; gvfs and the Thunar/Nemo archive plugins are installed with their file managers"
+    },
+    {
+      "id": "D06-yazi-browse",
+      "option": "tui_file_manager/yazi",
+      "capability": "files.browse",
+      "evidence_required": "argv",
+      "tests": [
+        {
+          "path": "tests/shell/application_workflows.sh",
+          "state": "delivered"
+        },
+        {
+          "path": "tests/shell/tui_file_manager.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Open yazi with role_exec.sh tui_file_manager: browse, open a text file in $EDITOR, toggle the theme and relaunch",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D06-ranger-browse",
+      "option": "tui_file_manager/ranger",
+      "capability": "files.browse",
+      "evidence_required": "argv",
+      "tests": [
+        {
+          "path": "tests/shell/application_workflows.sh",
+          "state": "delivered"
+        },
+        {
+          "path": "tests/shell/tui_file_manager.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Open ranger with role_exec.sh tui_file_manager: browse, open a text file in $EDITOR, toggle the theme and relaunch",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D06-lf-browse",
+      "option": "tui_file_manager/lf",
+      "capability": "files.browse",
+      "evidence_required": "argv",
+      "tests": [
+        {
+          "path": "tests/shell/application_workflows.sh",
+          "state": "delivered"
+        },
+        {
+          "path": "tests/shell/tui_file_manager.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Open lf with role_exec.sh tui_file_manager: browse, open a text file in $EDITOR, toggle the theme and relaunch",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D06-nnn-browse",
+      "option": "tui_file_manager/nnn",
+      "capability": "files.browse",
+      "evidence_required": "argv",
+      "tests": [
+        {
+          "path": "tests/shell/application_workflows.sh",
+          "state": "delivered"
+        },
+        {
+          "path": "tests/shell/tui_file_manager.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Open nnn with role_exec.sh tui_file_manager: browse, open a text file in $EDITOR, toggle the theme and relaunch",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D06-mc-browse",
+      "option": "tui_file_manager/mc",
+      "capability": "files.browse",
+      "evidence_required": "argv",
+      "tests": [
+        {
+          "path": "tests/shell/application_workflows.sh",
+          "state": "delivered"
+        },
+        {
+          "path": "tests/shell/tui_file_manager.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Open mc with role_exec.sh tui_file_manager: browse, open a text file in $EDITOR, toggle the theme and relaunch",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D06-vifm-browse",
+      "option": "tui_file_manager/vifm",
+      "capability": "files.browse",
+      "evidence_required": "argv",
+      "tests": [
+        {
+          "path": "tests/shell/application_workflows.sh",
+          "state": "delivered"
+        },
+        {
+          "path": "tests/shell/tui_file_manager.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Open vifm with role_exec.sh tui_file_manager: browse, open a text file in $EDITOR, toggle the theme and relaunch",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D06-tui-file-manager-none",
+      "option": "tui_file_manager/none",
+      "capability": "files.browse",
+      "evidence_required": "argv",
+      "tests": [
+        {
+          "path": "tests/shell/application_workflows.sh",
+          "state": "delivered"
+        },
+        {
+          "path": "tests/shell/tui_file_manager.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Select None: role_exec.sh tui_file_manager reports unavailable; Super+E still opens the graphical file manager",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D06-neovim-edit-theme",
+      "option": "tui_editor/neovim",
+      "capability": "editor.edit",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/application_workflows.sh",
+          "state": "delivered"
+        },
+        {
+          "path": "tests/shell/application_renderers.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Open a file with neovim, edit and save; toggle the theme and reopen (next launch)",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D06-helix-edit-theme",
+      "option": "tui_editor/helix",
+      "capability": "editor.edit",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/application_workflows.sh",
+          "state": "delivered"
+        },
+        {
+          "path": "tests/shell/application_renderers.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Open a file with helix, edit and save; toggle the theme and reopen (live with SIGUSR1)",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D06-vim-edit-theme",
+      "option": "tui_editor/vim",
+      "capability": "editor.edit",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/application_workflows.sh",
+          "state": "delivered"
+        },
+        {
+          "path": "tests/shell/application_renderers.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Open a file with vim, edit and save; toggle the theme and reopen (next launch)",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D06-nano-edit-theme",
+      "option": "tui_editor/nano",
+      "capability": "editor.edit",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/application_workflows.sh",
+          "state": "delivered"
+        },
+        {
+          "path": "tests/shell/application_renderers.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Open a file with nano, edit and save; toggle the theme and reopen (next launch)",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D06-zed-text-handler",
+      "option": "gui_editor/zed",
+      "capability": "handlers.text",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/application_handlers.sh",
+          "state": "delivered"
+        },
+        {
+          "path": "tests/shell/application_workflows.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Select zed: double-click a .txt and a .sh file in the file manager; both open in zed",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D06-visual-studio-code-bin-text-handler",
+      "option": "gui_editor/visual-studio-code-bin",
+      "capability": "handlers.text",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/application_handlers.sh",
+          "state": "delivered"
+        },
+        {
+          "path": "tests/shell/application_workflows.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Select visual-studio-code-bin: double-click a .txt and a .sh file in the file manager; both open in visual-studio-code-bin",
+      "result": "not-run",
+      "limits": "VS Code's code.desktop does not declare text/plain; verify it is honoured"
+    },
+    {
+      "id": "D06-cursor-bin-text-handler",
+      "option": "gui_editor/cursor-bin",
+      "capability": "handlers.text",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/application_handlers.sh",
+          "state": "delivered"
+        },
+        {
+          "path": "tests/shell/application_workflows.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Select cursor-bin: double-click a .txt and a .sh file in the file manager; both open in cursor-bin",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D06-kate-text-handler",
+      "option": "gui_editor/kate",
+      "capability": "handlers.text",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/application_handlers.sh",
+          "state": "delivered"
+        },
+        {
+          "path": "tests/shell/application_workflows.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Select kate: double-click a .txt and a .sh file in the file manager; both open in kate",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D06-mousepad-text-handler",
+      "option": "gui_editor/mousepad",
+      "capability": "handlers.text",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/application_handlers.sh",
+          "state": "delivered"
+        },
+        {
+          "path": "tests/shell/application_workflows.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Select mousepad: double-click a .txt and a .sh file in the file manager; both open in mousepad",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D06-gui-editor-none",
+      "option": "gui_editor/none",
+      "capability": "handlers.text",
+      "evidence_required": "modeled-effect",
+      "tests": [
+        {
+          "path": "tests/shell/application_handlers.sh",
+          "state": "delivered"
+        },
+        {
+          "path": "tests/shell/application_workflows.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Select GUI editor None: double-click a .txt file; the primary TUI editor opens in the selected terminal; no GUI editor autostarts",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D06-merkuro-open",
+      "option": "calendar/merkuro",
+      "capability": "calendar.open",
+      "evidence_required": "argv",
+      "tests": [
+        {
+          "path": "tests/shell/calendar_workflows.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Click the bar clock / calendar shortcut: merkuro opens (GUI calendars float and focus at 70%)",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D06-merkuro-local-events",
+      "option": "calendar/merkuro",
+      "capability": "calendar.local_events",
+      "evidence_required": "real-effect",
+      "tests": [],
+      "vm_check": "Fresh profile, no accounts: create, view and edit a local event in merkuro",
+      "result": "not-run",
+      "limits": "Manual VM check (Akonadi/EDS first run)"
+    },
+    {
+      "id": "D06-gnome-calendar-open",
+      "option": "calendar/gnome-calendar",
+      "capability": "calendar.open",
+      "evidence_required": "argv",
+      "tests": [
+        {
+          "path": "tests/shell/calendar_workflows.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Click the bar clock / calendar shortcut: gnome-calendar opens (GUI calendars float and focus at 70%)",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D06-gnome-calendar-local-events",
+      "option": "calendar/gnome-calendar",
+      "capability": "calendar.local_events",
+      "evidence_required": "real-effect",
+      "tests": [],
+      "vm_check": "Fresh profile, no accounts: create, view and edit a local event in gnome-calendar",
+      "result": "not-run",
+      "limits": "Manual VM check (Akonadi/EDS first run)"
+    },
+    {
+      "id": "D06-korganizer-open",
+      "option": "calendar/korganizer",
+      "capability": "calendar.open",
+      "evidence_required": "argv",
+      "tests": [
+        {
+          "path": "tests/shell/calendar_workflows.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Click the bar clock / calendar shortcut: korganizer opens (GUI calendars float and focus at 70%)",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D06-korganizer-local-events",
+      "option": "calendar/korganizer",
+      "capability": "calendar.local_events",
+      "evidence_required": "real-effect",
+      "tests": [],
+      "vm_check": "Fresh profile, no accounts: create, view and edit a local event in korganizer",
+      "result": "not-run",
+      "limits": "Manual VM check (Akonadi/EDS first run)"
+    },
+    {
+      "id": "D06-calcurse-open",
+      "option": "calendar/calcurse",
+      "capability": "calendar.open",
+      "evidence_required": "argv",
+      "tests": [
+        {
+          "path": "tests/shell/calendar_workflows.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Click the bar clock / calendar shortcut: calcurse opens (GUI calendars float and focus at 70%)",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D06-calcurse-local-events",
+      "option": "calendar/calcurse",
+      "capability": "calendar.local_events",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/calendar_workflows.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Fresh profile, no accounts: create, view and edit a local event in calcurse",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D06-khal-open",
+      "option": "calendar/khal",
+      "capability": "calendar.open",
+      "evidence_required": "argv",
+      "tests": [
+        {
+          "path": "tests/shell/calendar_workflows.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Click the bar clock / calendar shortcut: khal opens (GUI calendars float and focus at 70%)",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D06-khal-local-events",
+      "option": "calendar/khal",
+      "capability": "calendar.local_events",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/calendar_workflows.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Fresh profile, no accounts: create, view and edit a local event in khal",
+      "result": "not-run",
+      "limits": "Needs `khal configure` once (limited)"
+    }
+  ]
+}

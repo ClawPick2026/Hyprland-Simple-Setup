@@ -220,16 +220,18 @@ waveform = 0
 
 # Gradient mode, only hex defined colors are supported,
 # background must also be defined in hex or remain commented out. 1 = on, 0 = off.
+# The theme renderer manages the gradient keys below (Catppuccin Mocha shown here; the
+# light variant writes Latte colors).
 # You can define as many as 8 different colors. They range from bottom to top of screen
-gradient = 1
-gradient_color_1 = '#33BACC'rgb(51, 186, 204)
-gradient_color_2 = '#33A8CC'rgb(51, 168, 204)
-gradient_color_3 = '#337ACC'rgb(51, 122, 204)
-gradient_color_4 = '#3363CC'rgb(51, 99, 204)
-gradient_color_5 = '#3D33CC'rgb(61, 51, 204)
-gradient_color_6 = '#5C33CC'rgb(92, 51, 204)
-gradient_color_7 = '#7533CC'rgb(117, 51, 204)
-gradient_color_8 = '#8F33CC'rgb(143, 51, 204)
+gradient=1
+gradient_color_1='#94e2d5'
+gradient_color_2='#89dceb'
+gradient_color_3='#74c7ec'
+gradient_color_4='#89b4fa'
+gradient_color_5='#b4befe'
+gradient_color_6='#cba6f7'
+gradient_color_7='#f5c2e7'
+gradient_color_8='#f2cdcd'
 
 
 

@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "units": [
+    {
+      "id": "swaync",
+      "owner": "D03",
+      "description": "SwayNC popup and control-center colors, urgency accents, font and focus ring (rendered region in the shipped style.css; config.json behavior is untouched)",
+      "applies": {"members": ["notifications/swaync"]},
+      "depends": ["theme-core"],
+      "executables": ["swaync"],
+      "outputs": [
+        {"target": "config:swaync/style.css", "class": "managed-region", "comment": "/* */", "position": "prepend",
+         "template": "d03/swaync-colors.css.tmpl", "validator": "css"}
+      ],
+      "activation": [{"kind": "reload", "argv": ["swaync-client", "--reload-css", "--skip-wait"], "process": "swaync"}]
+    },
+    {
+      "id": "mako",
+      "owner": "D03",
+      "description": "Mako appearance, the do-not-disturb mode that still shows critical notifications and the 100-entry history cap, through include= in a managed region",
+      "applies": {"members": ["notifications/mako"]},
+      "depends": ["theme-core"],
+      "executables": ["mako"],
+      "outputs": [
+        {"target": "theme:generated/mako/theme.conf", "class": "generated", "template": "d03/mako-theme.conf.tmpl", "validator": "ini"},
+        {"target": "config:mako/config", "class": "managed-region", "comment": "#", "position": "prepend", "create_if_missing": true,
+         "validator": "ini", "content": "include={{path.generated}}/mako/theme.conf"}
+      ],
+      "activation": [{"kind": "reload", "argv": ["makoctl", "reload"], "process": "mako"}]
+    },
+    {
+      "id": "dunst",
+      "owner": "D03",
+      "description": "Dunst appearance, the 100-entry history cap, critical notifications during pause and transient notifications kept out of history (managed region at the top of dunstrc)",
+      "applies": {"members": ["notifications/dunst"]},
+      "depends": ["theme-core"],
+      "executables": ["dunst"],
+      "outputs": [
+        {"target": "config:dunst/dunstrc", "class": "managed-region", "comment": "#", "position": "prepend", "create_if_missing": true,
+         "template": "d03/dunst-region.tmpl", "validator": "ini"}
+      ],
+      "activation": [{"kind": "reload", "argv": ["dunstctl", "reload"], "process": "dunst"}]
+    },
+    {
+      "id": "fnott",
+      "owner": "D03",
+      "description": "Fnott fonts, colors, border and urgency accents as managed keys in fnott.ini (fnott has no include and no reload; applies on its next start)",
+      "applies": {"members": ["notifications/fnott"]},
+      "depends": ["theme-core"],
+      "executables": ["fnott"],
+      "outputs": [
+        {"target": "config:fnott/fnott.ini", "class": "managed-keys", "format": "ini", "create_if_missing": true,
+         "validator": "ini", "keys_template": "d03/fnott-keys.ini.tmpl"}
+      ],
+      "activation": [{"kind": "next-launch"}]
+    }
+  ]
+}

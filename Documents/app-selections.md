@@ -76,6 +76,73 @@ All launcher entry points use `menu_exec.sh`; Bemenu explicitly installs and sel
 
 These logs help distinguish missing dependencies, invalid settings and compositor errors. The launcher itself opens on demand; it is not a persistent autostart process. Rerunning setup refreshes the repo-owned helpers and panel profiles in existing dotfiles.
 
+## Harmonization support
+
+The chooser shows a desktop-harmonization label for each app, taken from the capability ledger (`capabilities.json` and `capabilities.d/`). `full` means every required desktop workflow is native and backed by evidence. `limited` means at least one workflow or the theme surface has no native support; the app stays selectable, and the missing action explains itself instead of opening another app. `unverified` means the behavior has not been checked yet, usually because it needs the VM, hardware or an account. No label has been confirmed in a VM yet; see [VM testing](desktop-harmonization-vm-testing.md) and [Desktop harmonization](desktop-harmonization.md).
+
+The table lists one main limitation per app. The ledger has the full list.
+
+| Role | App | Label | Main limitation |
+|---|---|---|---|
+| Browser | Firefox, Chromium, Zen Browser, Brave | `limited` | Colors follow only the system dark/light preference, not the Catppuccin palette. |
+| | Vivaldi | `unverified` | Same color limit; its http/https MIME handling still needs a VM check. |
+| Shell | Bash | `full` | No theme file: the prompt uses ANSI palette slots and follows the terminal theme. |
+| | Fish | `full` | Colors apply to new shells; open shells keep theirs. |
+| | Zsh | `full` | The prompt region lives in `~/.zshrc` and is not read when `ZDOTDIR` points elsewhere. |
+| Terminal | Kitty | `full` | Color lines placed before the theme region are overridden; put overrides after it. |
+| | Alacritty | `full` | An existing `alacritty.toml` needs the import line in `[general]`; its own `[colors]` override the theme. |
+| | Foot | `full` | Applies to new windows; running windows keep their colors. |
+| | Ghostty, Konsole | `unverified` | Not available in the test environment; Konsole applies to new windows only. |
+| Multiplexer | tmux | `full` | The theme is sourced from `~/.config/tmux/tmux.conf`; with `~/.tmux.conf`, add the `source-file` line yourself. |
+| | Zellij | `full` | Zellij uses the first theme line; remove the managed region to pick another theme. |
+| | Herdr | `unverified` | Not testable locally; theme changes apply after restart or reattach. |
+| File manager | Dolphin, Nautilus | `unverified` | Mounts, trash and archive actions were not exercised outside the VM. |
+| | Thunar | `unverified` | `gvfs` and `thunar-archive-plugin` install with Thunar; trash, mounting and archive actions are not yet verified in the VM. |
+| | Nemo | `unverified` | `nemo-fileroller` installs with Nemo; archive actions are not yet verified in the VM. |
+| | PCManFM-Qt | `unverified` | `gvfs` installs with PCManFM-Qt; trash is not yet verified in the VM. |
+| TUI file manager | Yazi | `unverified` | Trash restore and archive extraction were not exercised. |
+| | Ranger | `limited` | No system trash without trash-cli; archives need atool. |
+| | lf | `limited` | No built-in trash or archive support. |
+| | nnn | `limited` | Deletes permanently unless `NNN_TRASH` is set. |
+| | mc | `limited` | No trash: deletion is permanent. |
+| | Vifm | `limited` | Uses its own trash (`:restore`), not the system trash. |
+| | None | - | `role_exec.sh tui_file_manager` reports the role as unavailable; Super+E keeps the graphical file manager. |
+| Notifications | SwayNC | `limited` | No native history limit or 24-hour expiry. |
+| | Mako, Dunst | `limited` | No browsable history or notification center; history is lost on restart. |
+| | fnott | `limited` | No readable do-not-disturb and no history; theme changes apply after restart. |
+| TUI editor | Neovim, Helix, nano | `full` | None recorded. |
+| | Vim | `limited` | The color scheme applies only with `~/.config/vim/vimrc`; `~/.vimrc` is left untouched. |
+| GUI editor | Zed, Cursor, Kate, Mousepad | `unverified` | Opening text files was not run; Mousepad keeps its own editor style scheme. |
+| | VS Code | `unverified` | `code.desktop` does not declare `text/plain`; setup still uses it as the text handler. |
+| | None | - | Text files open in the primary TUI editor through `hss-tui-editor.desktop`. |
+| Bar | Waybar | `full` | Lock-key state needs the `input` group; otherwise the bar shows "cannot read". |
+| | Ironbar | `limited` | No microphone level; with several outputs, a right-click menu opens on every bar. |
+| | nwg-panel | `limited` | No right-click menus (power quick actions, tools, brightness presets, update options) and no update count. |
+| Dock | nwg-dock-hyprland | `limited` | Does not follow the focused output; theme applies at next start. |
+| | nwg-panel | `limited` | Pins always start a new instance; stays on the primary output. |
+| | None | - | No dock starts; the bar and its toggle are unaffected. |
+| Calendar | calcurse | `full` | None recorded. |
+| | khal | `limited` | Run `khal configure` once before first use. |
+| | Merkuro, KOrganizer | `unverified` | Needs Akonadi; first-run local calendar needs a VM check. |
+| | GNOME Calendar | `unverified` | Needs evolution-data-server; first-run local calendar needs a VM check. |
+| Bluetooth | Blueman | `full` | None recorded. |
+| | bluetui | `limited` | Does not start while Bluetooth is blocked by rfkill. |
+| | BlueDevil | `unverified` | Device-initiated pairing and file receiving need the KDE kded6 module. |
+| | bluetuith | `unverified` | PIN and passkey requests are answered automatically; devices needing a specific PIN cannot pair. |
+| Network | NetworkManager (nmtui) | `full` | None recorded. |
+| | network-manager-applet | `limited` | The connection chooser opens only from the tray menu. |
+| | nm-connection-editor | `limited` | Cannot choose or activate a connection. |
+| | plasma-nm | `unverified` | Password prompts outside Plasma need the KDE kded6 agent. |
+| Audio | Pavucontrol, Pavucontrol-Qt | `full` | An open window is focused without switching to the requested tab. |
+| | QasMixer, Alsamixer | `limited` | ALSA hardware only; per-application volume and routing are unsupported. |
+| | ncpamixer | `unverified` | AUR; not installable in the test userland. |
+| Launcher | Wofi, Rofi | `full` | Escape and internal errors share exit status 1, so a crash is reported as cancelled. Rofi runs through Xwayland. |
+| | Fuzzel | `full` | Command search lists executables together with applications. |
+| | Bemenu | `limited` | No desktop-application mode; Super+Space opens `bemenu-run`. |
+| | tofi | `unverified` | AUR; not available in the test environment. |
+| Coding agents | Pi, OpenCode, Claude Code, Codex CLI, Cursor CLI | `unverified` | Real sessions need your account and were not run. OpenCode, Claude Code, Codex CLI and Cursor CLI themes are partial. |
+| | None | - | No agent is installed, launched or offered for triage. |
+
 ## Limitations
 
-Live compatibility still depends on each application and compositor version. Some notification providers expose fewer center or do-not-disturb controls than SwayNC. Dedicated `nwg-dock-hyprland` uses its upstream defaults; the repository only supplies named `nwg-panel` bar/dock profiles.
+Live compatibility still depends on each application and compositor version. Some notification providers expose fewer center or do-not-disturb controls than SwayNC; those actions report that they are unsupported. The per-app limits are listed under [Harmonization support](#harmonization-support).

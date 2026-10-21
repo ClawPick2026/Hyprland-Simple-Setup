@@ -1,0 +1,31 @@
+/* SwayNC: {{variant_label}}, generated from the shared theme tokens and replaced on theme
+   changes. The rules below this region use these names; edit below to customize. */
+@define-color cc-bg {{color.bg | rgba:@effects.shell_opacity}};
+@define-color noti-border-color {{color.border}};
+@define-color noti-bg {{color.surface0 | rgba:@effects.shell_opacity}};
+@define-color noti-bg-opaque {{color.surface0}};
+@define-color noti-bg-alt {{color.surface1}};
+@define-color noti-bg-darker {{color.bg_alt}};
+@define-color noti-bg-hover {{color.surface1}};
+@define-color noti-bg-hover-opaque {{color.surface1}};
+@define-color noti-bg-focus {{color.surface1}};
+@define-color noti-close-bg {{color.surface1}};
+@define-color noti-close-bg-hover {{color.surface2}};
+@define-color noti-focus-ring {{color.focus}};
+@define-color noti-low-bg {{color.surface0 | rgba:@effects.shell_opacity}};
+@define-color noti-low-accent {{color.info}};
+@define-color noti-normal-bg {{color.surface0 | rgba:@effects.shell_opacity}};
+@define-color noti-normal-accent {{color.accent}};
+@define-color noti-critical-bg {{color.surface0 | mix:color.critical:0.18 | rgba:@effects.shell_opacity}};
+@define-color noti-critical-accent {{color.critical}};
+@define-color text-color {{color.fg}};
+@define-color text-color-disabled {{color.fg_disabled}};
+@define-color bg-selected {{color.accent}};
+
+* {
+  font-family: "{{font.ui_family}}", "{{font.symbol_fallback}}", sans-serif;
+}
+
+.notification-row:focus {
+  box-shadow: inset 0 0 0 {{metrics.focus_width}}px @noti-focus-ring;
+}

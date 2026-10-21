@@ -1,230 +1,190 @@
-@define-color primary #96d8ff;
-@define-color text #cdd6f4;
-@define-color muted #a6adc8;
-@define-color warning #f9e2af;
-@define-color critical #ff7b92;
-@define-color background rgba(21, 18, 27, 0.8);
-@define-color hover-background rgba(18, 38, 70, 0.5);
+/* Hyprland Simple Setup Waybar style.
+ *
+ * Colors and typography come from the generated theme that the hss-theme region below
+ * imports (Catppuccin Mocha dark or Latte light, switched with Super+Shift+T or the bar's
+ * theme control). The definitions directly below are Mocha fallbacks used only until the
+ * theme has been applied. Keep your own rules after the region; the theme never edits
+ * anything outside it.
+ */
+@define-color hss_bg #1e1e2e;
+@define-color hss_bg_alt #181825;
+@define-color hss_bg_shell rgba(30, 30, 46, 0.9);
+@define-color hss_surface0 #313244;
+@define-color hss_surface1 #45475a;
+@define-color hss_surface2 #585b70;
+@define-color hss_fg #cdd6f4;
+@define-color hss_fg_muted #a6adc8;
+@define-color hss_fg_disabled #6c7086;
+@define-color hss_border #45475a;
+@define-color hss_accent #89b4fa;
+@define-color hss_on_accent #1e1e2e;
+@define-color hss_focus #89b4fa;
+@define-color hss_hover #45475a;
+@define-color hss_success #a6e3a1;
+@define-color hss_warning #f9e2af;
+@define-color hss_critical #f38ba8;
+@define-color hss_info #74c7ec;
+@define-color hss_bar_active_bg #363f5b;
+@define-color hss_bar_warning_bg #4e494a;
+@define-color hss_bar_critical_bg #5a3d50;
 
-/* All Modules */
 * {
-  font-family: "JetBrainsMono Nerd Font";
-  font-weight: bold;
-  font-size: 15px;
-  background: rgba(21, 18, 27, 0);
+  font-family: "Noto Sans", "JetBrainsMono Nerd Font", "Symbols Nerd Font";
+  font-size: 14px;
+}
+
+/* >>> hss-theme:waybar >>> */
+/* <<< hss-theme:waybar <<< */
+
+* {
+  font-weight: 600;
+  min-height: 0;
 }
 
 window#waybar {
-  color: @primary;
+  background: transparent;
+  color: @hss_fg;
 }
 
 tooltip {
-  background: #11111b;
-  color: #cdd6f4;
-  border-radius: 10px;
-  border-width: 0.5px;
-  border-style: solid;
-  border-color: @primary;
+  background: @hss_bg_alt;
+  color: @hss_fg;
+  border: 1px solid @hss_border;
+  border-radius: 8px;
 }
 
 tooltip label {
-  color: #cdd6f4;
+  color: @hss_fg;
   background: transparent;
-  padding: 6px 10px;
+  padding: 4px 8px;
 }
 
-/* Dropdown menus */
+/* Right-click menus */
 menu {
-  background: #11111b;
-  color: #cdd6f4;
-  border: 1px solid @primary;
-  border-radius: 10px;
+  background: @hss_bg_alt;
+  color: @hss_fg;
+  border: 1px solid @hss_border;
+  border-radius: 8px;
+  padding: 4px 0;
 }
 
 menu menuitem,
 menu menuitem label {
   background: transparent;
-  color: #cdd6f4;
+  color: @hss_fg;
+}
+
+menu menuitem {
+  padding: 4px 12px;
 }
 
 menu menuitem:hover {
-  background-color: @hover-background;
-  border-color: @primary;
+  background: @hss_hover;
 }
 
-/* Workspaces */
+menu menuitem:hover label {
+  color: @hss_fg;
+}
+
+menu separator {
+  background: @hss_border;
+  min-height: 1px;
+  margin: 4px 8px;
+}
+
+/* Module surfaces */
+#workspaces,
+#submap,
+#tray,
+#pulseaudio,
+#backlight,
+#custom-backlight-unavailable,
+#custom-temperature,
+#keyboard-state,
+#custom-keyboard-state-unavailable,
+#battery,
+#custom-battery-unavailable,
+#network,
+#bluetooth,
+#custom-updates,
+#custom-notification,
+#custom-theme,
+#clock,
+#custom-power,
+#custom-menu,
+#window,
+#language,
+#cpu,
+#memory,
+#temperature,
+#idle_inhibitor,
+#power-profiles-daemon,
+#custom-clipboard,
+#custom-weather,
+#custom-brightness,
+#custom-input-method,
+#taskbar {
+  background: @hss_bg_shell;
+  color: @hss_fg;
+  border: 1px solid @hss_border;
+  border-radius: 8px;
+  padding: 2px 10px;
+  margin: 4px 0 0 0;
+}
+
 #workspaces {
-  background: @background;
-  font-family: "JetBrainsMono Nerd Font";
-  opacity: 1.0;
   padding: 2px 4px;
-  margin: 0;
-  margin-top: 4px;
-  border: 0.75px solid @primary;
-  border-radius: 10px;
 }
 
 #workspaces button {
   background: transparent;
   border: none;
   border-radius: 6px;
-  padding: 4px 8px;
+  padding: 2px 8px;
   margin: 0;
-  min-height: 0;
-  color: #a6adc8;
-}
-
-#workspaces button.active {
-  background: rgba(150, 216, 255, 0.12);
-  color: @primary;
-}
-
-#workspaces button.urgent {
-  color: #11111b;
-  background: @warning;
+  color: @hss_fg_muted;
+  box-shadow: none;
 }
 
 #workspaces button:hover {
-  background: @hover-background;
-  color: #cdd6f4;
+  background: @hss_hover;
+  color: @hss_fg;
 }
 
-/* Bar modules */
-#window,
-#custom-clipboard,
-#menu,
-#submap,
-#idle_inhibitor,
-#pulseaudio,
-#battery,
-#bluetooth,
-#network,
-#power-profiles-daemon,
-#cpu,
-#memory,
-#temperature,
-#custom-temperature,
-#keyboard-state,
-#clock,
-#language,
-#custom-input-method,
-#tray,
-#backlight,
-#custom-brightness,
-#custom-updates,
-#custom-notification,
-#custom-power,
-#custom-weather,
-#custom-menu,
-#wlr-taskbar {
-  background: @background;
-  font-family: "JetBrainsMono Nerd Font";
-  opacity: 1.0;
-  padding: 6px 10px;
-  margin: 0px 0px;
-  margin-top: 4px;
-  border: 0.75px solid @primary;
-  border-radius: 10px;
+#workspaces button.active {
+  background: @hss_bar_active_bg;
+  color: @hss_accent;
 }
 
-/* Individual modules */
+#workspaces button.urgent {
+  background: @hss_warning;
+  color: @hss_on_accent;
+}
+
 #submap {
-  background-color: rgba(10, 10, 10, 0.8);
-  color: @primary;
-}
-
-#menu {
-  background-color: @background;
-  border: 1px solid @primary;
-  border-radius: 10px;
-}
-
-#battery {
-  color: @primary;
-  padding-right: 15px;
-}
-
-#battery.warning {
-  color: @warning;
-  border-color: @warning;
-  background-color: rgba(249, 226, 175, 0.5);
-}
-
-#battery.critical {
-  color: @critical;
-  border-color: @critical;
-  background-color: rgba(255, 88, 116, 0.5);
-}
-
-#power-profiles-daemon.performance,
-#power-profiles-daemon.balanced,
-#power-profiles-daemon.power-saver {
-  color: @primary;
-}
-
-#temperature.critical,
-#custom-temperature.critical {
-  color: #11111b;
-  border-color: @critical;
-  background-color: @critical;
-}
-
-#clock {
-  margin-right: 0px;
-}
-
-#language {
-  margin-left: 0px;
-  margin-right: 5px;
-}
-
-#custom-input-method {
-  margin-left: 0px;
-  margin-right: 5px;
-}
-
-#custom-clipboard {
-  padding-left: 11px;
-  padding-right: 12px;
-}
-
-#custom-updates {
-  padding-right: 15px;
-}
-
-#custom-notification {
-  font-family: "NotoSansMono Nerd Font";
-  font-size: 16px;
-  padding-right: 15px;
+  color: @hss_accent;
+  font-style: italic;
 }
 
 #custom-power {
-  margin-left: 5px;
-  padding-left: 5px;
+  margin-left: 4px;
 }
 
-#network {
-  padding-right: 14px;
+#custom-menu,
+#custom-power {
+  color: @hss_accent;
 }
 
-#network.linked,
-#network.disconnected,
-#network.disabled,
-#bluetooth.connected,
-#bluetooth.off,
-#bluetooth.disabled,
-#bluetooth.no-controller,
+#keyboard-state label {
+  padding: 0 4px;
+  color: @hss_fg_muted;
+}
+
 #keyboard-state label.locked {
-  color: @primary;
+  color: @hss_accent;
 }
 
-#pulseaudio.muted,
-#pulseaudio.sink-muted,
-#pulseaudio.source-muted {
-  color: @warning;
-  border-color: @warning;
-}
-
+/* Interactive hover and focus */
 #custom-power:hover,
 #custom-menu:hover,
 #pulseaudio:hover,
@@ -234,62 +194,94 @@ menu menuitem:hover {
 #bluetooth:hover,
 #custom-updates:hover,
 #custom-notification:hover,
+#custom-theme:hover,
 #clock:hover {
-  background-color: @hover-background;
-  border-color: #cdd6f4;
+  background: @hss_hover;
+  border-color: @hss_focus;
 }
 
-#custom-temperature.critical:hover {
-  color: @critical;
+/* Warning, critical and attention states */
+#battery.warning:not(.charging) {
+  color: @hss_warning;
+  border-color: @hss_warning;
+  background: @hss_bar_warning_bg;
 }
 
-/* Not Used CSS Modues, defined with other Modules above */
-#tray {
-  /* Add unique CSS Options */
+#battery.critical:not(.charging) {
+  color: @hss_critical;
+  border-color: @hss_critical;
+  background: @hss_bar_critical_bg;
 }
 
-#custom-weather {
-  /* Add unique CSS Options */
+#battery.charging,
+#battery.plugged {
+  color: @hss_success;
 }
 
-#custom-menu {
-  /* Add unique CSS Options */
+#custom-temperature.critical,
+#temperature.critical {
+  color: @hss_on_accent;
+  border-color: @hss_critical;
+  background: @hss_critical;
 }
 
-#keyboard-state {
-  /* Add unique CSS Options */
+#pulseaudio.muted,
+#pulseaudio.sink-muted,
+#pulseaudio.source-muted {
+  color: @hss_warning;
+  border-color: @hss_warning;
 }
 
-#temperature,
-#custom-temperature {
-  /* Add unique CSS Options */
+#network.disconnected,
+#network.linked {
+  color: @hss_warning;
 }
 
-#power-profiles-daemon {
-  /* Add unique CSS Options */
+#custom-updates.has-updates {
+  color: @hss_accent;
 }
 
-#pulseaudio,
-#pulseaudio.microphone {
-  /* Add unique CSS Options */
+#custom-notification.notification,
+#custom-notification.inhibited-notification {
+  color: @hss_accent;
 }
 
-#custom-brightness {
-  /* Add unique CSS Options */
+#custom-notification.dnd-none,
+#custom-notification.dnd-notification,
+#custom-notification.dnd-inhibited-none,
+#custom-notification.dnd-inhibited-notification {
+  color: @hss_fg_muted;
 }
 
-#bluetooth {
-  /* Add unique CSS Options */
+/* Disabled (switched off) versus unavailable (absent, not installed or unreadable) */
+#network.disabled,
+#bluetooth.off,
+#bluetooth.disabled,
+#custom-notification.stopped,
+#custom-notification.disabled {
+  color: @hss_fg_muted;
 }
 
-#cpu {
-  /* Add unique CSS Options */
+#bluetooth.no-controller,
+#custom-backlight-unavailable,
+#custom-battery-unavailable,
+#custom-keyboard-state-unavailable,
+#custom-notification.unavailable,
+#custom-notification.missing-dependency,
+#custom-theme.unavailable {
+  color: @hss_fg_disabled;
+  border-style: dashed;
 }
 
-#memory {
-  /* Add unique CSS Options */
+#custom-keyboard-state-unavailable.denied,
+#custom-notification.error,
+#custom-theme.error {
+  color: @hss_critical;
+  border-style: dashed;
 }
 
-#idle_inhibitor {
-  /* Add unique CSS Options */
+#custom-theme.partial {
+  border-color: @hss_warning;
 }
+
+/* Your rules below this line override the theme. */

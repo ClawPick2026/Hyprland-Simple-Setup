@@ -2,7 +2,7 @@ local apps = require("sources.app_variables")
 
 hl.env("HYPRCURSOR_THEME", apps.cursor)
 hl.env("HYPRCURSOR_SIZE", "24")
-hl.env("XCURSOR_THEME", apps.cursor)
+hl.env("XCURSOR_THEME", "BreezeX-RosePine-Linux")
 hl.env("XCURSOR_SIZE", "24")
 hl.env("QT_QPA_PLATFORMTHEME", "qt6ct")
 hl.env("XDG_SESSION_TYPE", "wayland")

@@ -1303,6 +1303,34 @@ mod tests {
     }
 
     #[test]
+    fn harmonization_catalog_additions_are_optional_generic_packages() {
+        let registry = shipped_registry();
+        for (source, category, package) in [
+            (PackageSource::Pacman, "theming", "noto-fonts"),
+            (PackageSource::Aur, "theming", "rose-pine-cursor"),
+            (PackageSource::Pacman, "gui_tools", "qalculate-gtk"),
+            (PackageSource::Pacman, "cli_tools", "ffmpeg"),
+        ] {
+            assert!(
+                registry
+                    .categorized(source)
+                    .iter()
+                    .any(|(name, packages)| name == category
+                        && packages.iter().any(|p| p == package)),
+                "{package} is not a generic {category} package"
+            );
+            assert!(!registry.is_role_controlled_package(package));
+            assert!(!registry.required_set(source).contains(package));
+            assert!(
+                registry
+                    .package_descriptions
+                    .get(package)
+                    .is_some_and(|description| !description.is_empty())
+            );
+        }
+    }
+
+    #[test]
     fn zed_role_uses_the_installed_arch_executable() {
         let registry = shipped_registry();
         let zed = registry.roles["gui_editor"]

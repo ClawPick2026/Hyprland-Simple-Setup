@@ -7,7 +7,9 @@
 
 set -o vi
 
-eval "$(zoxide init bash)"
+if command -v zoxide >/dev/null 2>&1; then
+    eval "$(zoxide init bash)"
+fi
 
 # Git prompt setup - Arch-specific path
 if [ -f /usr/share/git/completion/git-prompt.sh ]; then
@@ -20,30 +22,18 @@ get_os() {
     echo "$os_name"
 }
 
+# Prompt colours use ANSI palette slots, so they follow the terminal theme in both the
+# dark and light variants: 4 = accent (OS name), 3 = git branch, 1 = failed command.
+# Dynamic text is stored in variables that PS1 references; it is never parsed as prompt
+# code, so branch names cannot run commands.
+HSS_PROMPT_OS=$(get_os 2>/dev/null)
 function bash_prompt {
-    # Set color to green
-    PS1="\[\e[32m\]"
-
-    # Add OS name
-    PS1+=$(get_os)" "
-
-    # Reset color
-    PS1+="\[\e[0m\]"
-
-    # Add current working directory
-    PS1+="\w"
-
-    # Set color to yellow for git prompt
-    PS1+="\[\e[33m\]"
-
-    # Add git prompt (assuming you have a function or command for this)
-    PS1+="$(git_prompt)"
-
-    # Reset color
-    PS1+="\[\e[0m\]"
-
-    # Add prompt symbol
-    PS1+=" > "
+    local status=$?
+    HSS_PROMPT_GIT=$(git_prompt)
+    HSS_PROMPT_STATUS=""
+    if [[ $status -ne 0 ]]; then
+        HSS_PROMPT_STATUS=" [$status]"
+    fi
 }
 
 # Example git prompt function (you can customize this)
@@ -61,6 +51,7 @@ vim() {
 
 # Set the prompt
 PROMPT_COMMAND=bash_prompt
+PS1='\[\e[34m\]${HSS_PROMPT_OS}\[\e[0m\] \w\[\e[33m\]${HSS_PROMPT_GIT}\[\e[0m\]\[\e[31m\]${HSS_PROMPT_STATUS}\[\e[0m\] > '
 
 # Prompt configuration with git integration
 # PS1='\[\033[32m\]EOS \[\033[0m\]\w\[\033[33m\]$(__git_ps1 " %s")\[\033[0m\] > '
@@ -72,7 +63,9 @@ alias ..='cd ..'
 # alias rm='rm -i'
 # alias mv='mv -i'
 # alias cp='cp -i'
-alias cd='z'
+if command -v zoxide >/dev/null 2>&1; then
+    alias cd='z'
+fi
 alias ls='lsd -lah --group-directories-first --color=auto'
 alias top='btop'
 alias cat='bat'
@@ -175,7 +168,7 @@ shopt -s dirspell
 shopt -s globstar
 
 # Disable Ctrl+S freezing the terminal
-stty -ixon
+[[ -t 0 ]] && stty -ixon
 
 # Load bash completion if available
 [[ -r /usr/share/bash-completion/bash_completion ]] && . /usr/share/bash-completion/bash_completion
@@ -183,9 +176,9 @@ stty -ixon
 # fzf Config Exports
 export FZF_DEFAULT_OPTS="--bind 'delete:execute(mkdir -p ~/.trash && mv {} ~/.trash/)+reload(find .)'"
 
-# Terminal settings
+# Terminal settings. TERM is set by the terminal emulator itself; forcing it here would
+# give foot, alacritty, ghostty, konsole, tmux and zellij the wrong terminfo and colours.
 export TERMINAL=kitty
-export TERM=kitty
 
 # Less pager settings
 export LESS='-R --quit-if-one-screen --ignore-case --LONG-PROMPT --RAW-CONTROL-CHARS --HILITE-UNREAD --tabs=4 --no-init --window=-4'

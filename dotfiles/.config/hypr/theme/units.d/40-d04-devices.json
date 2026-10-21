@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "units": [
+    {
+      "id": "nmtui",
+      "owner": "D04",
+      "description": "nmtui (libnewt) colors; the network provider passes this file as NEWT_COLORS_FILE",
+      "applies": {"members": ["network/networkmanager"]},
+      "depends": ["theme-core"],
+      "executables": ["nmtui"],
+      "outputs": [
+        {"target": "theme:generated/newt/colors", "class": "generated", "template": "d04/newt-colors.tmpl", "validator": "none"}
+      ],
+      "activation": [{"kind": "next-launch"}]
+    },
+    {
+      "id": "alsamixer",
+      "owner": "D04",
+      "description": "Alsamixer element colors mapped to terminal color names (the terminal supplies the Catppuccin palette)",
+      "applies": {"members": ["audio/alsa-utils"]},
+      "depends": ["theme-core"],
+      "executables": ["alsamixer"],
+      "outputs": [
+        {"target": "config:alsamixer.rc", "class": "managed-region", "comment": "#", "position": "append",
+         "create_if_missing": true, "template": "d04/alsamixer.rc.tmpl", "validator": "none"}
+      ],
+      "activation": [{"kind": "next-launch"}]
+    }
+  ]
+}

@@ -35,6 +35,8 @@ for index in "${!test_files[@]}"; do
     continue
   fi
 
+  # Host session variables are removed so no test can reach the host D-Bus, Wayland,
+  # Hyprland or X11 session (plan F04.2).
   case_root="$runner_tmp/case-$index"
   case_home="$case_root/home"
   case_config="$case_home/.config"
@@ -57,6 +59,8 @@ for index in "${!test_files[@]}"; do
     -u ROLE_LAUNCHER -u ROLE_LAUNCHER_PACKAGES -u ROLE_AGENT -u ROLE_AGENT_PACKAGES \
     -u SELECTED_PACMAN_PACKAGES -u SELECTED_AUR_PACKAGES \
     -u STUB_INSTALLED -u STUB_LOG -u HSS_TEST_MODE \
+    -u DBUS_SESSION_BUS_ADDRESS -u WAYLAND_DISPLAY -u HYPRLAND_INSTANCE_SIGNATURE \
+    -u DISPLAY -u XDG_SESSION_ID \
     HOME="$case_home" \
     XDG_CONFIG_HOME="$case_config" \
     XDG_STATE_HOME="$case_state" \

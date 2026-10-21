@@ -1,9 +1,9 @@
 local apps = require("sources.app_variables")
 
 hl.on("hyprland.start", function()
-    hl.exec_cmd("systemctl --user start hyprpolkitagent")
+    -- Hyprpolkitagent is the managed authentication agent; a foreign agent is reported, never stopped.
+    hl.exec_cmd(apps.hyprscripts .. "/action_exec.sh --quiet session.auth.start")
     hl.exec_cmd("hyprctl keyword input:kb_numlock true && " .. apps.hyprscripts .. "/startup_state.sh mark numlock")
-    hl.exec_cmd("/usr/lib/polkit-kde-authentication-agent-1")
 
     -- Start hyprpaper through Hyprland, then apply the wallpaper after its IPC initializes.
     hl.exec_cmd("hyprpaper")

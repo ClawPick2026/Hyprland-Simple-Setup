@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "units": [
+    {
+      "id": "hyprland",
+      "owner": "D07",
+      "description": "Hyprland borders, groups, rounding, opacity and shadow from the theme tokens",
+      "applies": {"packages": ["hyprland"]},
+      "depends": ["theme-core"],
+      "executables": ["Hyprland"],
+      "outputs": [
+        {"target": "theme:generated/hyprland/theme.lua", "class": "generated", "template": "d07/hyprland-theme.lua.tmpl", "validator": "lua"},
+        {"target": "config:hypr/sources/look_and_feel.lua", "class": "managed-region", "comment": "--", "position": "append",
+         "template": "d07/hyprland-region.lua.tmpl", "validator": "lua"}
+      ],
+      "activation": [{"kind": "reload", "argv": ["hyprctl", "reload", "config-only"], "process": "Hyprland"}]
+    },
+    {
+      "id": "hyprlock",
+      "owner": "D07",
+      "description": "Hyprlock background, input, focus, check and error colors and font families",
+      "applies": {"packages": ["hyprlock"]},
+      "depends": ["theme-core"],
+      "executables": ["hyprlock"],
+      "outputs": [
+        {"target": "theme:generated/hyprlock/colors.conf", "class": "generated", "template": "d07/hyprlock-colors.conf.tmpl", "validator": "none"}
+      ],
+      "activation": [{"kind": "next-launch"}]
+    },
+    {
+      "id": "wlogout",
+      "owner": "D07",
+      "description": "Wlogout imports the generated GTK palette after its Mocha fallback colors",
+      "applies": {"packages": ["wlogout"]},
+      "depends": ["theme-core"],
+      "executables": ["wlogout"],
+      "outputs": [
+        {"target": "config:wlogout/style.css", "class": "managed-region", "comment": "/* */", "position": "append",
+         "content": "@import url(\"{{path.generated | uri}}/palette.css\");", "validator": "css"}
+      ],
+      "activation": [{"kind": "next-launch"}]
+    },
+    {
+      "id": "btop",
+      "owner": "D07",
+      "description": "btop color theme generated into btop's own themes directory and selected by name",
+      "applies": {"packages": ["btop"]},
+      "depends": ["theme-core"],
+      "executables": ["btop"],
+      "outputs": [
+        {"target": "config:btop/themes/hss.theme", "class": "generated", "template": "d07/btop.theme.tmpl", "validator": "none"},
+        {"target": "config:btop/btop.conf", "class": "managed-keys", "format": "toml", "create_if_missing": true, "validator": "none",
+         "keys": [{"key": "color_theme", "value": "\"hss\""}]}
+      ],
+      "activation": [{"kind": "next-launch"}]
+    },
+    {
+      "id": "cava",
+      "owner": "D07",
+      "description": "Cava gradient colors from the Catppuccin palette",
+      "applies": {"packages": ["cava"]},
+      "depends": ["theme-core"],
+      "executables": ["cava"],
+      "outputs": [
+        {"target": "config:cava/config", "class": "managed-keys", "format": "ini", "validator": "ini",
+         "keys": [
+           {"section": "color", "key": "gradient", "value": "1"},
+           {"section": "color", "key": "gradient_color_1", "value": "'{{palette.teal}}'"},
+           {"section": "color", "key": "gradient_color_2", "value": "'{{palette.sky}}'"},
+           {"section": "color", "key": "gradient_color_3", "value": "'{{palette.sapphire}}'"},
+           {"section": "color", "key": "gradient_color_4", "value": "'{{palette.blue}}'"},
+           {"section": "color", "key": "gradient_color_5", "value": "'{{palette.lavender}}'"},
+           {"section": "color", "key": "gradient_color_6", "value": "'{{palette.mauve}}'"},
+           {"section": "color", "key": "gradient_color_7", "value": "'{{palette.pink}}'"},
+           {"section": "color", "key": "gradient_color_8", "value": "'{{palette.flamingo}}'"}
+         ]}
+      ],
+      "activation": [{"kind": "signal", "process": "cava", "signal": "USR2"}]
+    }
+  ]
+}

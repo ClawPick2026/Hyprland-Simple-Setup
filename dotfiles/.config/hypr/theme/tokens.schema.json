@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hss-theme-tokens-1",
+  "title": "Hyprland Simple Setup theme tokens, schema version 1",
+  "description": "Documentation of tokens.json. hss_theme.py enforces these rules itself (it has no JSON Schema dependency): both variants must define identical keys, colors are #rrggbb, '@name' references resolve inside the variant's palette, terminal.ansi has 16 entries and strings contain no control characters.",
+  "type": "object",
+  "required": ["schema_version", "default_variant", "palettes", "variants", "font", "metrics", "effects", "cursor"],
+  "additionalProperties": true,
+  "$defs": {
+    "color": {"type": "string", "pattern": "^#[0-9a-fA-F]{6}$"},
+    "colorOrRef": {"type": "string", "pattern": "^(#[0-9a-fA-F]{6}|@[a-z0-9]+)$"},
+    "variant": {
+      "type": "object",
+      "required": ["palette", "label", "flavor", "is_dark", "color", "terminal", "assets"],
+      "properties": {
+        "palette": {"type": "string"},
+        "label": {"type": "string"},
+        "flavor": {"type": "string"},
+        "is_dark": {"type": "boolean"},
+        "color": {"type": "object", "additionalProperties": {"$ref": "#/$defs/colorOrRef"}},
+        "terminal": {
+          "type": "object",
+          "required": ["foreground", "background", "cursor", "cursor_text", "selection_fg", "selection_bg", "ansi"],
+          "properties": {"ansi": {"type": "array", "minItems": 16, "maxItems": 16, "items": {"$ref": "#/$defs/colorOrRef"}}}
+        },
+        "assets": {"type": "object", "additionalProperties": {"type": "string"}}
+      }
+    }
+  },
+  "properties": {
+    "schema_version": {"const": 1},
+    "default_variant": {"enum": ["dark", "light"]},
+    "palettes": {"type": "object", "additionalProperties": {"type": "object", "additionalProperties": {"$ref": "#/$defs/color"}}},
+    "variants": {
+      "type": "object",
+      "required": ["dark", "light"],
+      "additionalProperties": false,
+      "properties": {"dark": {"$ref": "#/$defs/variant"}, "light": {"$ref": "#/$defs/variant"}}
+    },
+    "font": {"type": "object"},
+    "metrics": {"type": "object", "additionalProperties": {"type": "number"}},
+    "effects": {"type": "object"},
+    "cursor": {"type": "object", "required": ["hyprcursor_theme", "xcursor_theme", "size"]}
+  }
+}

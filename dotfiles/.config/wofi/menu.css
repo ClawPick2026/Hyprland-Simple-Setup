@@ -1,82 +1,79 @@
+/* >>> hss-theme:wofi >>> */
+/* Wofi launcher and chooser: Catppuccin Mocha, generated from the shared theme tokens.
+   Edit below this region to customize; the region is replaced on theme changes. */
+@define-color hss_menu_bg #1e1e2e;
+@define-color hss_menu_surface #313244;
+@define-color hss_menu_fg #cdd6f4;
+@define-color hss_menu_fg_muted #a6adc8;
+@define-color hss_menu_border #45475a;
+@define-color hss_menu_accent #89b4fa;
+@define-color hss_menu_on_accent #1e1e2e;
+@define-color hss_menu_focus #89b4fa;
+
+* {
+    font-family: "Noto Sans", "Symbols Nerd Font", sans-serif;
+}
+
 window {
     margin: 0px;
-    border: 10px solid #1e1e2e;
-    background-color: #cdd6f4;
-    border-radius: 20px;
-}
-
-#input {
-    padding: 4px;
-    margin: 4px;
-    padding-left: 20px;
     border: none;
-    color: #cdd6f4;
-    font-weight: bold;
-    background-color: #1e1e2e;
-    /* background: ; */
-   	outline: none;
-    border-radius: 20px;
-    margin: 10px 13px;
-    margin-bottom: 2px;
-}
-#input:focus {
-    border: 0px solid #1e1e2e;
-    margin-bottom: 0px;
-}
-
-#inner-box {
-    margin: 4px;
-    border: 20px solid #1e1e2e;
-    color: #cdd6f4;
-    font-weight: bold;
-    background-color: #242446;
-    /* background-color: red; */
-    border-radius: 20px;
+    background-color: transparent;
 }
 
 #outer-box {
     margin: 0px;
-    border: 3px solid #6cbdff;
-    border-radius: 20px;
-    background-color: #1e1e2e;
+    padding: 8px;
+    border: 2px solid @hss_menu_accent;
+    border-radius: 12px;
+    background-color: @hss_menu_bg;
+}
+
+#input {
+    margin: 4px;
+    padding: 4px 8px;
+    border: 2px solid @hss_menu_border;
+    border-radius: 8px;
+    color: @hss_menu_fg;
+    background-color: @hss_menu_surface;
+    box-shadow: none;
+}
+
+#input:focus {
+    border-color: @hss_menu_focus;
+}
+
+#inner-box {
+    margin: 4px;
+    background-color: transparent;
 }
 
 #scroll {
-    margin-top: 5px;
+    margin: 4px 0px;
     border: none;
-    border-radius: 15px;
-    margin-bottom: 5px;
-}
-
-#img{
-    margin-right: 10px;
-}
-
-#img:selected {
-    background-color: #89b4fa;
-    margin-right: 10px;
-    border-radius: 10px;
-}
-
-#text:selected {
-    color: #cdd6f4;
-    color: black;
-    margin: 0px 0px;
-    border: none;
-    border-radius: 10px;
-    background-color: #89b4fa;
 }
 
 #entry {
-    margin: 0px 0px;
-    border: none;
-    border-radius: 15px;
+    padding: 4px 8px;
+    border: 2px solid transparent;
+    border-radius: 8px;
     background-color: transparent;
 }
 
 #entry:selected {
-    margin: 0px 0px;
-    border: none;
-    border-radius: 5px;
-    background-color: #89b4fa;
+    border-color: @hss_menu_focus;
+    background-color: @hss_menu_accent;
 }
+
+#text {
+    color: @hss_menu_fg;
+}
+
+#text:selected {
+    color: @hss_menu_on_accent;
+}
+
+#img {
+    margin-right: 8px;
+}
+/* <<< hss-theme:wofi <<< */
+/* Personal wofi styling: add rules below; they override the theme region above. */

@@ -12,11 +12,9 @@ set -gx MANPAGER "nvim +Man!"
 set -gx MENU_DMENU "wofi --dmenu"
 
 # PATH settings
-# NOTE: This replaces PATH with a fixed list and does not preserve the inherited $PATH.
-# That can drop distro/user-provided entries (e.g. from display/login managers, direnv, asdf, etc.).
-# Prefer appending/prepending to the existing PATH (fish_add_path or `set -gx PATH <new> $PATH`)
-# unless you intentionally want a fully fixed PATH.
-set -x PATH /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin \
+# The list below comes first, in this order. Directories inherited from the session or
+# login manager, fish_user_paths and other tools that are not listed are kept after it.
+set -l hss_path /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin \
   $HOME/go/bin \
   $HOME/.local/bin \
   $HOME/.vscode/extensions \
@@ -30,6 +28,11 @@ set -x PATH /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin \
   $HOME/.config/hypr/scripts \
   $HOME/.config/waybar/scripts \
   $HOME/.npm-global/bin
+for hss_dir in $PATH
+    contains -- $hss_dir $hss_path; or set -a hss_path $hss_dir
+end
+set -x PATH $hss_path
+set -e hss_dir
 
 
 # Make scripts executable

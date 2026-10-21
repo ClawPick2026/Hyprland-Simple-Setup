@@ -4,6 +4,10 @@
 # Increase this if you see timeout warnings when opening terminals
 scan_timeout = 2000
 
+# Catppuccin palette for the current desktop variant (catppuccin_mocha or catppuccin_latte),
+# managed by the theme switch (Super+Shift+T). Keep this key above the multi-line `format`.
+palette = "catppuccin_mocha"
+
 format = """
 [](red)\
 $os\
@@ -32,7 +36,6 @@ $cmd_duration\
 $line_break\
 $character"""
 
-palette = 'catppuccin_mocha'
 
 [os]
 disabled = false

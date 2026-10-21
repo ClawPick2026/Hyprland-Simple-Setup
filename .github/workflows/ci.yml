@@ -47,14 +47,41 @@ jobs:
             dotfiles/.config/hypr/scripts/toggle_floating.sh
             dotfiles/.config/waybar/scripts/brightness.sh
             dotfiles/.config/waybar/scripts/clipboard.sh
+            dotfiles/.config/waybar/scripts/clipboard_pick.sh
             dotfiles/.config/waybar/scripts/waybar_launch.sh
             dotfiles/.config/waybar/scripts/weather.sh
           )
-          bash_files=(setup.sh install.sh "${shell_files[@]}" "${role_scripts[@]}")
+          # Shared runtime entry points, source-only libraries and providers (plans F02/F04).
+          runtime_scripts=(
+            dotfiles/.config/hypr/scripts/action_exec.sh
+            dotfiles/.config/hypr/scripts/status_read.sh
+            dotfiles/.config/hypr/scripts/menu_choose.sh
+            dotfiles/.config/hypr/scripts/window_present.sh
+            dotfiles/.config/hypr/scripts/window_place.sh
+            dotfiles/.config/hypr/scripts/nwg_dock.sh
+            dotfiles/.config/hypr/scripts/dock_pins.sh
+            dotfiles/.config/hypr/scripts/nwg_panel.sh
+            dotfiles/.config/hypr/scripts/role_exec.sh
+            dotfiles/.config/hypr/scripts/role_window.sh
+            dotfiles/.config/hypr/scripts/toggle_bluetooth.sh
+            dotfiles/.config/hypr/scripts/hyprsunset.sh
+            dotfiles/.config/waybar/scripts/notification_status.sh
+            dotfiles/.config/waybar/scripts/theme_status.sh
+            dotfiles/.config/waybar/scripts/hardware_state.sh
+            dotfiles/.config/waybar/scripts/bar_status.sh
+            dotfiles/.config/waybar/scripts/power_action.sh
+            dotfiles/.config/waybar/scripts/launch_power_screen.sh
+            dotfiles/.config/hypr/scripts/lib/*.sh
+            dotfiles/.config/hypr/scripts/providers/*.sh
+          )
+          bash_files=(setup.sh install.sh "${shell_files[@]}" "${role_scripts[@]}" "${runtime_scripts[@]}")
           for file in "${bash_files[@]}"; do
             bash -n "$file"
           done
           shellcheck -x "${bash_files[@]}"
+          python3 dotfiles/.config/hypr/theme/hss_theme.py check
+          # Offline functional checks only: graphical, VM and hardware evidence is collected
+          # manually (tests/fixtures/harmonization/visual-protocol.md), never in CI.
           tests/run.sh
       - name: Test official-installer fixtures with Dash and Bash
         shell: bash

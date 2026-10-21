@@ -79,11 +79,12 @@ assert pads['volume']['class'] == 'hss-audio'
 PY
 printf 'ok - Konsole uses title matchers and switching terminal restores class matchers\n'
 
-cat > "$HOME/.config/waybar/scripts/launch_qt_gui.sh" <<'STUB'
+# role_window.sh calls the generic window helper; the Waybar launch_qt_gui.sh path is a wrapper.
+cat > "$HOME/.config/hypr/scripts/window_present.sh" <<'STUB'
 #!/usr/bin/env bash
 printf '%s\0' "$@" > "$GUI_LOG"
 STUB
-chmod +x "$HOME/.config/waybar/scripts/launch_qt_gui.sh"
+chmod +x "$HOME/.config/hypr/scripts/window_present.sh"
 for entry in calendar:merkuro calendar:gnome-calendar audio:pavucontrol-qt audio:qastools; do
   role=${entry%%:*}
   package=${entry#*:}

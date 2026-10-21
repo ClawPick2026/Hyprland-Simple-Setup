@@ -1,0 +1,467 @@
+{
+  "schema_version": 1,
+  "owner": "D05",
+  "cases": [
+    {
+      "id": "D05-bash-environment",
+      "option": "shell/bash",
+      "capability": "shell.environment",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/terminal_shell_environment.sh",
+          "state": "delivered"
+        },
+        {
+          "path": "tests/shell/shell_language.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Open a Bash terminal: prompt shows the OS name in Blue, a failed command shows [status]; toggle Super+Shift+T and open a new terminal",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D05-fish-environment",
+      "option": "shell/fish",
+      "capability": "shell.environment",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/terminal_shell_environment.sh",
+          "state": "delivered"
+        },
+        {
+          "path": "tests/shell/shell_language.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Open a Fish terminal in both variants: commands Blue, errors red, completion pager readable; `echo $PATH` keeps session entries",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D05-zsh-environment",
+      "option": "shell/zsh",
+      "capability": "shell.environment",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/terminal_workspace.sh",
+          "state": "delivered"
+        },
+        {
+          "path": "tests/shell/shell_language.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Select Zsh, open a terminal: coloured prompt, [status] after a failing command",
+      "result": "not-run",
+      "limits": "zsh is not in the hermetic userland; the region is render-tested, the prompt behaviour has research real-effect evidence E-D05-024"
+    },
+    {
+      "id": "D05-kitty-launch-cwd",
+      "option": "terminal/kitty",
+      "capability": "terminal.cwd",
+      "evidence_required": "argv",
+      "tests": [
+        {
+          "path": "tests/shell/terminal_workspace.sh",
+          "state": "delivered"
+        },
+        {
+          "path": "tests/shell/multiplexer_runtime.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Select kitty; open the multiplexer shortcut and a TUI app; run term_exec.sh --cwd ~/Documents -- fish and check pwd",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D05-kitty-clipboard",
+      "option": "terminal/kitty",
+      "capability": "terminal.clipboard",
+      "evidence_required": "real-effect",
+      "tests": [],
+      "vm_check": "In kitty: select text, Ctrl+Shift+C, paste with Ctrl+Shift+V in another window",
+      "result": "not-run",
+      "limits": "Manual VM check only (default bindings documented, E-D05-035)"
+    },
+    {
+      "id": "D05-kitty-theme",
+      "option": "terminal/kitty",
+      "capability": "theme",
+      "evidence_required": "visual",
+      "tests": [
+        {
+          "path": "tests/shell/terminal_workspace.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Toggle Super+Shift+T: kitty colours switch (live (SIGUSR1)); font family JetBrainsMono Nerd Font, font size unchanged",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D05-alacritty-launch-cwd",
+      "option": "terminal/alacritty",
+      "capability": "terminal.cwd",
+      "evidence_required": "argv",
+      "tests": [
+        {
+          "path": "tests/shell/terminal_workspace.sh",
+          "state": "delivered"
+        },
+        {
+          "path": "tests/shell/multiplexer_runtime.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Select alacritty; open the multiplexer shortcut and a TUI app; run term_exec.sh --cwd ~/Documents -- fish and check pwd",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D05-alacritty-clipboard",
+      "option": "terminal/alacritty",
+      "capability": "terminal.clipboard",
+      "evidence_required": "real-effect",
+      "tests": [],
+      "vm_check": "In alacritty: select text, Ctrl+Shift+C, paste with Ctrl+Shift+V in another window",
+      "result": "not-run",
+      "limits": "Manual VM check only (default bindings documented, E-D05-035)"
+    },
+    {
+      "id": "D05-alacritty-theme",
+      "option": "terminal/alacritty",
+      "capability": "theme",
+      "evidence_required": "visual",
+      "tests": [
+        {
+          "path": "tests/shell/terminal_workspace.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Toggle Super+Shift+T: alacritty colours switch (live); font family JetBrainsMono Nerd Font, font size unchanged",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D05-foot-launch-cwd",
+      "option": "terminal/foot",
+      "capability": "terminal.cwd",
+      "evidence_required": "argv",
+      "tests": [
+        {
+          "path": "tests/shell/terminal_workspace.sh",
+          "state": "delivered"
+        },
+        {
+          "path": "tests/shell/multiplexer_runtime.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Select foot; open the multiplexer shortcut and a TUI app; run term_exec.sh --cwd ~/Documents -- fish and check pwd",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D05-foot-clipboard",
+      "option": "terminal/foot",
+      "capability": "terminal.clipboard",
+      "evidence_required": "real-effect",
+      "tests": [],
+      "vm_check": "In foot: select text, Ctrl+Shift+C, paste with Ctrl+Shift+V in another window",
+      "result": "not-run",
+      "limits": "Manual VM check only (default bindings documented, E-D05-035)"
+    },
+    {
+      "id": "D05-foot-theme",
+      "option": "terminal/foot",
+      "capability": "theme",
+      "evidence_required": "visual",
+      "tests": [
+        {
+          "path": "tests/shell/terminal_workspace.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Toggle Super+Shift+T: foot colours switch (new windows); font family JetBrainsMono Nerd Font, font size unchanged",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D05-ghostty-launch-cwd",
+      "option": "terminal/ghostty",
+      "capability": "terminal.cwd",
+      "evidence_required": "argv",
+      "tests": [
+        {
+          "path": "tests/shell/terminal_workspace.sh",
+          "state": "delivered"
+        },
+        {
+          "path": "tests/shell/multiplexer_runtime.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Select ghostty; open the multiplexer shortcut and a TUI app; run term_exec.sh --cwd ~/Documents -- fish and check pwd",
+      "result": "not-run",
+      "limits": "ghostty is not available locally; launch flags and theme files are argv/render-tested only"
+    },
+    {
+      "id": "D05-ghostty-clipboard",
+      "option": "terminal/ghostty",
+      "capability": "terminal.clipboard",
+      "evidence_required": "real-effect",
+      "tests": [],
+      "vm_check": "In ghostty: select text, Ctrl+Shift+C, paste with Ctrl+Shift+V in another window",
+      "result": "not-run",
+      "limits": "Manual VM check only (default bindings documented, E-D05-035)"
+    },
+    {
+      "id": "D05-ghostty-theme",
+      "option": "terminal/ghostty",
+      "capability": "theme",
+      "evidence_required": "visual",
+      "tests": [
+        {
+          "path": "tests/shell/terminal_workspace.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Toggle Super+Shift+T: ghostty colours switch (documented SIGUSR2 reload); font family JetBrainsMono Nerd Font, font size unchanged",
+      "result": "not-run",
+      "limits": "ghostty is not available locally; launch flags and theme files are argv/render-tested only"
+    },
+    {
+      "id": "D05-konsole-launch-cwd",
+      "option": "terminal/konsole",
+      "capability": "terminal.cwd",
+      "evidence_required": "argv",
+      "tests": [
+        {
+          "path": "tests/shell/terminal_workspace.sh",
+          "state": "delivered"
+        },
+        {
+          "path": "tests/shell/multiplexer_runtime.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Select konsole; open the multiplexer shortcut and a TUI app; run term_exec.sh --cwd ~/Documents -- fish and check pwd",
+      "result": "not-run",
+      "limits": "konsole is not available locally; launch flags and theme files are argv/render-tested only"
+    },
+    {
+      "id": "D05-konsole-clipboard",
+      "option": "terminal/konsole",
+      "capability": "terminal.clipboard",
+      "evidence_required": "real-effect",
+      "tests": [],
+      "vm_check": "In konsole: select text, Ctrl+Shift+C, paste with Ctrl+Shift+V in another window",
+      "result": "not-run",
+      "limits": "Manual VM check only (default bindings documented, E-D05-035)"
+    },
+    {
+      "id": "D05-konsole-theme",
+      "option": "terminal/konsole",
+      "capability": "theme",
+      "evidence_required": "visual",
+      "tests": [
+        {
+          "path": "tests/shell/terminal_workspace.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Toggle Super+Shift+T: konsole colours switch (new windows); font family JetBrainsMono Nerd Font, font size unchanged",
+      "result": "not-run",
+      "limits": "konsole is not available locally; launch flags and theme files are argv/render-tested only"
+    },
+    {
+      "id": "D05-tmux-session",
+      "option": "multiplexer/tmux",
+      "capability": "multiplexer.session",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/multiplexer_runtime.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Open tmux with the shortcut, create a session, split a pane in another directory, detach, reattach explicitly",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D05-tmux-theme",
+      "option": "multiplexer/tmux",
+      "capability": "theme",
+      "evidence_required": "visual",
+      "tests": [
+        {
+          "path": "tests/shell/terminal_workspace.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Toggle the theme with tmux open: status/borders follow the variant (live)",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D05-zellij-session",
+      "option": "multiplexer/zellij",
+      "capability": "multiplexer.session",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/multiplexer_runtime.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Open Zellij with the shortcut, create a session, split a pane in another directory, detach, reattach explicitly",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D05-zellij-theme",
+      "option": "multiplexer/zellij",
+      "capability": "theme",
+      "evidence_required": "visual",
+      "tests": [
+        {
+          "path": "tests/shell/terminal_workspace.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Toggle the theme with Zellij open: status/borders follow the variant (live)",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D05-herdr-bin-session",
+      "option": "multiplexer/herdr-bin",
+      "capability": "multiplexer.session",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/multiplexer_runtime.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Open Herdr with the shortcut, create a session, split a pane in another directory, detach, reattach explicitly",
+      "result": "not-run",
+      "limits": "Herdr is not installable locally; documentation evidence only (E-D05-020)"
+    },
+    {
+      "id": "D05-herdr-bin-theme",
+      "option": "multiplexer/herdr-bin",
+      "capability": "theme",
+      "evidence_required": "visual",
+      "tests": [
+        {
+          "path": "tests/shell/terminal_workspace.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Toggle the theme with Herdr open: status/borders follow the variant (after restart)",
+      "result": "not-run",
+      "limits": "Herdr is not installable locally; documentation evidence only (E-D05-020)"
+    },
+    {
+      "id": "D05-pi-launch",
+      "option": "agent/pi",
+      "capability": "agent.launch",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/agent_triage.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "With pi selected and signed in by you: trigger a startup warning, click the notification action, confirm the agent opens read-only in the selected terminal/multiplexer",
+      "result": "not-run",
+      "limits": "Requires your own agent account; tests are modeled (no authenticated agent run)"
+    },
+    {
+      "id": "D05-opencode-launch",
+      "option": "agent/opencode",
+      "capability": "agent.launch",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/agent_triage.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "With opencode selected and signed in by you: trigger a startup warning, click the notification action, confirm the agent opens read-only in the selected terminal/multiplexer",
+      "result": "not-run",
+      "limits": "Requires your own agent account; tests are modeled (no authenticated agent run)"
+    },
+    {
+      "id": "D05-claude-code-launch",
+      "option": "agent/claude-code",
+      "capability": "agent.launch",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/agent_triage.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "With claude-code selected and signed in by you: trigger a startup warning, click the notification action, confirm the agent opens read-only in the selected terminal/multiplexer",
+      "result": "not-run",
+      "limits": "Requires your own agent account; tests are modeled (no authenticated agent run)"
+    },
+    {
+      "id": "D05-codex-cli-launch",
+      "option": "agent/codex-cli",
+      "capability": "agent.launch",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/agent_triage.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "With codex-cli selected and signed in by you: trigger a startup warning, click the notification action, confirm the agent opens read-only in the selected terminal/multiplexer",
+      "result": "not-run",
+      "limits": "Requires your own agent account; tests are modeled (no authenticated agent run)"
+    },
+    {
+      "id": "D05-cursor-cli-launch",
+      "option": "agent/cursor-cli",
+      "capability": "agent.launch",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/agent_triage.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "With cursor-cli selected and signed in by you: trigger a startup warning, click the notification action, confirm the agent opens read-only in the selected terminal/multiplexer",
+      "result": "not-run",
+      "limits": "Requires your own agent account; tests are modeled (no authenticated agent run)"
+    },
+    {
+      "id": "D05-agent-none",
+      "option": "agent/none",
+      "capability": "agent.launch",
+      "evidence_required": "modeled-effect",
+      "tests": [
+        {
+          "path": "tests/shell/agent_triage.sh",
+          "state": "delivered"
+        },
+        {
+          "path": "tests/shell/terminal_workspace.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Select None: no agent notification action, no agent units, existing CLIs untouched",
+      "result": "not-run",
+      "limits": ""
+    }
+  ]
+}

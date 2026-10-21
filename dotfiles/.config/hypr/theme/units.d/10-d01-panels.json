@@ -1,0 +1,160 @@
+{
+  "schema_version": 1,
+  "units": [
+    {
+      "id": "waybar",
+      "owner": "D01",
+      "description": "Waybar colors and typography, imported by the hss-theme region of style.css",
+      "applies": {
+        "members": [
+          "bar/waybar"
+        ]
+      },
+      "depends": [
+        "theme-core"
+      ],
+      "executables": [
+        "waybar"
+      ],
+      "outputs": [
+        {
+          "target": "theme:generated/waybar/colors.css",
+          "class": "generated",
+          "template": "d01/waybar-colors.css.tmpl",
+          "validator": "css"
+        },
+        {
+          "target": "config:waybar/style.css",
+          "class": "managed-region",
+          "comment": "/* */",
+          "position": "prepend",
+          "validator": "css",
+          "content": "@import url(\"{{path.generated | uri}}/waybar/colors.css\");"
+        }
+      ],
+      "activation": [
+        {
+          "kind": "signal",
+          "process": "waybar",
+          "signal": "USR2"
+        }
+      ]
+    },
+    {
+      "id": "ironbar",
+      "owner": "D01",
+      "description": "Ironbar stylesheet, imported by the hss-theme region of style.css",
+      "applies": {
+        "members": [
+          "bar/ironbar"
+        ]
+      },
+      "depends": [
+        "theme-core"
+      ],
+      "executables": [
+        "ironbar"
+      ],
+      "outputs": [
+        {
+          "target": "theme:generated/ironbar/style.css",
+          "class": "generated",
+          "template": "d01/ironbar.css.tmpl",
+          "validator": "css"
+        },
+        {
+          "target": "config:ironbar/style.css",
+          "class": "managed-region",
+          "comment": "/* */",
+          "position": "prepend",
+          "create_if_missing": true,
+          "validator": "css",
+          "content": "@import url(\"{{path.generated | uri}}/ironbar/style.css\");"
+        }
+      ],
+      "activation": [
+        {
+          "kind": "reload",
+          "process": "ironbar",
+          "argv": [
+            "ironbar",
+            "style",
+            "load-css",
+            "{{path.config_home}}/ironbar/style.css"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "nwg-panel",
+      "owner": "D01",
+      "description": "nwg-panel bar and dock stylesheet, imported by the hss-theme region of hss-style.css",
+      "applies": {
+        "members": [
+          "bar/nwg-panel",
+          "dock/nwg-panel"
+        ]
+      },
+      "depends": [
+        "theme-core"
+      ],
+      "executables": [
+        "nwg-panel"
+      ],
+      "outputs": [
+        {
+          "target": "theme:generated/nwg-panel/style.css",
+          "class": "generated",
+          "template": "d01/nwg-panel.css.tmpl",
+          "validator": "css"
+        },
+        {
+          "target": "config:nwg-panel/hss-style.css",
+          "class": "managed-region",
+          "comment": "/* */",
+          "position": "prepend",
+          "create_if_missing": true,
+          "validator": "css",
+          "content": "@import url(\"{{path.generated | uri}}/nwg-panel/style.css\");"
+        }
+      ],
+      "activation": [
+        {
+          "kind": "next-launch"
+        }
+      ]
+    },
+    {
+      "id": "nwg-dock-hyprland",
+      "owner": "D01",
+      "description": "nwg-dock-hyprland dock colors, rounding and focus states (inline region in style.css)",
+      "applies": {
+        "members": [
+          "dock/nwg-dock-hyprland"
+        ]
+      },
+      "depends": [
+        "theme-core"
+      ],
+      "executables": [
+        "nwg-dock-hyprland"
+      ],
+      "outputs": [
+        {
+          "target": "config:nwg-dock-hyprland/style.css",
+          "class": "managed-region",
+          "comment": "/* */",
+          "position": "append",
+          "create_if_missing": true,
+          "validator": "css",
+          "template": "d01/nwg-dock.css.tmpl"
+        }
+      ],
+      "activation": [
+        {
+          "kind": "next-launch"
+        }
+      ]
+    }
+  ]
+}

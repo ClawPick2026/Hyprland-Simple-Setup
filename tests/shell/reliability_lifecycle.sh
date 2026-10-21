@@ -165,7 +165,7 @@ printf '%s\n' \
   'Type=Application' \
   'Name=Visual Studio Code' \
   'Exec=code %F' \
-  'MimeType=text/plain;application/x-shellscript;' > "$filepicker_desktop_dir/visual-studio-code.desktop"
+  'MimeType=text/plain;application/x-shellscript;' > "$filepicker_desktop_dir/code.desktop"
 update-desktop-database "$filepicker_desktop_dir"
 HSS_RELIABILITY_ACTION=filepicker \
   "$repo_root/setup.sh" --test-scenario reliability >"$fixture/filepicker.out" 2>&1
@@ -174,8 +174,8 @@ if grep -Fq 'org.freedesktop.impl.portal.FileChooser = kde' "$filepicker_config_
   printf 'not ok - file chooser still selects the KDE backend\n'
   exit 1
 fi
-[[ $(xdg-mime query default text/plain) == visual-studio-code.desktop ]]
-[[ $(xdg-mime query default application/x-shellscript) == visual-studio-code.desktop ]]
+[[ $(xdg-mime query default text/plain) == code.desktop ]]
+[[ $(xdg-mime query default application/x-shellscript) == code.desktop ]]
 if grep -Fq 'applications.menu' "$STUB_LOG"; then
   printf 'not ok - file chooser setup still mutates the system application menu\n'
   exit 1

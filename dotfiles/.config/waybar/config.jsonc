@@ -14,13 +14,17 @@
   "modules-right": [
     "pulseaudio",
     "backlight",
+    "custom/backlight-unavailable",
     "custom/temperature",
     "keyboard-state",
+    "custom/keyboard-state-unavailable",
     "battery",
+    "custom/battery-unavailable",
     "network",
     "bluetooth",
     "custom/updates",
     "custom/notification",
+    "custom/theme",
     "clock"
   ],
   "keyboard-state": {
@@ -35,7 +39,6 @@
   "wlr/taskbar": {
     "format": "{icon}",
     "icon-size": 30,
-    "icon-theme": "Numix-Circle",
     "tooltip-format": "{title}",
     "on-click": "activate",
     "on-click-middle": "close",
@@ -61,7 +64,7 @@
     "on-click": "activate",
     "sort-by": "number",
     "tooltips": {
-      "default": "Workspace {name}\nLeft click: switch • Scroll: previous/next"
+      "default": "Workspace {name}\nLeft click: switch"
     }
   },
   "tray": {
@@ -114,9 +117,9 @@
     }
   },
   "pulseaudio": {
-    "on-click": "$HOME/.config/waybar/scripts/audio_control.sh",
-    "on-click-right": "$HOME/.config/waybar/scripts/alsamixer.sh",
-    "tooltip-format": "Output: {desc}\nVolume: {volume}%\nMicrophone: {source_volume}%\nLeft or right click: selected audio control",
+    "on-click": "$HOME/.config/hypr/scripts/action_exec.sh audio.streams.open",
+    "on-click-right": "$HOME/.config/hypr/scripts/action_exec.sh audio.hardware.open",
+    "tooltip-format": "Output: {desc}\nVolume: {volume}%\nMicrophone: {source_volume}%\nLeft click: application volumes • Right click: device mixer",
     "format": "{volume}% {icon} {format_source}",
     "format-bluetooth": "{volume}% {icon}\uf294 {format_source}",
     "format-bluetooth-muted": "\uf6a9 {icon}\uf294 {format_source}",
@@ -150,8 +153,8 @@
     "tooltip-format-connected-battery": "Connected: {device_alias}\nBattery: {device_battery_percentage}%\nLeft click: devices • Right click: power",
     "tooltip-format-off": "Bluetooth is off\nRight click: turn on",
     "tooltip-format-no-controller": "No Bluetooth controller found",
-    "on-click": "$HOME/.config/waybar/scripts/bluetooth_manager.sh",
-    "on-click-right": "$HOME/.config/hypr/scripts/toggle_bluetooth.sh"
+    "on-click": "$HOME/.config/hypr/scripts/action_exec.sh bluetooth.open",
+    "on-click-right": "$HOME/.config/hypr/scripts/action_exec.sh bluetooth.radio.toggle"
   },
   "network": {
     "format-wifi": "{signalStrength}% \uf1eb",
@@ -164,8 +167,8 @@
     "tooltip-format-ethernet": "Ethernet: {ifname}\nAddress: {ipaddr}\nGateway: {gwaddr}\nLeft click: network picker • Right click: connection editor",
     "tooltip-format-disconnected": "Network disconnected\nLeft click: network picker • Right click: connection editor",
     "tooltip-format-disabled": "Wi-Fi is disabled\nLeft click: network picker • Right click: connection editor",
-    "on-click-right": "bash -lc '$HOME/.config/waybar/scripts/nmtui.sh'",
-    "on-click": "bash -lc '$HOME/.config/waybar/scripts/nmtui-connect.sh'"
+    "on-click": "$HOME/.config/hypr/scripts/action_exec.sh network.connect.choose",
+    "on-click-right": "$HOME/.config/hypr/scripts/action_exec.sh network.profile.edit"
   },
   "backlight": {
     "format": "{icon} {percent}%",
@@ -217,12 +220,55 @@
       "inhibited-notification": "\uf0a2<span foreground='red'><sup>\uf444</sup></span>",
       "inhibited-none": "\uf0a2",
       "dnd-inhibited-notification": "\uf1f7<span foreground='red'><sup>\uf444</sup></span>",
-      "dnd-inhibited-none": "\uf1f7"
+      "dnd-inhibited-none": "\uf1f7",
+      "stopped": "\uf0a2",
+      "disabled": "\uf0a2",
+      "unavailable": "\uf0a2 n/a",
+      "error": "\uf0a2 !"
     },
     "return-type": "json",
     "exec": "$HOME/.config/waybar/scripts/notification_status.sh",
-    "on-click": "$HOME/.config/hypr/scripts/notification_control.sh toggle",
-    "on-click-right": "$HOME/.config/hypr/scripts/notification_control.sh dnd",
+    "on-click": "$HOME/.config/hypr/scripts/action_exec.sh notifications.primary",
+    "on-click-right": "$HOME/.config/hypr/scripts/action_exec.sh notifications.dnd.toggle",
+    "escape": true
+  },
+  "custom/theme": {
+    "format": "{icon}",
+    "format-icons": {
+      "dark": "\uf186",
+      "light": "\uf185",
+      "unavailable": "\uf042",
+      "error": "\uf042 !"
+    },
+    "return-type": "json",
+    "exec": "$HOME/.config/waybar/scripts/theme_status.sh",
+    "interval": 30,
+    "tooltip": true,
+    "on-click": "$HOME/.config/hypr/scripts/action_exec.sh theme.toggle",
+    "escape": true
+  },
+  "custom/backlight-unavailable": {
+    "return-type": "json",
+    "exec": "$HOME/.config/waybar/scripts/hardware_state.sh backlight",
+    "exec-if": "$HOME/.config/waybar/scripts/hardware_state.sh --absent backlight",
+    "interval": 60,
+    "tooltip": true,
+    "escape": true
+  },
+  "custom/battery-unavailable": {
+    "return-type": "json",
+    "exec": "$HOME/.config/waybar/scripts/hardware_state.sh battery",
+    "exec-if": "$HOME/.config/waybar/scripts/hardware_state.sh --absent battery",
+    "interval": 60,
+    "tooltip": true,
+    "escape": true
+  },
+  "custom/keyboard-state-unavailable": {
+    "return-type": "json",
+    "exec": "$HOME/.config/waybar/scripts/hardware_state.sh keyboard",
+    "exec-if": "$HOME/.config/waybar/scripts/hardware_state.sh --absent keyboard",
+    "interval": 60,
+    "tooltip": true,
     "escape": true
   },
   "custom/power": {
@@ -233,11 +279,11 @@
     "menu": "on-click-right",
     "menu-file": "$HOME/.config/waybar/power_menu.xml",
     "menu-actions": {
-      "shutdown": "~/.config/waybar/scripts/power_action.sh shutdown",
-      "reboot": "~/.config/waybar/scripts/power_action.sh reboot",
-      "suspend": "~/.config/waybar/scripts/power_action.sh suspend",
-      "hibernate": "~/.config/waybar/scripts/power_action.sh hibernate",
-      "logout": "~/.config/waybar/scripts/power_action.sh logout"
+      "suspend": "$HOME/.config/hypr/scripts/action_exec.sh session.suspend",
+      "hibernate": "$HOME/.config/hypr/scripts/action_exec.sh session.hibernate",
+      "shutdown": "$HOME/.config/hypr/scripts/action_exec.sh session.shutdown",
+      "reboot": "$HOME/.config/hypr/scripts/action_exec.sh session.reboot",
+      "logout": "$HOME/.config/hypr/scripts/action_exec.sh session.logout"
     }
   },
   "custom/menu": {

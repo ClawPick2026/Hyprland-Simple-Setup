@@ -1,57 +1,83 @@
+/* Hyprland Simple Setup power screen.
+ * Colors use the shared @hss_* names. The theme renderer appends an import of the generated
+ * Catppuccin palette at the end of this file; GTK applies the last definition, so the values
+ * below are only the Catppuccin Mocha fallback used before the theme has been applied.
+ * Icons follow the GTK icon theme (Breeze or Breeze Dark), so they match both variants. */
+@define-color hss_bg #1e1e2e;
+@define-color hss_bg_deep #11111b;
+@define-color hss_surface0 #313244;
+@define-color hss_surface1 #45475a;
+@define-color hss_surface2 #585b70;
+@define-color hss_fg #cdd6f4;
+@define-color hss_border #45475a;
+@define-color hss_focus #89b4fa;
+@define-color hss_accent #89b4fa;
+
 * {
 	box-shadow: none;
+	font-family: "Noto Sans", sans-serif;
 }
 
 window {
 	background-image: url("../../.cache/wlogout/current-wallpaper");
-	background-color: rgb(17, 17, 27);
+	background-color: @hss_bg_deep;
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: cover;
 }
 
 button {
-    border-radius: 20px;
+	border-radius: 12px;
 	margin: 30px;
 	padding: 50px;
-    border-color: rgb(70, 73, 255);
-	text-decoration-color: #FFFFFF;
-    color: #FFFFFF;
-	background-color: #4a74ff;
 	border-style: solid;
 	border-width: 2px;
+	border-color: @hss_border;
+	color: @hss_fg;
+	text-decoration-color: @hss_fg;
+	background-color: alpha(@hss_bg, 0.9);
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: 20%;
 }
 
-button:focus, button:active, button:hover {
-	background-color: #aac5ff;
-	outline-style: groove;
-	color: #000000;
-	border-width: 5px;
+button:hover {
+	background-color: alpha(@hss_surface0, 0.95);
+	border-color: @hss_accent;
+}
+
+/* Keyboard focus: thicker accent border (padding shrinks so the button keeps its size). */
+button:focus {
+	background-color: alpha(@hss_surface1, 0.95);
+	border-color: @hss_focus;
+	border-width: 4px;
+	padding: 48px;
+}
+
+button:active {
+	background-color: @hss_surface2;
 }
 
 #lock {
-    background-image: image(url("/usr/share/wlogout/icons/lock.png"), url("/usr/local/share/wlogout/icons/lock.png"));
+	background-image: -gtk-icontheme("system-lock-screen");
 }
 
 #logout {
-    background-image: image(url("/usr/share/wlogout/icons/logout.png"), url("/usr/local/share/wlogout/icons/logout.png"));
+	background-image: -gtk-icontheme("system-log-out");
 }
 
 #suspend {
-    background-image: image(url("/usr/share/wlogout/icons/suspend.png"), url("/usr/local/share/wlogout/icons/suspend.png"));
+	background-image: -gtk-icontheme("system-suspend");
 }
 
 #hibernate {
-    background-image: image(url("/usr/share/wlogout/icons/hibernate.png"), url("/usr/local/share/wlogout/icons/hibernate.png"));
+	background-image: -gtk-icontheme("system-suspend-hibernate");
 }
 
 #shutdown {
-    background-image: image(url("/usr/share/wlogout/icons/shutdown.png"), url("/usr/local/share/wlogout/icons/shutdown.png"));
+	background-image: -gtk-icontheme("system-shutdown");
 }
 
 #reboot {
-    background-image: image(url("/usr/share/wlogout/icons/reboot.png"), url("/usr/local/share/wlogout/icons/reboot.png"));
+	background-image: -gtk-icontheme("system-reboot");
 }

@@ -1,0 +1,24 @@
+{
+  "kind": "real-effect",
+  "case": "D03-swaync-dnd",
+  "date": "YYYY-MM-DD",
+  "environment": "Disposable Arch Linux VM, Hyprland 0.xx, private session; or the test userland and its recorded versions",
+  "versions": {
+    "provider": "swaync 0.12.6",
+    "hyprland": "",
+    "repository_commit": ""
+  },
+  "selection": {
+    "primary": "notifications/swaync",
+    "members": ["notifications/swaync"],
+    "variant": "dark"
+  },
+  "command": "Exact command or numbered manual steps that produced the result",
+  "oracle": "How the effect was observed independently of the adapter's own report",
+  "result": "What was observed, in one or two sentences",
+  "artifacts": [
+    {"path": "relative/path/to/capture.png", "kind": "screenshot", "privacy_reviewed": true}
+  ],
+  "limits": "Hardware, version or environment limits; physical hardware stays unverified",
+  "reviewer": "Name or handle of the person who ran or reviewed it"
+}
