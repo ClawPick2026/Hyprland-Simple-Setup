@@ -1,6 +1,6 @@
 # D06 — Applications and default handlers
 
-Status: product policy synchronized with the completed interview; implementation not started. Apply master section 9 and the [decision record](../desktop-harmonization-grill.md); native application/handler evidence remains pending.
+Status: product policy synchronized with the completed interview; implemented on branch `feat/harmonize-visual-design` (uncommitted, 2026-10-21); user-led VM acceptance pending, see [acceptance matrix](../../../Documents/desktop-harmonization-acceptance.md). Apply master section 9 and the [decision record](../desktop-harmonization-grill.md); native application/handler evidence remains pending.
 Master: [Desktop harmonization master](../desktop-harmonization-master.md).
 Source baseline: `610a18bac374e7e2ffd0bcb2d99b026131deedbc`, branch `feat/harmonize-visual-design`.
 
@@ -124,7 +124,7 @@ FileChooser backend choice is not a folder handler and must not be switched mere
 
 ## 5. Implementation work packages
 
-All packages are **not started**; prerequisites describe future work, not authorization.
+All packages are **implemented on the branch** (VM acceptance pending); prerequisites describe future work, not authorization.
 
 ### D06.1 — Reconcile option evidence and workflow requirements
 Prerequisites: baseline recheck when authorized; F01/F04 discovery interfaces; no foundation implementation required for specification.
@@ -212,12 +212,12 @@ A declined helper or unsupported renderer leaves the requirement blocked; it doe
 
 ## 9. Implementation checklist and confidence
 
-1. Not started — D06.1: reconcile option evidence and obtain required workflow decisions.
-2. Not started — D06.2: implement approved reversible handler intents.
-3. Not started — D06.3: preserve launch/focus and verify file/editor workflows.
-4. Not started — D06.4: establish five calendar first-use procedures.
-5. Not started — D06.5: implement selected-member F03 application renderers.
-6. Not started — D06.6: deliver preservation, switching and acceptance evidence to I01.
+1. Implemented (VM acceptance pending) — D06.1: reconcile option evidence and obtain required workflow decisions.
+2. Implemented (VM acceptance pending) — D06.2: implement approved reversible handler intents.
+3. Implemented (VM acceptance pending) — D06.3: preserve launch/focus and verify file/editor workflows.
+4. Implemented (VM acceptance pending) — D06.4: establish five calendar first-use procedures.
+5. Implemented (VM acceptance pending) — D06.5: implement selected-member F03 application renderers.
+6. Implemented (VM acceptance pending) — D06.6: deliver preservation, switching and acceptance evidence to I01.
 
 Planning confidence: **92/100** for source-grounded scope, ownership and dependency ordering.
 Runtime feasibility remains unverified; provisional contracts, desktop IDs, calendar initialization and per-app theme constraints limit certainty.

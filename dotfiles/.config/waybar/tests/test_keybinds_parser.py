@@ -44,7 +44,7 @@ class KeybindsParserTests(unittest.TestCase):
 
     def test_bundled_config_populates_viewer(self):
         binds = self.parse_file(BUNDLED_BINDS)
-        self.assertEqual(len(binds), 78)
+        self.assertEqual(len(binds), 79)
         self.assertIn({"keybind": "SUPER + SPACE", "description": "Open Menu"}, binds)
         self.assertIn({"keybind": "SUPER + Enter", "description": "Open Calculator"}, binds)
         self.assertIn({"keybind": "XF86AudioMute", "description": "Mute Volume"}, binds)

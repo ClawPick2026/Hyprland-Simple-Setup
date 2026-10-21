@@ -165,13 +165,12 @@ assert_wrapper_argv() {
 assert_clipboard_behavior() {
   local fixture_root=$1 roles_file=$2 package=$3 floating=$4
   local wrapper_log="$fixture_root/consumer-wrapper.log"
-  local executable terminal_package terminal_pid clipboard_command
+  local executable terminal_package terminal_pid
   local -a args expected
 
   executable=$(jq -er '.roles.terminal.executable' "$roles_file")
   terminal_package=$(jq -er '.roles.terminal.package' "$roles_file")
   mapfile -t args < <(jq -r '.roles.terminal.args[]?' "$roles_file")
-  clipboard_command='wl-clipboard-history -l 376 | fzf --bind "ctrl-alt-y:execute-silent(echo {} | sed -E \"s/.*,(.*)/\1/\" | wl-copy)+abort"'
   : > "$fixture_root/hyprctl.log"
   rm -f -- "$fixture_root/terminal.pid"
   WRAPPER_LOG="$wrapper_log" \
@@ -190,7 +189,7 @@ assert_clipboard_behavior() {
     konsole) expected+=(--separate -p tabtitle=hss-clipboard -e) ;;
     *) fail "unexpected terminal package in clipboard test: $terminal_package"; return ;;
   esac
-  expected+=(sh -c "$clipboard_command")
+  expected+=("$HOME/dotfiles/.config/waybar/scripts/clipboard_pick.sh")
   assert_argv "$wrapper_log" "clipboard terminal argv for $package" "${expected[@]}"
   assert_contains "dispatch focuswindow pid:$terminal_pid" "$fixture_root/hyprctl.log" 'clipboard focuses its stable-class window'
   assert_contains 'resizeactive\ exact\ 50%\ 55%' "$fixture_root/hyprctl.log" 'clipboard window is resized'
@@ -290,7 +289,7 @@ assert_common_consumers() {
 
   assert_contains 'term_exec.sh' "$HOME/dotfiles/.config/hypr/scripts/notes.sh" 'notes use terminal wrapper'
   assert_contains '.roles.tui_editor.editor_bin' "$HOME/dotfiles/.config/hypr/scripts/notes.sh" 'notes resolve selected editor'
-  assert_contains 'menu_exec.sh" --dmenu' "$HOME/dotfiles/.config/hypr/scripts/repos_wofi.sh" 'repository picker uses menu wrapper'
+  assert_contains 'menu_choose.sh" --prompt Repositories' "$HOME/dotfiles/.config/hypr/scripts/repos_wofi.sh" 'repository picker uses menu chooser'
   assert_contains 'term_exec.sh" --app-id hss-repos' "$HOME/dotfiles/.config/hypr/scripts/repos_wofi.sh" 'repository picker uses terminal wrapper'
   assert_contains '.roles.terminal.class' "$HOME/dotfiles/.config/hypr/scripts/toggle_floating.sh" 'floating toggle resolves selected terminal class'
 

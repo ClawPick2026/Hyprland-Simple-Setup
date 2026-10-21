@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "owner": "F04",
+  "description": "Foundation verification suites for the shared runtime (F02) and theme engine (F03). Cross-cutting cases: option and capability are null.",
+  "cases": [
+    {
+      "id": "F04-runner-isolation",
+      "option": null,
+      "capability": null,
+      "evidence_required": "modeled-effect",
+      "tests": [{"path": "tests/shell/harness_regressions.sh", "state": "delivered"}],
+      "vm_check": "",
+      "result": "not-run",
+      "limits": "Proves the runner and fixture library remove host session variables and clean up; does not prove anything about applications"
+    },
+    {
+      "id": "F04-coverage-descriptors",
+      "option": null,
+      "capability": null,
+      "evidence_required": "static",
+      "tests": [{"path": "tests/shell/harmonization_coverage.sh", "state": "delivered"}],
+      "vm_check": "",
+      "result": "not-run",
+      "limits": "Capability foreign keys are checked only when capabilities.json or capabilities.d/ exists"
+    },
+    {
+      "id": "F04-action-dispatch",
+      "option": null,
+      "capability": null,
+      "evidence_required": "modeled-effect",
+      "tests": [{"path": "tests/shell/runtime_contracts.sh", "state": "delivered"}],
+      "vm_check": "Trigger one action from a keybinding and one from a bar; an unsupported action shows one explanatory notification and nothing else",
+      "result": "not-run",
+      "limits": "A throwaway provider proves dispatcher semantics; provider behavior belongs to each domain"
+    },
+    {
+      "id": "F04-status-observation",
+      "option": null,
+      "capability": null,
+      "evidence_required": "modeled-effect",
+      "tests": [{"path": "tests/shell/runtime_contracts.sh", "state": "delivered"}],
+      "vm_check": "",
+      "result": "not-run",
+      "limits": "Status freshness under a live session is checked by the domain owners"
+    },
+    {
+      "id": "F04-dbus-ownership-probe",
+      "option": null,
+      "capability": null,
+      "evidence_required": "modeled-effect",
+      "tests": [{"path": "tests/shell/runtime_ownership.sh", "state": "delivered"}],
+      "vm_check": "With the selected notification daemon running, a second start request reports conflict and the running owner keeps its notifications",
+      "result": "not-run",
+      "limits": "busctl and dbus-send replies are modeled from systemd 262 and dbus 1.16 output; singleton start policy is D03/D07 work"
+    },
+    {
+      "id": "F04-managed-configuration",
+      "option": null,
+      "capability": null,
+      "evidence_required": "modeled-effect",
+      "tests": [{"path": "tests/shell/managed_configuration.sh", "state": "delivered"}],
+      "vm_check": "On an existing installation run setup with preview, then with adoption; edit one managed key and switch the theme; confirm the edited file is preserved and the others switch",
+      "result": "not-run",
+      "limits": "Real files in a fixture HOME; application adoption of the written settings is visual or real-effect evidence"
+    },
+    {
+      "id": "F04-theme-rendering",
+      "option": null,
+      "capability": null,
+      "evidence_required": "static",
+      "tests": [{"path": "tests/shell/theme_rendering.sh", "state": "delivered"}],
+      "vm_check": "",
+      "result": "not-run",
+      "limits": "Rendered text only; whether an application honors it needs visual review"
+    },
+    {
+      "id": "F04-theme-activation",
+      "option": null,
+      "capability": null,
+      "evidence_required": "modeled-effect",
+      "tests": [{"path": "tests/shell/theme_activation.sh", "state": "delivered"}],
+      "vm_check": "Press Super+Shift+T with a terminal, a GTK app and a Qt app open; running reloadable apps change, others change at next launch, and nothing new is launched",
+      "result": "not-run",
+      "limits": "pgrep, pkill, gsettings and reload commands are doubles; real reload effects need the VM"
+    },
+    {
+      "id": "F04-theme-visual-review",
+      "option": null,
+      "capability": null,
+      "evidence_required": "visual",
+      "tests": [{"path": "tests/fixtures/harmonization/visual-protocol.md", "state": "delivered"}],
+      "vm_check": "Follow the visual protocol for the theme-core scenes in dark and light and record a signed review",
+      "result": "not-run",
+      "limits": "Manual review in the disposable Arch VM (P07); no numeric thresholds"
+    }
+  ]
+}

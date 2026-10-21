@@ -265,8 +265,12 @@ web_client {
  
 // Choose the theme that is specified in the themes section.
 // Default: default
-// 
-theme "catppuccin-frappe"
+// The theme region is managed by the desktop theme switch (Super+Shift+T): it selects
+// the generated Catppuccin Mocha/Latte theme in themes/hss.kdl. Zellij uses the first
+// `theme` node, so remove the whole region before choosing another theme here.
+// >>> hss-theme:zellij >>>
+theme "hss"
+// <<< hss-theme:zellij <<<
  
 // Choose the base input mode of zellij.
 // Default: normal

@@ -1,6 +1,6 @@
 # F01 — Inventory and capability contracts
 
-Status: product policy synchronized with the completed interview; implementation not started. P01-P07 refer to the resolved master section 9 and [decision record](../desktop-harmonization-grill.md); native feasibility, interface design and execution evidence remain pending.
+Status: product policy synchronized with the completed interview; implemented on branch `feat/harmonize-visual-design` (uncommitted, 2026-10-21); user-led VM acceptance pending, see [acceptance matrix](../../../Documents/desktop-harmonization-acceptance.md). P01-P07 refer to the resolved master section 9 and [decision record](../desktop-harmonization-grill.md); native feasibility, interface design and execution evidence remain pending.
 Master: [Desktop harmonization master](../desktop-harmonization-master.md).
 Source baseline: `610a18bac374e7e2ffd0bcb2d99b026131deedbc`, branch `feat/harmonize-visual-design`.
 
@@ -143,21 +143,21 @@ Changes after Gate A require producer/consumer impact, migration and test update
 ## 6. Numbered implementation work packages
 
 ### F01.1 — Establish the exhaustive inventory
-Status: not started. Prerequisite: implementation authorization and baseline recheck.
+Status: implemented; VM acceptance pending. Prerequisite: implementation authorization and baseline recheck.
 Deliverables: populate **proposed** `capabilities.json`; inventory all 73 role-option rows, four None states and all generic packages.
 Record per-option startup/lifecycle, privacy boundary, rendering family, available actions, configuration surfaces, assets and evidence uncertainty.
 Validation: catalog-to-ledger set equality, unique option IDs, valid owner references, no orphan generic entries or unclassified extras.
 Done: every current choice has an owner and evidence-backed classification or explicitly unresolved blocking field.
 
 ### F01.2 — Freeze observable semantic requirements
-Status: not started. Prerequisite: F01.1 identities; pre-foundation domain specifications; P01 approval for final freeze.
+Status: implemented; VM acceptance pending. Prerequisite: F01.1 identities; pre-foundation domain specifications; P01 approval for final freeze.
 Deliverables: requirement/action/status records in the same ledger; exact active Waybar operation trace; separate native extras and inactive definitions.
 D01 owns detailed panel extraction; D02-D07 contribute role outcomes without implementing a competing action bus.
 Validation: each proposed mandatory outcome has an observable success condition and unsupported/failure/cancellation expectations.
 Done: user approves P01, or all affected parity claims remain explicitly blocked.
 
 ### F01.3 — Prove risky options and establish compatibility evidence
-Status: not started. Prerequisite: F01.2 candidate requirements; separate authorization for bounded feasibility spikes.
+Status: implemented; VM acceptance pending. Prerequisite: F01.2 candidate requirements; separate authorization for bounded feasibility spikes.
 Deliverables: pre-foundation evidence from D02/D03/D04, decision briefs P03/P04/P05 and a version/platform matrix; completed adapters are not prerequisites.
 Notification spike: separately test DND suppression/readback, history retrieval, actions and restart behavior under one notification owner.
 Audio spike: verify hardware mixing separately from native per-app routing. Classify QasMixer/Alsamixer as limited when native stream control is absent; do not evaluate or implement a companion.
@@ -166,7 +166,7 @@ Validation: record exact tested versions, compositor/session/toolkit context, co
 Done: approved supported combinations have evidence; impossible/unproven cases remain blocking, never relabeled equivalent.
 
 ### F01.4 — Approve compatible schema evolution
-Status: not started. Prerequisite: F01.1/F01.2 draft descriptors; F02/F04 specification review.
+Status: implemented; VM acceptance pending. Prerequisite: F01.1/F01.2 draft descriptors; F02/F04 specification review.
 Deliverables: catalog/sidecar/runtime compatibility table and strict-reader fixtures; bounded changes to `src/packages.rs` and `tests/check_packages_json.sh` only if approved.
 Recommend independent sidecar versioning while leaving catalog shape and runtime schema 2 unchanged initially.
 Alternative: typed optional catalog metadata requires coordinated Rust/jq reader changes before emission; old strict readers still need an explicit compatibility strategy.
@@ -175,7 +175,7 @@ Validation: old catalog/new reader, new metadata/old reader, absent sidecar, mal
 Done: consumers reject unsupported inputs clearly before writes; no predetermined runtime bump, weakened strictness or guessed capabilities.
 
 ### F01.5 — Specify deterministic feature dependency closure
-Status: not started. Prerequisite: F01.2 requirements, F01.3 feasibility and approved dependency costs.
+Status: implemented; VM acceptance pending. Prerequisite: F01.2 requirements, F01.3 feasibility and approved dependency costs.
 Deliverables: typed dependency graph in the ledger; F02/I01 integration specification, not installer implementation.
 Preserve existing required/generic selection semantics; union selected members and extras by source, then approved feature/helper/asset dependencies.
 Represent package, executable, service, protocol, renderer and asset requirements separately; prohibit dependency cycles and unresolved references.
@@ -184,7 +184,7 @@ Validation: all-selected, optional None, shared nwg-panel, non-primary members, 
 Done: every enabled approved feature has explainable closure, one lifecycle owner and no silently added optional companion.
 
 ### F01.6 — Deliver Gate A evidence and regression coverage
-Status: not started. Prerequisite: F01.1-F01.5; F04 fixture specification; user decisions for affected claims.
+Status: implemented; VM acceptance pending. Prerequisite: F01.1-F01.5; F04 fixture specification; user decisions for affected claims.
 Deliverables: F01-owned registry tests, domain evidence references, contribution patches and Gate A review packet.
 Extend existing Rust tests and shell checks; **proposed** `tests/shell/capability_contracts.sh` and **proposed** `tests/fixtures/capabilities/` need F04 coordination.
 Validation: exhaustive option/None coverage plus targeted cross-role combinations; compare old and proposed selections, argv and schema-2 output.
@@ -229,12 +229,12 @@ Local wiki paths supplied by the master were not consulted; no upstream/version 
 
 ## 10. Implementation checklist and confidence
 
-1. Not started — F01.1: reconcile every role option, None state and generic package into the inventory.
-2. Not started — F01.2: obtain pre-foundation specifications and user approval of P01 requirements.
-3. Not started — F01.3: complete authorized feasibility evidence and resolve affected P03/P04/P05 gates.
-4. Not started — F01.4: approve and verify strict catalog/sidecar/schema-2 compatibility.
-5. Not started — F01.5: validate approved feature dependencies, assets and singleton ownership.
-6. Not started — F01.6: deliver regression evidence and obtain independent Gate A acceptance.
+1. Implemented (VM acceptance pending) — F01.1: reconcile every role option, None state and generic package into the inventory.
+2. Implemented (VM acceptance pending) — F01.2: obtain pre-foundation specifications and user approval of P01 requirements.
+3. Implemented (VM acceptance pending) — F01.3: complete authorized feasibility evidence and resolve affected P03/P04/P05 gates.
+4. Implemented (VM acceptance pending) — F01.4: approve and verify strict catalog/sidecar/schema-2 compatibility.
+5. Implemented (VM acceptance pending) — F01.5: validate approved feature dependencies, assets and singleton ownership.
+6. Implemented (VM acceptance pending) — F01.6: deliver regression evidence and obtain independent Gate A acceptance.
 
 Planning confidence: **94/100** in repository-grounded scope and identified compatibility hazards.
 Feasibility remains unverified: installed/upstream versions, graphical effects and hardware behavior were not tested.

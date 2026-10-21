@@ -1,56 +1,24 @@
 #!/usr/bin/env bash
+# Compatibility entry point for power actions used by Waybar menus, keybindings and older
+# configurations. All semantics live in the session provider (plan D07):
+#   lock      immediate
+#   suspend   direct
+#   hibernate only when logind reports it can hibernate
+#   logout, reboot, shutdown  confirmed through the shared chooser; logout ends only the
+#             current session and never falls back to ending every session of the user
+set -euo pipefail
 
-action="$1"
-
+action_exec="$HOME/.config/hypr/scripts/action_exec.sh"
+action=${1:-}
 case "$action" in
-  shutdown)
-    notify-send "Shutdown" "System will power off in 3 seconds..."
-    sleep 3
-    if ! systemctl poweroff; then
-      notify-send "Shutdown" "Failed to shutdown" --urgency=critical
-    fi
-    ;;
-  reboot)
-    notify-send "Reboot" "System will reboot in 3 seconds..."
-    sleep 3
-    if ! systemctl reboot; then
-      notify-send "Reboot" "Failed to reboot" --urgency=critical
-    fi
-    ;;
-  suspend)
-    notify-send "Suspend" "Suspending system in 3 seconds..."
-    sleep 3
-    if ! systemctl suspend; then
-      notify-send "Suspend" "Failed to suspend" --urgency=critical
-    fi
-    ;;
-  hibernate)
-    notify-send "Hibernate" "Hibernating system in 3 seconds..."
-    sleep 3
-    if ! systemctl hibernate; then
-      notify-send "Hibernate" "Failed to hibernate" --urgency=critical
-    fi
-    ;;
-  logout)
-    notify-send "Logout" "Logging out in 3 seconds..."
-    sleep 3
-    if ! hyprctl dispatch 'hl.dsp.exit()'; then
-      notify-send "Logout" "Hyprland exit failed, trying loginctl..." --urgency=critical
-      if [[ -n "${XDG_SESSION_ID:-}" ]]; then
-        loginctl terminate-session "$XDG_SESSION_ID"
-      else
-        loginctl terminate-user "$USER"
-      fi
-    fi
-    ;;
-  lock)
-    notify-send "Lock Screen" "Locking screen in 3 seconds..."
-    sleep 3
-    if ! hyprlock; then
-      notify-send "Lock Screen" "Failed to lock screen" --urgency=critical
-    fi
-    ;;
+  lock|logout|reboot|shutdown|suspend|hibernate) ;;
   *)
-    notify-send "Power Menu" "Unknown action: $action" --urgency=critical
+    if command -v notify-send >/dev/null 2>&1; then
+      notify-send "Power Menu" "Unknown action: $action" --urgency=critical || true
+    fi
+    printf 'Usage: power_action.sh lock|logout|reboot|shutdown|suspend|hibernate\n' >&2
+    exit 2
     ;;
 esac
+shift
+exec "$action_exec" "session.$action" "$@"

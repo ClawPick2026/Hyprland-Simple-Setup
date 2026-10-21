@@ -5,7 +5,10 @@
 # Import other config fragments (absolute paths, ~/ paths, or paths relative to this file). [Default: none]
 # Files are loaded in order; later files override earlier ones. [Docs]
 # import = ["~/.config/alacritty/base16-dark.toml", "~/.config/alacritty/keybindings.toml"]
-import = []
+# The generated Catppuccin Mocha/Latte theme (colours and font family) is switched with
+# Super+Shift+T and reloads live. This file is loaded after its imports, so do not set
+# [colors] or font families here unless you want to override the theme.
+import = ["~/.config/hss-theme/generated/alacritty/theme.toml"]
 
 # Start the shell in this directory; "None" uses the parent process working directory. [Default: "None"]
 working_directory = "None"
@@ -75,17 +78,8 @@ history = 10000
 multiplier = 3
 
 [font]
-# Normal (regular) font family/style. [Default: Linux/BSD "monospace"/Regular; Windows "Consolas"; macOS "Menlo"]
-normal = { family = "JetBrainsMono Nerd Font Mono", style = "Bold" }
-
-# Bold font; family falls back to 'normal.family' when unspecified. [Default style: "Bold"]
-bold = { family = "JetBrainsMono Nerd Font Mono", style = "Bold" }
-
-# Italic font; family falls back to 'normal.family' when unspecified. [Default style: "Italic"]
-italic = { family = "JetBrainsMono Nerd Font Mono", style = "Italic" }
-
-# Bold+Italic font; family falls back to 'normal.family' when unspecified. [Default style: "Bold Italic"]
-bold_italic = { family = "JetBrainsMono Nerd Font Mono", style = "Bold Italic" }
+# The font family (JetBrainsMono Nerd Font) comes from the imported theme; bold, italic and
+# bold italic fall back to it. The size below remains your own setting.
 
 # Font size in points. [Default: 11.25]
 size = 14
@@ -99,90 +93,7 @@ glyph_offset = { x = 0, y = 0 }
 # Use built-in box drawing, legacy computing, and powerline symbol font. [Default: true]
 builtin_box_drawing = true
 
-[colors]
-# Primary foreground/background; dim/bright foregrounds adjust special cases. [Defaults: fg "#d8d8d8", bg "#181818"]
-[colors.primary]
-foreground = "#e0def4"
-background = "#12121e"
-dim_foreground = "#828482"        # Auto-calculated if unset. [Docs]
-bright_foreground = "None"        # Used when draw_bold_text_with_bright_colors = true. [Docs]
-
-# Cursor colors; use hex or CellForeground/CellBackground. [Default: text=CellBackground, cursor=CellForeground]
-[colors.cursor]
-text = "#12121e"
-cursor = "#cccccc"
-
-# Cursor colors for vi mode. [Default: text=CellBackground, cursor=CellForeground]
-[colors.vi_mode_cursor]
-text = "CellBackground"
-cursor = "CellForeground"
-
-# Search highlight colors. [Defaults: matches fg "#181818"/bg "#ac4242"; focused_match fg "#181818"/bg "#f4bf75"]
-[colors.search]
-matches = { foreground = "#181818", background = "#ac4242" }
-focused_match = { foreground = "#181818", background = "#f4bf75" }
-
-# Hints (URL labels etc.): first char and remaining chars colors. [Defaults shown]
-[colors.hints]
-start = { foreground = "#181818", background = "#f4bf75" }
-end   = { foreground = "#181818", background = "#ac4242" }
-
-# Line indicator (search/vi mode history position); "None" uses opposing primary color. [Default: both "None"]
-[colors.line_indicator]
-foreground = "None"
-background = "None"
-
-# Footer bar colors (regex input/URI preview). [Defaults: fg "#181818", bg "#d8d8d8"]
-[colors.footer_bar]
-foreground = "#181818"
-background = "#d8d8d8"
-
-# Selection colors; can use CellForeground/CellBackground. [Default: text=CellBackground, background=CellForeground]
-[colors.selection]
-text = "#12121e"
-background = "#FFFACD"
-
-# 8 standard ANSI colors. [Defaults shown]
-[colors.normal]
-black   = "#3B4252"
-red     = "#FF789E"
-green   = "#A3BE8C"
-yellow  = "#f6c177"
-blue    = "#81A1C1"
-magenta = "#c4a7e7"
-cyan    = "#9ccfd8"
-white   = "#E5E9F0"
-
-# Bright ANSI colors. [Defaults shown]
-[colors.bright]
-black   = "#4C566A"
-red     = "#FF789E"
-green   = "#A3BE8C"
-yellow  = "#f6c177"
-blue    = "#81A1C1"
-magenta = "#c4a7e7"
-cyan    = "#8FBCBB"
-white   = "#ECEFF4"
-
-# Dim ANSI colors; auto-calculated from normal if unset. [Defaults shown]
-[colors.dim]
-black   = "#0f0f0f"
-red     = "#712b2b"
-green   = "#5f6f3a"
-yellow  = "#a17e4d"
-blue    = "#456877"
-magenta = "#704d68"
-cyan    = "#4d7770"
-white   = "#8e8e8e"
-
-# 256-color palette overrides: array of {index, color}; empty uses sensible defaults. [Default: []]
-# indexed_colors = []
-
-# Apply window.opacity to all cell backgrounds instead of only the default background. [Default: false]
-# transparent_background_colors = false
-
-# Draw bold text using the bright color variants. [Default: false]
-# draw_bold_text_with_bright_colors = false
+# Colours ([colors.*]) come from the imported Catppuccin theme; see [general] import.
 
 [bell]
 # Visual bell animation easing. [Default: "Linear"]

@@ -70,53 +70,49 @@ discover_git_repos() {
         --exclude "proc" --exclude "sys" --exclude "dev" --exclude "run" --exclude "tmp" \
         --exclude "System_BackUp" \
         -0 '^\.git$' "$root" \
-        | xargs -0 -r -n1 dirname
+        | xargs -0 -r dirname -z --
     else
       # Fallback: slower than fd, but always available.
       find "$root" -maxdepth "$max_depth" \
         \( -path /proc -o -path /proc/\* -o -path /sys -o -path /sys/\* -o -path /dev -o -path /dev/\* -o -path /run -o -path /run/\* -o -path /tmp -o -path /tmp/\* -o -path /var/cache -o -path /var/cache/\* -o -path /var/tmp -o -path /var/tmp/\* -o -path /mnt/SSD_NVME_4TB/System_BackUp -o -path /mnt/SSD_NVME_4TB/System_BackUp/\* \) -prune -o \
         \( -type d \( -name ".cache" -o -name ".claude" -o -name ".cargo" -o -name ".local" \) -prune \) -o \
         \( -type d -name .git -print0 \) 2>/dev/null \
-        | xargs -0 -r -n1 dirname
+        | xargs -0 -r dirname -z --
     fi
-  done | sort -u
+  done | sort -zu
 }
 
-# Collect repos
-repos="$(discover_git_repos || true)"
-[[ -n "$repos" ]] || { die "No git repos found (max depth: ${REPOS_WOFI_MAX_DEPTH:-6}). Configure search roots via REPOS_WOFI_ROOTS or set REPOS_WOFI_INCLUDE_ROOT=1."; exit 1; }
+# Collect repos. Paths stay NUL-separated so every directory name keeps its identity.
+mapfile -d '' repos < <(discover_git_repos || true)
+(( ${#repos[@]} > 0 )) || { die "No git repos found (max depth: ${REPOS_WOFI_MAX_DEPTH:-6}). Configure search roots via REPOS_WOFI_ROOTS or set REPOS_WOFI_INCLUDE_ROOT=1."; exit 1; }
 
-# Pick repo
-declare -A __label_counts=()
-declare -A __label_to_abs=()
-choices=()
-while IFS= read -r abs; do
+# Offer one chooser record per repository. The record ID, not the label, selects the path;
+# menu_choose.sh disambiguates repeated labels and refuses anything that is not offered.
+repo_paths=()
+records=""
+for abs in "${repos[@]}"; do
   [[ -n "$abs" ]] || continue
   label="$(format_repo_label "$abs" || true)"
   [[ -n "${label:-}" ]] || continue
-
-  n="${__label_counts["$label"]:-0}"
-  n=$((n + 1))
-  __label_counts["$label"]="$n"
-
-  if [[ "$n" -gt 1 ]]; then
-    label="${label} (${n})"
-  fi
-
-  __label_to_abs["$label"]="$abs"
-  choices+=("$label")
-done <<<"$repos"
-(( ${#choices[@]} > 0 )) || { die "No git repos found (after filtering)"; exit 1; }
+  records+="r${#repo_paths[@]}"$'\t'"${label//$'\n'/ }"$'\n'
+  repo_paths+=("$abs")
+done
+(( ${#repo_paths[@]} > 0 )) || { die "No git repos found (after filtering)"; exit 1; }
 
 [[ -r "$roles_file" ]] || { die "Missing role data: $roles_file"; exit 1; }
-chosen_dir="$(printf '%s\n' "${choices[@]}" | "$HOME/.config/hypr/scripts/menu_exec.sh" --dmenu || true)"
-[[ -n "$chosen_dir" ]] || exit 0
+status=0
+chosen_id="$(printf '%s' "$records" | "$HOME/.config/hypr/scripts/menu_choose.sh" --prompt Repositories)" || status=$?
+case "$status" in
+  0) ;;
+  3) exit 0 ;;
+  *) die "Repository selection failed (menu status $status)"; exit 1 ;;
+esac
 
-chosen_abs="${__label_to_abs["$chosen_dir"]:-}"
-if [[ -z "$chosen_abs" ]]; then
-  die "Failed to map selection to a path: $chosen_dir"
+if [[ ! "$chosen_id" =~ ^r(0|[1-9][0-9]{0,8})$ ]] || (( ${chosen_id#r} >= ${#repo_paths[@]} )); then
+  die "Failed to map the selection to a repository"
   exit 1
 fi
+chosen_abs="${repo_paths[${chosen_id#r}]}"
 
 if [[ "$chosen_abs" = /* ]]; then
   dir="$chosen_abs"

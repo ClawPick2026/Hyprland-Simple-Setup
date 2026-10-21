@@ -14,6 +14,13 @@ hss_start_app_log launcher
 [[ -r "$roles_file" ]] || { printf 'Missing role data: %s\n' "$roles_file" >&2; exit 1; }
 if [[ $(jq -er '.roles.launcher.package' "$roles_file") == bemenu ]]; then
   export BEMENU_BACKEND=wayland
+  # Bemenu has no configuration file; its native appearance options come from the theme
+  # renderer (unit "bemenu"). A BEMENU_OPTS value set by the user always wins.
+  bemenu_opts_file="${XDG_CONFIG_HOME:-$HOME/.config}/hss-theme/generated/bemenu/bemenu.opts"
+  if [[ -z ${BEMENU_OPTS+x} && -f $bemenu_opts_file && -r $bemenu_opts_file ]] \
+    && IFS= read -r bemenu_opts < "$bemenu_opts_file" && [[ -n $bemenu_opts ]]; then
+    export BEMENU_OPTS=$bemenu_opts
+  fi
 fi
 process=$(jq -er '.roles.launcher.process' "$roles_file")
 

@@ -1,0 +1,403 @@
+{
+  "schema_version": 1,
+  "units": [
+    {
+      "id": "kitty",
+      "owner": "D05",
+      "description": "Kitty ANSI palette, cursor, selection, tab/border colours and font family (never size)",
+      "applies": {
+        "members": [
+          "terminal/kitty"
+        ]
+      },
+      "depends": [
+        "theme-core"
+      ],
+      "executables": [
+        "kitty"
+      ],
+      "outputs": [
+        {
+          "target": "theme:generated/kitty/theme.conf",
+          "class": "generated",
+          "template": "d05/kitty-theme.conf.tmpl",
+          "validator": "none"
+        },
+        {
+          "target": "config:kitty/kitty.conf",
+          "class": "managed-region",
+          "comment": "#",
+          "position": "append",
+          "create_if_missing": true,
+          "content": "include {{path.generated}}/kitty/theme.conf"
+        }
+      ],
+      "activation": [
+        {
+          "kind": "signal",
+          "process": "kitty",
+          "signal": "USR1"
+        }
+      ]
+    },
+    {
+      "id": "alacritty",
+      "owner": "D05",
+      "description": "Alacritty palette and font family, imported by alacritty.toml [general] import (live reload)",
+      "applies": {
+        "members": [
+          "terminal/alacritty"
+        ]
+      },
+      "depends": [
+        "theme-core"
+      ],
+      "executables": [
+        "alacritty"
+      ],
+      "outputs": [
+        {
+          "target": "theme:generated/alacritty/theme.toml",
+          "class": "generated",
+          "template": "d05/alacritty-theme.toml.tmpl",
+          "validator": "toml"
+        }
+      ],
+      "activation": []
+    },
+    {
+      "id": "foot",
+      "owner": "D05",
+      "description": "Foot [colors-<variant>] palette and font family through a prepended include",
+      "applies": {
+        "members": [
+          "terminal/foot"
+        ]
+      },
+      "depends": [
+        "theme-core"
+      ],
+      "executables": [
+        "foot"
+      ],
+      "outputs": [
+        {
+          "target": "theme:generated/foot/theme.ini",
+          "class": "generated",
+          "template": "d05/foot-theme.ini.tmpl",
+          "validator": "ini"
+        },
+        {
+          "target": "config:foot/foot.ini",
+          "class": "managed-region",
+          "comment": "#",
+          "position": "prepend",
+          "create_if_missing": true,
+          "content": "include={{path.generated}}/foot/theme.ini"
+        }
+      ],
+      "activation": [
+        {
+          "kind": "next-launch"
+        }
+      ]
+    },
+    {
+      "id": "ghostty",
+      "owner": "D05",
+      "description": "Ghostty palette and font family through an optional config-file include",
+      "applies": {
+        "members": [
+          "terminal/ghostty"
+        ]
+      },
+      "depends": [
+        "theme-core"
+      ],
+      "executables": [
+        "ghostty"
+      ],
+      "outputs": [
+        {
+          "target": "theme:generated/ghostty/theme",
+          "class": "generated",
+          "template": "d05/ghostty-theme.tmpl",
+          "validator": "none"
+        },
+        {
+          "target": "config:ghostty/config.ghostty",
+          "class": "managed-region",
+          "comment": "#",
+          "position": "append",
+          "create_if_missing": true,
+          "content": "config-file = ?{{path.generated}}/ghostty/theme"
+        }
+      ],
+      "activation": [
+        {
+          "kind": "signal",
+          "process": "ghostty",
+          "signal": "USR2"
+        }
+      ]
+    },
+    {
+      "id": "konsole",
+      "owner": "D05",
+      "description": "Konsole colour scheme and default profile; the font family comes from the global fixed font",
+      "applies": {
+        "members": [
+          "terminal/konsole"
+        ]
+      },
+      "depends": [
+        "theme-core"
+      ],
+      "executables": [
+        "konsole"
+      ],
+      "outputs": [
+        {
+          "target": "data:konsole/hss-catppuccin.colorscheme",
+          "class": "generated",
+          "template": "d05/konsole.colorscheme.tmpl",
+          "validator": "ini"
+        },
+        {
+          "target": "data:konsole/hss-catppuccin.profile",
+          "class": "generated",
+          "template": "d05/konsole.profile.tmpl",
+          "validator": "ini"
+        },
+        {
+          "target": "config:konsolerc",
+          "class": "managed-keys",
+          "format": "ini",
+          "create_if_missing": true,
+          "validator": "ini",
+          "keys": [
+            {
+              "section": "Desktop Entry",
+              "key": "DefaultProfile",
+              "value": "hss-catppuccin.profile"
+            }
+          ]
+        }
+      ],
+      "activation": [
+        {
+          "kind": "next-launch"
+        }
+      ]
+    },
+    {
+      "id": "tmux",
+      "owner": "D05",
+      "description": "tmux status, pane, message, mode, menu and popup styles sourced from tmux.conf",
+      "applies": {
+        "members": [
+          "multiplexer/tmux"
+        ]
+      },
+      "depends": [
+        "theme-core"
+      ],
+      "executables": [
+        "tmux"
+      ],
+      "outputs": [
+        {
+          "target": "theme:generated/tmux/theme.conf",
+          "class": "generated",
+          "template": "d05/tmux-theme.conf.tmpl",
+          "validator": "none"
+        },
+        {
+          "target": "config:tmux/tmux.conf",
+          "class": "managed-region",
+          "comment": "#",
+          "position": "append",
+          "create_if_missing": true,
+          "content": "source-file -q '{{path.generated}}/tmux/theme.conf'"
+        }
+      ],
+      "activation": [
+        {
+          "kind": "reload",
+          "argv": [
+            "tmux",
+            "source-file",
+            "-q",
+            "{{path.generated}}/tmux/theme.conf"
+          ],
+          "process": "tmux: server"
+        }
+      ]
+    },
+    {
+      "id": "zellij",
+      "owner": "D05",
+      "description": "Zellij theme with Blue accents in themes/hss.kdl, selected by a prepended theme region (live reload)",
+      "applies": {
+        "members": [
+          "multiplexer/zellij"
+        ]
+      },
+      "depends": [
+        "theme-core"
+      ],
+      "executables": [
+        "zellij"
+      ],
+      "outputs": [
+        {
+          "target": "config:zellij/themes/hss.kdl",
+          "class": "generated",
+          "template": "d05/zellij-theme.kdl.tmpl",
+          "validator": "kdl"
+        },
+        {
+          "target": "config:zellij/config.kdl",
+          "class": "managed-region",
+          "comment": "//",
+          "position": "prepend",
+          "create_if_missing": true,
+          "validator": "kdl",
+          "content": "theme \"hss\""
+        }
+      ],
+      "activation": []
+    },
+    {
+      "id": "herdr",
+      "owner": "D05",
+      "description": "Herdr native Catppuccin theme name for the active variant",
+      "applies": {
+        "members": [
+          "multiplexer/herdr-bin"
+        ]
+      },
+      "depends": [
+        "theme-core"
+      ],
+      "executables": [
+        "herdr"
+      ],
+      "outputs": [
+        {
+          "target": "config:herdr/config.toml",
+          "class": "managed-region",
+          "comment": "#",
+          "position": "append",
+          "create_if_missing": true,
+          "validator": "toml",
+          "content": "[theme]\nname = \"catppuccin-{{flavor_lower}}\""
+        }
+      ],
+      "activation": [
+        {
+          "kind": "next-launch"
+        }
+      ]
+    },
+    {
+      "id": "fish",
+      "owner": "D05",
+      "description": "Fish syntax and pager colours, sourced from config.fish after the frozen theme",
+      "applies": {
+        "members": [
+          "shell/fish"
+        ]
+      },
+      "depends": [
+        "theme-core"
+      ],
+      "executables": [
+        "fish"
+      ],
+      "outputs": [
+        {
+          "target": "theme:generated/fish/theme.fish",
+          "class": "generated",
+          "template": "d05/fish-theme.fish.tmpl",
+          "validator": "none"
+        },
+        {
+          "target": "config:fish/config.fish",
+          "class": "managed-region",
+          "comment": "#",
+          "position": "append",
+          "create_if_missing": true,
+          "content": "if status is-interactive; and test -r '{{path.generated}}/fish/theme.fish'\n    source '{{path.generated}}/fish/theme.fish'\nend"
+        }
+      ],
+      "activation": [
+        {
+          "kind": "next-launch"
+        }
+      ]
+    },
+    {
+      "id": "zsh",
+      "owner": "D05",
+      "description": "Native Zsh prompt colours from the terminal ANSI palette (no prompt framework)",
+      "applies": {
+        "members": [
+          "shell/zsh"
+        ]
+      },
+      "depends": [
+        "theme-core"
+      ],
+      "executables": [
+        "zsh"
+      ],
+      "outputs": [
+        {
+          "target": "home:.zshrc",
+          "class": "managed-region",
+          "comment": "#",
+          "position": "prepend",
+          "create_if_missing": true,
+          "content": "# Prompt colours use ANSI palette slots, so they follow the terminal theme.\n# A PROMPT set later in this file (or by a prompt tool) takes precedence.\nif [[ -o interactive ]]; then\n  PROMPT='%F{4}%n@%m%f %F{6}%~%f %(?..%F{1}[%?]%f )%F{2}%#%f '\nfi"
+        }
+      ],
+      "activation": [
+        {
+          "kind": "next-launch"
+        }
+      ]
+    },
+    {
+      "id": "starship",
+      "owner": "D05",
+      "description": "Starship palette key in the repository ~/starship.toml (Catppuccin Mocha/Latte palettes)",
+      "applies": {
+        "packages": [
+          "starship"
+        ]
+      },
+      "depends": [
+        "theme-core"
+      ],
+      "executables": [
+        "starship"
+      ],
+      "outputs": [
+        {
+          "target": "home:starship.toml",
+          "class": "managed-keys",
+          "format": "toml",
+          "validator": "toml",
+          "keys": [
+            {
+              "key": "palette",
+              "value": "\"catppuccin_{{flavor_lower}}\""
+            }
+          ]
+        }
+      ],
+      "activation": []
+    }
+  ]
+}

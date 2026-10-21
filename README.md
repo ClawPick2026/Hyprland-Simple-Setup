@@ -48,6 +48,7 @@
 - [Prerequisites](#prerequisites)
 - [Setup Script Execution](#setup-script-execution)
   - [Application roles](#application-roles)
+  - [Desktop harmonization](#desktop-harmonization)
   - [Run history, logs, and rollback](#run-history-logs-and-rollback)
   - [Testing](#testing)
 - [Package Installations](#package-installations)
@@ -121,7 +122,7 @@ It sets up the following Components/Apps:
 - Snapshots for Btrfs-Filesystems (Timeshift)
 - Snapshot Setup for Grub (grub-btrfs)
 - Scratchpad for Minimizable Terminal (pyprland)
-- Custom Mouse Cursor (rose-pine-hyprcursor)
+- Custom Mouse Cursor (rose-pine-hyprcursor, with rose-pine-cursor for non-Hyprland toolkits)
 
 
 ### Quick Start
@@ -319,6 +320,16 @@ Startup failures can offer a **Troubleshoot with your primary agent** notificati
 
 See [Application selections](Documents/app-selections.md) for direct-installer environment variables, compatibility, and runtime details.
 
+### Desktop harmonization
+
+Every selectable app shares the same desktop workflows and a Catppuccin appearance: Mocha when dark (the default) and Latte when light, with Blue accents, Noto Sans and JetBrains Mono Nerd Font, Breeze icons and the Rose Pine cursor. Switch dark and light with `Super+Shift+T`, the theme button on the bar, or the installer's **Appearance** setting (`HSS_THEME_VARIANT=dark|light`). Switching never installs packages, and only applications with a safe native reload are reloaded; others apply the theme the next time they start.
+
+The installer labels each app `full`, `limited` or `unverified`. A limited app stays selectable, but an action it cannot perform natively, such as per-application volume in an ALSA-only mixer, explains itself instead of opening something else.
+
+Existing installations are previewed first: setup writes only a report to the run directory. Choose **Existing configuration → Apply** (`HSS_HARMONIZATION_ADOPT=apply`) to adopt the theme, or **Skip** (`skip`) to leave it alone. Setup changes only marked theme regions and a short list of appearance keys, and preserves anything you edited yourself; an edited app is skipped and reported while the rest switches. `Super+Shift+T` and the bar control work only after adoption. Each theme switch is a setup run, so `./setup.sh --list-runs` and `./setup.sh --rollback <run-id>` restore its files (see [Run history, logs, and rollback](#run-history-logs-and-rollback)).
+
+This work is implemented on the `feat/harmonize-visual-design` branch, and VM acceptance is still pending. See [Desktop harmonization](Documents/desktop-harmonization.md), the [VM testing checklist](Documents/desktop-harmonization-vm-testing.md) and the [acceptance matrix](Documents/desktop-harmonization-acceptance.md).
+
 ### Run history, logs, and rollback
 
 Run state lives in:
@@ -342,6 +353,8 @@ Restore the setup-managed files recorded for one run with:
 ./setup.sh --rollback <run-id>
 ```
 
+Every dark/light theme switch is recorded as its own run, so `--rollback` also restores the files a theme switch changed.
+
 Rollback validates the run ID, manifest, backups, paths, and file digests before writing. A non-interactive rollback stops if a file changed after the recorded run. Rollback covers only files in that run's manifest. It does not uninstall packages, reverse service changes, remove Stow links, restore copied directory trees, or replace `~/.config` or `~/dotfiles` as a whole.
 
 ### Testing
@@ -354,7 +367,10 @@ Run these checks from the repository root; they do not install packages:
 tests/run.sh
 tests/check_packages_json.sh
 tests/verify_hypr_config.sh
+python3 dotfiles/.config/hypr/theme/hss_theme.py check
 ```
+
+The last command validates the theme tokens, unit registry and templates. Graphical and live-session behavior is not covered by these checks; it is tested manually in a VM (see [VM testing](Documents/desktop-harmonization-vm-testing.md)).
 
 `tests/check_packages_json.sh` performs offline structural and schema checks by default. The release-only lookup checks pacman and AUR availability with bounded requests:
 
@@ -404,6 +420,7 @@ The lists below cover common packages. Actual installations depend on your selec
 - grub-btrfs
 - inotify-tools
 - satty
+- gvfs, thunar-archive-plugin, nemo-fileroller (installed only with Thunar, Nemo or PCManFM-Qt for trash, mounts and archive actions)
 
 **Terminal and Shell**
 - kitty (Terminal emulator)
@@ -459,11 +476,13 @@ The lists below cover common packages. Actual installations depend on your selec
 - curl
 - less
 - lm_sensors
+- ffmpeg (provides ffplay for the music helper)
 
 **Theming and Appearance**
 - ttf-jetbrains-mono-nerd
 - ttf-nerd-fonts-symbols
 - ttf-nerd-fonts-symbols-common
+- noto-fonts (GUI font of the harmonized theme)
 - cava (Audio visualizer)
 
 **Calculator**
@@ -481,6 +500,7 @@ The lists below cover common packages. Actual installations depend on your selec
 - wl-clipboard-history-git (Clipboard history)
 - github-desktop-bin (GitHub client)
 - rose-pine-hyprcursor (Mouse Cursor)
+- rose-pine-cursor (matching Xcursor theme for GTK and Qt apps)
 
 ## Manuell Installation & Configuration
 

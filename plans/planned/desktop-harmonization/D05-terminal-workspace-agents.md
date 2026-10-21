@@ -1,6 +1,6 @@
 # D05 — Terminal workspace and agents
 
-Status: product policy synchronized with the completed interview; implementation not started. Apply master section 9 and the [decision record](../desktop-harmonization-grill.md); native profile/session evidence remains pending.
+Status: product policy synchronized with the completed interview; implemented on branch `feat/harmonize-visual-design` (uncommitted, 2026-10-21); user-led VM acceptance pending, see [acceptance matrix](../../../Documents/desktop-harmonization-acceptance.md). Apply master section 9 and the [decision record](../desktop-harmonization-grill.md); native profile/session evidence remains pending.
 Master: [Desktop harmonization master](../desktop-harmonization-master.md).
 Supplied baseline: `610a18bac374e7e2ffd0bcb2d99b026131deedbc`, branch `feat/harmonize-visual-design`.
 
@@ -121,7 +121,7 @@ An accepted terminal spawn is not proof the command ran; preserve current at-mos
 
 ## 5. Implementation work packages
 
-All work packages are **not started**; future execution requires authorization.
+All work packages are **implemented on the branch** (VM acceptance pending); future execution requires authorization.
 
 ### D05.1 — Freeze domain capability and compatibility contributions
 
@@ -219,12 +219,12 @@ If a native requirement is unsupported, retain the option with a limited label a
 
 ## 8. Not-started checklist and confidence
 
-1. Not started — D05.1: reconcile exhaustive contracts and bounded feasibility requirements.
-2. Not started — D05.2: implement reversible selected-shell environment/prompt mappings.
-3. Not started — D05.3: implement five terminal renderers and compatible launch behavior.
-4. Not started — D05.4: implement approved multiplexer/workspace mappings.
-5. Not started — D05.5: verify five-agent/None presentation and triage preservation.
-6. Not started — D05.6: deliver migration/effect evidence and shared integration requests.
+1. Implemented (VM acceptance pending) — D05.1: reconcile exhaustive contracts and bounded feasibility requirements.
+2. Implemented (VM acceptance pending) — D05.2: implement reversible selected-shell environment/prompt mappings.
+3. Implemented (VM acceptance pending) — D05.3: implement five terminal renderers and compatible launch behavior.
+4. Implemented (VM acceptance pending) — D05.4: implement approved multiplexer/workspace mappings.
+5. Implemented (VM acceptance pending) — D05.5: verify five-agent/None presentation and triage preservation.
+6. Implemented (VM acceptance pending) — D05.6: deliver migration/effect evidence and shared integration requests.
 
 Planning confidence: **92/100** for source-grounded scope and preservation requirements.
 Native compatibility, foundation API details and user decisions remain unverified; implementation feasibility is not certified.

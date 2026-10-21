@@ -31,6 +31,14 @@ SETUP_SCRIPT_ROOT=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 source "$SETUP_SCRIPT_ROOT/scripts/lib/setup-reliability.sh"
 # shellcheck source=scripts/lib/agent-installers.sh
 source "$SETUP_SCRIPT_ROOT/scripts/lib/agent-installers.sh"
+# shellcheck source=scripts/lib/setup-harmonization.sh
+source "$SETUP_SCRIPT_ROOT/scripts/lib/setup-harmonization.sh"
+# shellcheck source=scripts/lib/setup-handlers.sh
+source "$SETUP_SCRIPT_ROOT/scripts/lib/setup-handlers.sh"
+# shellcheck source=scripts/lib/setup-panels.sh
+source "$SETUP_SCRIPT_ROOT/scripts/lib/setup-panels.sh"
+# shellcheck source=scripts/lib/setup-session.sh
+source "$SETUP_SCRIPT_ROOT/scripts/lib/setup-session.sh"
 
 # Arrays to store update statuses
 mirror_updates=()
@@ -439,6 +447,8 @@ append_text_atomic() {
     fi
     make_tmp tmp append.XXXXXX || return 1
     [[ -f $destination ]] && cat -- "$destination" > "$tmp"
+    # Appended text starts on its own line, even when the file lacks a final newline.
+    [[ -s $tmp && -n $(tail -c 1 -- "$tmp") ]] && printf '\n' >> "$tmp"
     printf '%s' "$content" >> "$tmp"
     write_file_atomic "$destination" "$tmp" "$reason"
 }
@@ -1644,43 +1654,26 @@ find_hyprland_setup_dir() {
 
 sync_installer_managed_runtime_files() {
     local setup_dir=$1
-    local relative source destination
-    local managed_files=(
-        ".config/hypr/scripts/change_wallpaper.sh"
-        ".config/hypr/scripts/fix-dolphin.sh"
-        ".config/hypr/scripts/Startup_check.sh"
-        ".config/hypr/scripts/startup_state.sh"
-        ".config/hypr/scripts/run_once.sh"
-        ".config/hypr/scripts/float_calendar.sh"
-        ".config/hypr/scripts/notification_control.sh"
-        ".config/hypr/scripts/role_exec.sh"
-        ".config/hypr/scripts/menu_exec.sh"
-        ".config/hypr/scripts/app_log.sh"
-        ".config/hypr/scripts/nwg_panel.sh"
-        ".config/hypr/scripts/role_window.sh"
-        ".config/waybar/scripts/clipboard.sh"
-        ".config/hypr/scripts/term_exec.sh"
-        ".config/hypr/scripts/toggle_waybar.sh"
-        ".config/waybar/scripts/alsamixer.sh"
-        ".config/waybar/scripts/audio_control.sh"
-        ".config/waybar/scripts/bluetooth_manager.sh"
-        ".config/waybar/scripts/nmtui-connect.sh"
-        ".config/waybar/scripts/nmtui.sh"
-        ".config/waybar/scripts/notification_status.sh"
-        ".config/waybar/scripts/confirm_system_update.sh"
-        ".config/waybar/scripts/launch_system_update.sh"
-        ".config/waybar/scripts/system_update.sh"
-        ".config/waybar/scripts/update_maintenance_action.sh"
-        ".config/waybar/scripts/brightness.sh"
-        ".config/waybar/scripts/waybar_launch.sh"
-        ".config/waybar/scripts/hss_jsonc.py"
-        ".config/ironbar/config.toml"
-        ".config/nwg-panel/bar"
-        ".config/nwg-panel/dock"
-        ".local/scripts/troubleshoot_with_agent.py"
-        ".local/scripts/troubleshoot_with_agent.sh"
-        ".local/share/dbus-1/services/org.freedesktop.Notifications.service"
-    )
+    local relative source destination list
+    local -a managed_files=()
+    list="$setup_dir/scripts/lib/installer-managed-files.txt"
+    [ -r "$list" ] || list="$SETUP_SCRIPT_ROOT/scripts/lib/installer-managed-files.txt"
+    while IFS= read -r relative || [ -n "$relative" ]; do
+        relative=${relative%%#*}
+        relative=${relative//[[:space:]]/}
+        [ -n "$relative" ] || continue
+        case "$relative" in
+            /*|*..*) print_error "Refusing unsafe installer-managed path: $relative"; return 1 ;;
+            */)
+                # A trailing slash manages every regular file below that directory.
+                [ -d "$setup_dir/dotfiles/$relative" ] || continue
+                while IFS= read -r -d '' source; do
+                    managed_files+=("${source#"$setup_dir/dotfiles/"}")
+                done < <(find "$setup_dir/dotfiles/$relative" -type f ! -name '*.pyc' -print0 | LC_ALL=C sort -z)
+                ;;
+            *) managed_files+=("$relative") ;;
+        esac
+    done < "$list" || return 1
 
     for relative in "${managed_files[@]}"; do
         source="$setup_dir/dotfiles/$relative"
@@ -1720,6 +1713,8 @@ update_configs() {
             # Copy Dotfiles directory to $HOME Directory
             if execute_command "cp -r '$hyprland_setup_dir/dotfiles' '$HOME/dotfiles'" "Copy dotfiles to Home directory"; then
                 print_message "Dotfiles were successfully copied to Home directory"
+                # Configuration copied by this run is setup-owned and may adopt the theme directly.
+                HSS_DOTFILES_FRESH=true
             else
                 print_error "Failed to copy dotfiles to Home directory"
             fi
@@ -1924,6 +1919,12 @@ replace_exact_trimmed_line() {
     local file=$1 original=$2 replacement=$3 reason=$4 tmp status=0
     [ -f "$file" ] || return 0
     if is_dry_run; then
+        # Report only edits that would happen: some line must match after trimming.
+        HSS_ORIGINAL=$original awk '
+            { comparison = $0; sub(/^[[:space:]]+/, "", comparison); sub(/[[:space:]]+$/, "", comparison) }
+            comparison == ENVIRON["HSS_ORIGINAL"] { found = 1 }
+            END { exit !found }
+        ' "$file" || return 0
         write_file_atomic "$file" /dev/null "$reason"
         return 0
     fi
@@ -2274,6 +2275,8 @@ configure_hypr_autostart_optional_extras() {
         local cmd="$2"
         local line="$3"
         command -v "$cmd" >/dev/null 2>&1 || return 0
+        # Only a still-commented line is enabled; an active or removed line is left alone.
+        awk -v prefix="    -- $line" 'index($0, prefix) == 1 { found = 1 } END { exit !found }' "$lua_file" || return 0
         replace_literal_prefix "$lua_file" "    -- $line" "    $line" "Enable autostart: ${cmd}"
     }
 
@@ -2282,6 +2285,8 @@ configure_hypr_autostart_optional_extras() {
         local file="$2"
         local line="$3"
         [ -f "$file" ] || return 0
+        # Only a still-commented line is enabled; an active or removed line is left alone.
+        awk -v prefix="    -- $line" 'index($0, prefix) == 1 { found = 1 } END { exit !found }' "$lua_file" || return 0
         replace_literal_prefix "$lua_file" "    -- $line" "    $line" "Enable autostart: $(basename "$file")"
     }
 
@@ -2713,20 +2718,6 @@ configure_gnome_keyring() {
     fi
 }
 
-desktop_application_exists() {
-    local desktop_file="$1"
-    local data_dirs="${XDG_DATA_DIRS:-}"
-    data_dirs+="${data_dirs:+:}$HOME/.local/share:/usr/local/share:/usr/share"
-    data_dirs+=":$HOME/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share"
-
-    local data_dir
-    while IFS= read -r data_dir; do
-        [ -n "$data_dir" ] || continue
-        data_dir=${data_dir//\$HOME/$HOME}
-        [ -f "$data_dir/applications/$desktop_file" ] && return 0
-    done < <(printf '%s' "$data_dirs" | tr ':' '\n')
-    return 1
-}
 
 configure_filepicker() {
     announce_step "Configuring filepicker"
@@ -2750,29 +2741,19 @@ org.freedesktop.impl.portal.FileChooser = gtk
         write_text_atomic "$conf_file" "Configure GTK file chooser backend" "$desired_content" || return 1
     fi
 
-    local editor_desktop
-    editor_desktop=$(role_field gui_editor desktop_file) || return 1
-    if ! desktop_application_exists "$editor_desktop"; then
-        print_warning "Selected editor desktop entry is unavailable: $editor_desktop"
-        record_warning "configure_filepicker" "Selected editor desktop entry is unavailable: $editor_desktop"
-        track_config_status "Filepicker Setup" "$CIRCLE (Editor desktop entry unavailable)"
-        return 0
-    fi
-    if ! command -v xdg-mime >/dev/null 2>&1; then
-        print_warning "xdg-mime is unavailable; text-file associations were not configured."
-        record_warning "configure_filepicker" "xdg-mime is unavailable"
-        track_config_status "Filepicker Setup" "$CIRCLE (xdg-mime unavailable)"
-        return 0
-    fi
-
-    if execute_command "xdg-mime default '$editor_desktop' text/plain && xdg-mime default '$editor_desktop' application/x-shellscript" "Associate text files with the selected GUI editor"; then
-        print_message "Text files will open with $editor_desktop"
-        track_config_status "Filepicker Setup" "$CHECK_MARK"
-    else
-        print_warning "Could not configure text-file associations."
-        record_warning "configure_filepicker" "xdg-mime failed for $editor_desktop"
-        track_config_status "Filepicker Setup" "$CIRCLE (MIME association failed)"
-    fi
+    local handler_status=0
+    hss_handlers_configure || handler_status=$?
+    case "$handler_status" in
+        0)
+            print_message "Default handlers: ${HSS_HANDLERS_SUMMARY:-configured}"
+            track_config_status "Filepicker Setup" "$CHECK_MARK"
+            ;;
+        *)
+            print_warning "Default handlers: ${HSS_HANDLERS_SUMMARY:-not fully configured}"
+            record_warning "configure_filepicker" "Default handlers: ${HSS_HANDLERS_SUMMARY:-exit $handler_status}"
+            track_config_status "Filepicker Setup" "$CIRCLE (${HSS_HANDLERS_SUMMARY:-handlers incomplete})"
+            ;;
+    esac
 }
 
 configure_pacman_color() {
@@ -3433,6 +3414,14 @@ main() {
         return 1
     }
     configure_hypr_autostart_optional_extras
+    configure_session_authentication_autostart
+    configure_session_wlogout_layout
+    configure_session_hypridle_dispatch
+    configure_harmonization || {
+        print_error "Failed to configure desktop harmonization"
+        record_hard_failure "configure_harmonization" "Invalid harmonization input"
+        return 1
+    }
     configure_shell
     configure_environment
     configure_network_manager
@@ -3474,6 +3463,24 @@ run_role_test_scenario() {
     configure_shell || return 1
     configure_environment || return 1
     verify_installed_packages || return 1
+    if is_dry_run; then
+        print_dry_run_summary
+    fi
+}
+
+run_harmonization_test_scenario() {
+    [ "${HSS_TEST_MODE:-0}" = 1 ] || {
+        print_error "--test-scenario is available only when HSS_TEST_MODE=1"
+        return 2
+    }
+    NON_INTERACTIVE=${NON_INTERACTIVE:-true}
+    DISTRO=${DISTRO:-arch}
+    hss_begin_run "--test-scenario harmonization" || return $?
+    bootstrap_jq || return 1
+    load_role_selections || return 1
+    prepare_package_selections || return 1
+    configure_roles || return 1
+    configure_harmonization || return 1
     if is_dry_run; then
         print_dry_run_summary
     fi
@@ -3522,6 +3529,9 @@ run_reliability_test_scenario() {
         autostart-extras)
             hss_begin_run "reliability autostart-extras" || return $?
             configure_hypr_autostart_optional_extras
+            configure_session_authentication_autostart
+            configure_session_wlogout_layout
+            configure_session_hypridle_dispatch
             ;;
         sync-managed)
             hss_begin_run "reliability sync-managed" || return $?
@@ -3611,13 +3621,20 @@ fi
 
 if [ -n "$ROLLBACK_RUN_ID" ]; then
     hss_begin_run "$ORIGINAL_ARGS" || exit $?
-    hss_rollback "$ROLLBACK_RUN_ID"
-    exit $?
+    rollback_status=0
+    hss_rollback "$ROLLBACK_RUN_ID" || rollback_status=$?
+    # Default handlers are restored only when the file rollback was accepted and completed.
+    [ "$rollback_status" -eq 0 ] || exit "$rollback_status"
+    handlers_status=0
+    hss_handlers_restore "$ROLLBACK_RUN_ID" || handlers_status=$?
+    [ "$handlers_status" -eq 0 ] || print_warning "Default handlers: ${HSS_HANDLERS_SUMMARY:-restore incomplete}"
+    exit "$handlers_status"
 fi
 
 if [ -n "$TEST_SCENARIO" ]; then
     case "$TEST_SCENARIO" in
         roles) run_role_test_scenario ;;
+        harmonization) run_harmonization_test_scenario ;;
         reliability) run_reliability_test_scenario ;;
         *) print_error "Unknown test scenario '$TEST_SCENARIO'"; exit 2 ;;
     esac

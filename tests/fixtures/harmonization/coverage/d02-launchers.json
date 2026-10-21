@@ -1,0 +1,339 @@
+{
+  "schema_version": 1,
+  "owner": "D02",
+  "description": "Launchers and shared menus (D02): native application/command modes, shared chooser and confirmation, repository picker and launcher themes.",
+  "cases": [
+    {
+      "id": "D02-wofi-applications",
+      "option": "launcher/wofi",
+      "capability": "menu.applications",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/launcher_desktop_entries.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Select Wofi; press Super+Space and run action_exec.sh menu.applications: both open the same desktop-application list; start an application, then press Escape on a second run and confirm nothing starts",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D02-wofi-commands",
+      "option": "launcher/wofi",
+      "capability": "menu.commands",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/launcher_desktop_entries.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Run action_exec.sh menu.commands; the run mode lists PATH executables; start one",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D02-wofi-chooser",
+      "option": "launcher/wofi",
+      "capability": "menu.choose",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/launcher_menus.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "With Wofi selected press Ctrl+Super+Space (repository picker) with two repositories of the same name: both rows are distinct and each opens its own directory in the TUI editor; Escape opens nothing",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D02-wofi-confirm",
+      "option": "launcher/wofi",
+      "capability": "menu.confirm",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/launcher_menus.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "With Wofi selected run printf '' | menu_choose.sh --prompt 'Test?' --confirm; echo $?: No is highlighted first; Enter prints nothing and exits 3; selecting Yes prints yes and exits 0",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D02-rofi-applications",
+      "option": "launcher/rofi",
+      "capability": "menu.applications",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/launcher_desktop_entries.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Select Rofi; press Super+Space and run action_exec.sh menu.applications: both open the same desktop-application list; start an application, then press Escape on a second run and confirm nothing starts",
+      "result": "not-run",
+      "limits": "Keyboard paths were not exercisable through Xwayland in the headless probe; the VM run is the first real-effect check."
+    },
+    {
+      "id": "D02-rofi-commands",
+      "option": "launcher/rofi",
+      "capability": "menu.commands",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/launcher_desktop_entries.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Run action_exec.sh menu.commands; rofi -show run lists PATH executables; start one",
+      "result": "not-run",
+      "limits": "Keyboard paths were not exercisable through Xwayland in the headless probe; the VM run is the first real-effect check."
+    },
+    {
+      "id": "D02-rofi-chooser",
+      "option": "launcher/rofi",
+      "capability": "menu.choose",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/launcher_menus.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "With Rofi selected press Ctrl+Super+Space (repository picker) with two repositories of the same name: both rows are distinct and each opens its own directory in the TUI editor; Escape opens nothing",
+      "result": "not-run",
+      "limits": "Keyboard paths were not exercisable through Xwayland in the headless probe; the VM run is the first real-effect check."
+    },
+    {
+      "id": "D02-rofi-confirm",
+      "option": "launcher/rofi",
+      "capability": "menu.confirm",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/launcher_menus.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "With Rofi selected run printf '' | menu_choose.sh --prompt 'Test?' --confirm; echo $?: No is highlighted first; Enter prints nothing and exits 3; selecting Yes prints yes and exits 0",
+      "result": "not-run",
+      "limits": "Keyboard paths were not exercisable through Xwayland in the headless probe; the VM run is the first real-effect check."
+    },
+    {
+      "id": "D02-fuzzel-applications",
+      "option": "launcher/fuzzel",
+      "capability": "menu.applications",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/launcher_desktop_entries.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Select Fuzzel; press Super+Space and run action_exec.sh menu.applications: both open the same desktop-application list; start an application, then press Escape on a second run and confirm nothing starts",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D02-fuzzel-commands",
+      "option": "launcher/fuzzel",
+      "capability": "menu.commands",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/launcher_desktop_entries.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Run action_exec.sh menu.commands; executables appear together with applications; start one",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D02-fuzzel-chooser",
+      "option": "launcher/fuzzel",
+      "capability": "menu.choose",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/launcher_menus.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "With Fuzzel selected press Ctrl+Super+Space (repository picker) with two repositories of the same name: both rows are distinct and each opens its own directory in the TUI editor; Escape opens nothing",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D02-fuzzel-confirm",
+      "option": "launcher/fuzzel",
+      "capability": "menu.confirm",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/launcher_menus.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "With Fuzzel selected run printf '' | menu_choose.sh --prompt 'Test?' --confirm; echo $?: No is highlighted first; Enter prints nothing and exits 3; selecting Yes prints yes and exits 0",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D02-bemenu-applications",
+      "option": "launcher/bemenu",
+      "capability": "menu.applications",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/launcher_desktop_entries.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Select Bemenu; run action_exec.sh menu.applications and confirm the notification explains that Bemenu has no desktop-application mode and nothing opens; Super+Space still opens bemenu-run",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D02-bemenu-commands",
+      "option": "launcher/bemenu",
+      "capability": "menu.commands",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/launcher_desktop_entries.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Run action_exec.sh menu.commands; bemenu-run lists PATH executables; start one",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D02-bemenu-chooser",
+      "option": "launcher/bemenu",
+      "capability": "menu.choose",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/launcher_menus.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "With Bemenu selected press Ctrl+Super+Space (repository picker) with two repositories of the same name: both rows are distinct and each opens its own directory in the TUI editor; Escape opens nothing",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D02-bemenu-confirm",
+      "option": "launcher/bemenu",
+      "capability": "menu.confirm",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/launcher_menus.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "With Bemenu selected run printf '' | menu_choose.sh --prompt 'Test?' --confirm; echo $?: No is highlighted first; Enter prints nothing and exits 3; selecting Yes prints yes and exits 0",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D02-tofi-applications",
+      "option": "launcher/tofi",
+      "capability": "menu.applications",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/launcher_desktop_entries.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Select tofi; press Super+Space and run action_exec.sh menu.applications: both open the same desktop-application list; start an application, then press Escape on a second run and confirm nothing starts",
+      "result": "not-run",
+      "limits": "tofi (AUR) was not installable in the test environment; all tofi behavior is documentation-only until the VM run."
+    },
+    {
+      "id": "D02-tofi-commands",
+      "option": "launcher/tofi",
+      "capability": "menu.commands",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/launcher_desktop_entries.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Run action_exec.sh menu.commands; tofi-run lists PATH executables; the selected one starts",
+      "result": "not-run",
+      "limits": "tofi (AUR) was not installable in the test environment; all tofi behavior is documentation-only until the VM run."
+    },
+    {
+      "id": "D02-tofi-chooser",
+      "option": "launcher/tofi",
+      "capability": "menu.choose",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/launcher_menus.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "With tofi selected press Ctrl+Super+Space (repository picker) with two repositories of the same name: both rows are distinct and each opens its own directory in the TUI editor; Escape opens nothing",
+      "result": "not-run",
+      "limits": "tofi (AUR) was not installable in the test environment; all tofi behavior is documentation-only until the VM run."
+    },
+    {
+      "id": "D02-tofi-confirm",
+      "option": "launcher/tofi",
+      "capability": "menu.confirm",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/launcher_menus.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "With tofi selected run printf '' | menu_choose.sh --prompt 'Test?' --confirm; echo $?: No is highlighted first; Enter prints nothing and exits 3; selecting Yes prints yes and exits 0",
+      "result": "not-run",
+      "limits": "tofi (AUR) was not installable in the test environment; all tofi behavior is documentation-only until the VM run."
+    },
+    {
+      "id": "D02-theme-units",
+      "option": null,
+      "capability": null,
+      "evidence_required": "visual",
+      "tests": [
+        {
+          "path": "tests/shell/launcher_themes.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "For each launcher switch dark and light with Super+Shift+T and reopen the launcher and the repository picker: Mocha/Latte surfaces, Blue selection, Noto Sans text and a visible focus border on the search field; the Wi-Fi wofi menu file is unchanged",
+      "result": "not-run",
+      "limits": "Rofi and tofi visuals were not captured locally (Xwayland keyboard limits, tofi not installable); wofi, fuzzel and bemenu screenshots exist in both variants.",
+      "context": "units wofi, rofi, fuzzel, tofi, bemenu"
+    },
+    {
+      "id": "D02-repository-picker",
+      "option": null,
+      "capability": null,
+      "evidence_required": "modeled-effect",
+      "tests": [
+        {
+          "path": "tests/shell/launcher_menus.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Ctrl+Super+Space: repositories under ~/GitHub and REPOS_WOFI_ROOTS appear with unique labels; a launcher error shows a notification instead of silently closing",
+      "result": "not-run",
+      "limits": "",
+      "context": "repos_wofi.sh roots, depth, exclusions, editor and terminal routes"
+    }
+  ]
+}

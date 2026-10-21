@@ -1,6 +1,6 @@
 # D04 — Network, Bluetooth and audio controls
 
-Status: product policy synchronized with the completed interview; implementation not started. Apply master section 9 and the [decision record](../desktop-harmonization-grill.md); native device capability and physical effects remain unverified.
+Status: product policy synchronized with the completed interview; implemented on branch `feat/harmonize-visual-design` (uncommitted, 2026-10-21); user-led VM acceptance pending, see [acceptance matrix](../../../Documents/desktop-harmonization-acceptance.md). Apply master section 9 and the [decision record](../desktop-harmonization-grill.md); native device capability and physical effects remain unverified.
 Master: [Desktop harmonization master](../desktop-harmonization-master.md).
 Supplied baseline: `610a18bac374e7e2ffd0bcb2d99b026131deedbc`, branch `feat/harmonize-visual-design`.
 Canonical destination: `plans/planned/desktop-harmonization/D04-device-controls.md`.
@@ -123,7 +123,7 @@ Foundation discovery must not wait for completed D04 adapters; later frontend wi
 
 ### D04.1 — Freeze device capability contributions
 
-Status: not started. Prerequisite: authorization for discovery/feasibility; foundation drafts suffice for specification only.
+Status: implemented; VM acceptance pending. Prerequisite: authorization for discovery/feasibility; foundation drafts suffice for specification only.
 Ownership: D04 evidence and contribution content; F01 owns the capability ledger and F04 owns shared coverage descriptors.
 Deliverables: all thirteen option rows, operation/outcome matrix, applet/agent inventory, configuration surfaces and P04 decision brief.
 Validation: trace every current wrapper/gesture; identify missing connect/edit paths and prove risky assumptions only in separately authorized isolated spikes.
@@ -131,7 +131,7 @@ Done: each required operation has an evidence requirement, owner and explicit bl
 
 ### D04.2 — Implement network separation and applet lifecycle
 
-Status: not started. Prerequisites: frozen foundation gate, D04.1 network specification and D02 chooser contract.
+Status: implemented; VM acceptance pending. Prerequisites: frozen foundation gate, D04.1 network specification and D02 chooser contract.
 Ownership: D04 provider module at proposed `dotfiles/.config/hypr/scripts/device_network.sh`; compatibility-wrapper changes coordinated with F02/I01.
 Deliverables: distinct connect/edit/radio/status adapters for all four choices, plus nm-applet lifecycle/reachability behavior.
 Keep legacy `nmtui.sh` and `nmtui-connect.sh` argv behavior during extraction; wire distinct semantics through separately reviewed frontend changes.
@@ -140,7 +140,7 @@ Done: every choice exposes approved workflows or remains explicitly blocked; no 
 
 ### D04.3 — Implement Bluetooth controls and pairing boundaries
 
-Status: not started. Prerequisites: frozen foundation gate, D04.1 pairing specification, D02 chooser and D07 ownership agreement.
+Status: implemented; VM acceptance pending. Prerequisites: frozen foundation gate, D04.1 pairing specification, D02 chooser and D07 ownership agreement.
 Ownership: D04 proposed `dotfiles/.config/hypr/scripts/device_bluetooth.sh` and `toggle_bluetooth.sh`; shared dispatcher changes remain F02/I01-owned.
 Deliverables: four selected-manager routes, explicit radio operations, honest status and pairing workflow/error mapping.
 Retain `bluetooth_manager.sh` compatibility; replace unconditional success notifications only through reviewed behavior migration.
@@ -149,7 +149,7 @@ Done: independently observed state backs success; failed queries never cause pow
 
 ### D04.4 — Implement native audio controls and honest support limits
 
-Status: not started. Prerequisites: frozen foundation gate and D04.1 native evidence; P04 product policy is resolved and excludes companions.
+Status: implemented; VM acceptance pending. Prerequisites: frozen foundation gate and D04.1 native evidence; P04 product policy is resolved and excludes companions.
 Ownership: D04 proposed `dotfiles/.config/hypr/scripts/device_audio.sh`; F02 owns shared window routing; I01 integrates media-key contributions.
 Deliverables: five preserved application routes, output/input status/control semantics and separate hardware-versus-stream capability declarations.
 For QasMixer/Alsamixer, preserve the native hardware-mixer route and mark per-app routing unsupported unless native evidence proves it exists. Do not add a companion mixer, substitute another selected app or emulate the missing feature.
@@ -158,7 +158,7 @@ Done: full-support options demonstrate native per-app volume/routing; ALSA-only 
 
 ### D04.5 — Register appearance and reversible activation
 
-Status: not started. Prerequisites: frozen foundation gate, verified app surfaces, F03 renderer interface and P02/P06 approvals where applicable.
+Status: implemented; VM acceptance pending. Prerequisites: frozen foundation gate, verified app surfaces, F03 renderer interface and P02/P06 approvals where applicable.
 Ownership: D04 app mappings under proposed `theme/renderers/device-controls/`; F03 owns registration/global settings and D05 owns terminal profiles.
 Deliverables: deterministic app-specific outputs or explicit global/native-constrained bindings, validators, managed-key ownership and deferred/reload classifications.
 Validation: all thirteen mappings, non-primary terminal coverage, missing assets, output collisions, user overrides, Stow links and failure before/after commit.
@@ -166,7 +166,7 @@ Done: approved variants are readable and keyboard-operable; no renderer changes 
 
 ### D04.6 — Verify providers and deliver frontend/integration evidence
 
-Status: not started. Prerequisites: D04.2–D04.5, F04 fixtures, D01/D02 wiring and approved P05/P07 acceptance scope.
+Status: implemented; VM acceptance pending. Prerequisites: D04.2–D04.5, F04 fixtures, D01/D02 wiring and approved P05/P07 acceptance scope.
 Ownership: D04 proposed `tests/shell/device_controls.sh` and `tests/shell/device_themes.sh`; shared fixtures/runner remain F04/I01-owned.
 Deliverables: thirteen-option coverage, switching cases, applet concurrency tests, device failure fixtures and consented real-hardware/visual procedures.
 Validation: static → argv → modeled effect → real effect → visual evidence; never use an earlier evidence level to satisfy a later requirement.
@@ -214,12 +214,12 @@ No missing hardware, declined companion or failed feasibility result authorizes 
 
 ## 10. Implementation checklist and confidence
 
-1. Not started — D04.1: reconcile capability contributions and obtain affected decisions.
-2. Not started — D04.2: implement network separation and persistent-applet behavior.
-3. Not started — D04.3: implement Bluetooth state and pairing safeguards.
-4. Not started — D04.4: implement audio distinctions under the P04 gate.
-5. Not started — D04.5: register appearance and reversible activation.
-6. Not started — D04.6: verify effects, presentation and integration handoffs.
+1. Implemented (VM acceptance pending) — D04.1: reconcile capability contributions and obtain affected decisions.
+2. Implemented (VM acceptance pending) — D04.2: implement network separation and persistent-applet behavior.
+3. Implemented (VM acceptance pending) — D04.3: implement Bluetooth state and pairing safeguards.
+4. Implemented (VM acceptance pending) — D04.4: implement audio distinctions under the P04 gate.
+5. Implemented (VM acceptance pending) — D04.5: register appearance and reversible activation.
+6. Implemented (VM acceptance pending) — D04.6: verify effects, presentation and integration handoffs.
 
 Planning confidence: **92/100** for repository-grounded scope, ownership and identified gaps.
 Runtime feasibility remains unverified; concrete contracts, native pairing-agent behavior, applet lifecycle and physical device effects limit stronger claims. The native-only ALSA policy is resolved.

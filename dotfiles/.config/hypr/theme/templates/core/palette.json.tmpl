@@ -1,0 +1,60 @@
+{
+  "generator": "hss_theme.py",
+  "variant": "{{variant}}",
+  "label": {{variant_label | json}},
+  "is_dark": {{is_dark}},
+  "color": {
+    "bg": "{{color.bg}}",
+    "bg_alt": "{{color.bg_alt}}",
+    "bg_deep": "{{color.bg_deep}}",
+    "surface0": "{{color.surface0}}",
+    "surface1": "{{color.surface1}}",
+    "surface2": "{{color.surface2}}",
+    "fg": "{{color.fg}}",
+    "fg_muted": "{{color.fg_muted}}",
+    "fg_subtle": "{{color.fg_subtle}}",
+    "fg_disabled": "{{color.fg_disabled}}",
+    "border": "{{color.border}}",
+    "border_inactive": "{{color.border_inactive}}",
+    "accent": "{{color.accent}}",
+    "accent_alt": "{{color.accent_alt}}",
+    "on_accent": "{{color.on_accent}}",
+    "focus": "{{color.focus}}",
+    "hover": "{{color.hover}}",
+    "pressed": "{{color.pressed}}",
+    "selection_bg": "{{color.selection_bg}}",
+    "selection_fg": "{{color.selection_fg}}",
+    "link": "{{color.link}}",
+    "visited": "{{color.visited}}",
+    "success": "{{color.success}}",
+    "warning": "{{color.warning}}",
+    "error": "{{color.error}}",
+    "critical": "{{color.critical}}",
+    "info": "{{color.info}}",
+    "shadow": "{{color.shadow}}"
+  },
+  "terminal": {
+    "foreground": "{{terminal.foreground}}",
+    "background": "{{terminal.background}}",
+    "cursor": "{{terminal.cursor}}",
+    "cursor_text": "{{terminal.cursor_text}}",
+    "selection_fg": "{{terminal.selection_fg}}",
+    "selection_bg": "{{terminal.selection_bg}}",
+    "ansi": ["{{terminal.ansi.0}}", "{{terminal.ansi.1}}", "{{terminal.ansi.2}}", "{{terminal.ansi.3}}",
+             "{{terminal.ansi.4}}", "{{terminal.ansi.5}}", "{{terminal.ansi.6}}", "{{terminal.ansi.7}}",
+             "{{terminal.ansi.8}}", "{{terminal.ansi.9}}", "{{terminal.ansi.10}}", "{{terminal.ansi.11}}",
+             "{{terminal.ansi.12}}", "{{terminal.ansi.13}}", "{{terminal.ansi.14}}", "{{terminal.ansi.15}}"]
+  },
+  "font": {
+    "ui_family": {{font.ui_family | json}},
+    "ui_size_pt": {{font.ui_size_pt}},
+    "mono_family": {{font.mono_family | json}},
+    "mono_size_pt": {{font.mono_size_pt}}
+  },
+  "metrics": {
+    "radius": {{metrics.radius}},
+    "space_m": {{metrics.space_m}},
+    "border": {{metrics.border}},
+    "focus_width": {{metrics.focus_width}}
+  }
+}

@@ -1,6 +1,6 @@
 # D03 — Notifications and attention
 
-Status: product policy synchronized with the completed interview; implementation not started. Master section 9 and the [decision record](../desktop-harmonization-grill.md) define P03; provider-native feasibility remains pending.
+Status: product policy synchronized with the completed interview; implemented on branch `feat/harmonize-visual-design` (uncommitted, 2026-10-21); user-led VM acceptance pending, see [acceptance matrix](../../../Documents/desktop-harmonization-acceptance.md). Master section 9 and the [decision record](../desktop-harmonization-grill.md) define P03; provider-native feasibility remains pending.
 Master: [Desktop harmonization master](../desktop-harmonization-master.md).
 Supplied baseline: `610a18bac374e7e2ffd0bcb2d99b026131deedbc`, branch `feat/harmonize-visual-design`.
 
@@ -111,7 +111,7 @@ Backend semantics must not depend on D01 widgets or Waybar filesystem paths; fro
 ## 6. Concrete work packages
 
 ### D03.1 — Inventory and freeze operation distinctions
-Status: not started. Prerequisite: authorized discovery; F01/F02 draft coordination, before foundation implementation where useful.
+Status: implemented; VM acceptance pending. Prerequisite: authorized discovery; F01/F02 draft coordination, before foundation implementation where useful.
 Ownership: D03 supplies contributions to F01's ledger and F04's coverage descriptor; their owners integrate shared records.
 Deliverables: provider/version evidence template, exact legacy-call matrix, native-extra classification and proposed action/status definitions from §4.
 Inventory native configuration, notification capabilities, timeout/urgency rules, history storage, action callbacks and startup ownership without reading personal history.
@@ -119,7 +119,7 @@ Validation: reconcile all four catalog choices and every known caller; map each 
 Done: F01/F02/F04 accept the specification contribution; unproved capability fields remain blocked rather than inferred.
 
 ### D03.2 — Bound P03 feasibility and retention policy
-Status: not started. Prerequisite: D03.1 candidate requirements and separate authorization for isolated provider spikes.
+Status: implemented; VM acceptance pending. Prerequisite: D03.1 candidate requirements and separate authorization for isolated provider spikes.
 Ownership: D03 supplies evidence and recommendations; F01 reconciles capability records; the user resolves P03.
 Deliverables: finite probe matrix for DND suppression/readback, history retrieval, retained actions, status and restart behavior for all four providers.
 Use synthetic events in a disposable session/private bus; record exact versions, configuration, commands, observations and cleanup.
@@ -129,7 +129,7 @@ Validation: compare observed delivery/state against requested operations, includ
 Done: native evidence is mapped to the resolved P03 requirements. Unsupported providers have explicit limited status and cannot claim full parity; they do not block delivery of the entire branch.
 
 ### D03.3 — Implement provider actions and truthful status
-Status: not started. Prerequisite: frozen F01/F02/F03/F04 contracts, D03.1 definitions and applicable P03/P05 approvals.
+Status: implemented; VM acceptance pending. Prerequisite: frozen F01/F02/F03/F04 contracts, D03.1 definitions and applicable P03/P05 approvals.
 Ownership: D03 owns provider modules under proposed `dotfiles/.config/hypr/scripts/notification_providers/`; F02 owns shared dispatch.
 Deliverables: four adapters, capability-aware errors, bounded observations and legacy compatibility contributions for `notification_control.sh`.
 Keep existing argv/selection routes intact until reviewed migration; provide new explicit operations without silently redefining `toggle`.
@@ -137,7 +137,7 @@ Validation: proposed `tests/shell/notifications_contracts.sh` uses F04 stateful 
 Done: supported operations satisfy independent modeled-effect assertions; unsupported operations are honest and no shared state contains frontend markup or private content.
 
 ### D03.4 — Implement four application renderers
-Status: not started. Prerequisite: foundation gate, F03 renderer registration and applicable P02/P05 approvals.
+Status: implemented; VM acceptance pending. Prerequisite: foundation gate, F03 renderer registration and applicable P02/P05 approvals.
 Ownership: D03 owns proposed `theme/renderers/notifications/` registrations/templates within F03's framework.
 Deliverables: mappings for existing `dotfiles/.config/swaync/{config.json,style.css}` and proposed Mako/Dunst/Fnott profiles.
 Proposed profile paths are `dotfiles/.config/mako/config`, `dotfiles/.config/dunst/dunstrc` and `dotfiles/.config/fnott/fnott.ini`; verify native discovery before adopting them.
@@ -146,7 +146,7 @@ Validation: proposed `tests/shell/notifications_rendering.sh` covers determinist
 Done: each option has verified mapping or an explicit blocked visual requirement; managed ownership and native activation limitations are registered with F03/F02.
 
 ### D03.5 — Integrate singleton lifecycle and reversible switching
-Status: not started. Prerequisite: foundation gate, D03.3/D03.4 and P06 approval before changed activation.
+Status: implemented; VM acceptance pending. Prerequisite: foundation gate, D03.3/D03.4 and P06 approval before changed activation.
 Ownership: F02 supplies lifecycle/transaction mechanisms; D03 specifies provider readiness; I01 integrates service, setup and autostart contributions.
 Deliverables: coordinated activation for autostart and D-Bus requests; selection-versus-active-provider reporting; migration and recovery instructions.
 Enforce one `org.freedesktop.Notifications` owner per user bus, including multiple compositor sessions; a per-session lock is insufficient.
@@ -155,7 +155,7 @@ Validation: proposed `tests/shell/notifications_lifecycle.sh` covers concurrent 
 Done: singleton effects and recoverable file changes are independently demonstrated; runtime recovery remains separate from file rollback.
 
 ### D03.6 — Complete effect, privacy and frontend acceptance
-Status: not started. Prerequisite: D03.2–D03.5, D01 integration, F04 fixtures and applicable P07 approval.
+Status: implemented; VM acceptance pending. Prerequisite: D03.2–D03.5, D01 integration, F04 fixtures and applicable P07 approval.
 Ownership: D03 owns domain scenarios and proposed `tests/fixtures/notifications/`; F04/I01 integrate shared coverage and final execution.
 Deliverables: all-provider effect matrix, redacted visual evidence, keyboard/monitor checks and exact operation/support notes for I01.
 Validate synthetic delivery, DND, history, dismissal, actions, timeout/urgency, ownership and privacy using independent oracles.
@@ -207,12 +207,12 @@ An infeasible native capability leaves that option limited and its unsupported a
 
 ## 10. Not-started checklist and confidence
 
-1. Not started — D03.1: reconcile option evidence and explicit operation contracts.
-2. Not started — D03.2: complete authorized feasibility probes and obtain P03 decisions.
-3. Not started — D03.3: implement provider adapters on frozen foundation contracts.
-4. Not started — D03.4: implement and validate all four F03 renderer mappings.
-5. Not started — D03.5: prove singleton switching, preservation and bounded recovery.
-6. Not started — D03.6: deliver effect/privacy/visual evidence and frontend acceptance.
+1. Implemented (VM acceptance pending) — D03.1: reconcile option evidence and explicit operation contracts.
+2. Implemented (VM acceptance pending) — D03.2: complete authorized feasibility probes and obtain P03 decisions.
+3. Implemented (VM acceptance pending) — D03.3: implement provider adapters on frozen foundation contracts.
+4. Implemented (VM acceptance pending) — D03.4: implement and validate all four F03 renderer mappings.
+5. Implemented (VM acceptance pending) — D03.5: prove singleton switching, preservation and bounded recovery.
+6. Implemented (VM acceptance pending) — D03.6: deliver effect/privacy/visual evidence and frontend acceptance.
 
 Planning confidence: **93/100** for repository-grounded scope, ownership and identified gaps.
 Provider feasibility is not certified; provisional contracts, unresolved decisions and absent live/version testing limit implementation certainty.

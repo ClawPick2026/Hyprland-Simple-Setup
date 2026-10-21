@@ -1,3 +1,4 @@
+mod capabilities;
 mod packages;
 
 use std::io::{self};
@@ -27,6 +28,7 @@ use ratatui::widgets::{
 };
 use std::collections::{BTreeMap, BTreeSet, HashMap, HashSet};
 
+use capabilities::CapabilityLedger;
 use packages::{
     PackageSource, PackagesRoot, ROLE_ORDER, RoleSelection, SelectionKind, enforce_required,
     set_all_with_required, toggle_with_required,
@@ -94,9 +96,132 @@ struct PreflightConfig {
     monitor_setup_enabled: bool,
     monitor_config: String,
     auto_continue_on_warnings: bool,
+    theme_variant: ThemeVariant,
+    // Variant recorded in hss-theme/state.json, shown by the Keep current label.
+    recorded_theme_variant: Option<&'static str>,
+    harmonization_adopt: HarmonizationAdopt,
     dry_run: bool,
     password: String,
 }
+
+/// Appearance chosen in preflight. Only an explicit Dark or Light choice exports
+/// HSS_THEME_VARIANT; Keep current lets setup keep the recorded variant (dark on a
+/// new installation).
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum ThemeVariant {
+    KeepCurrent,
+    Dark,
+    Light,
+}
+
+impl ThemeVariant {
+    const ALL: [Self; 3] = [Self::KeepCurrent, Self::Dark, Self::Light];
+
+    fn env_value(self) -> Option<&'static str> {
+        match self {
+            Self::KeepCurrent => None,
+            Self::Dark => Some("dark"),
+            Self::Light => Some("light"),
+        }
+    }
+
+    fn cycled(self, delta: i32) -> Self {
+        let len = Self::ALL.len() as i32;
+        let index = Self::ALL.iter().position(|mode| *mode == self).unwrap_or(0) as i32;
+        Self::ALL[(index + delta).rem_euclid(len) as usize]
+    }
+}
+
+/// Handling of existing user configuration. Only an explicit choice exports
+/// HSS_HARMONIZATION_ADOPT; Automatic lets setup decide (fresh installs adopt,
+/// previously adopted installs apply, others preview).
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum HarmonizationAdopt {
+    Automatic,
+    Preview,
+    Apply,
+    Skip,
+}
+
+impl HarmonizationAdopt {
+    const ALL: [Self; 4] = [Self::Automatic, Self::Preview, Self::Apply, Self::Skip];
+
+    fn label(self) -> &'static str {
+        match self {
+            Self::Automatic => "Automatic (setup decides)",
+            Self::Preview => "Preview only",
+            Self::Apply => "Apply harmonized configuration",
+            Self::Skip => "Skip",
+        }
+    }
+
+    fn env_value(self) -> Option<&'static str> {
+        match self {
+            Self::Automatic => None,
+            Self::Preview => Some("preview"),
+            Self::Apply => Some("apply"),
+            Self::Skip => Some("skip"),
+        }
+    }
+
+    fn cycled(self, delta: i32) -> Self {
+        let len = Self::ALL.len() as i32;
+        let index = Self::ALL.iter().position(|mode| *mode == self).unwrap_or(0) as i32;
+        Self::ALL[(index + delta).rem_euclid(len) as usize]
+    }
+}
+
+fn theme_variant_label(preflight: &PreflightConfig) -> String {
+    match (preflight.theme_variant, preflight.recorded_theme_variant) {
+        (ThemeVariant::KeepCurrent, Some(variant)) => format!("Keep current ({variant})"),
+        (ThemeVariant::KeepCurrent, None) => "Keep current (dark for new installs)".to_string(),
+        (ThemeVariant::Dark, _) => "Dark".to_string(),
+        (ThemeVariant::Light, _) => "Light".to_string(),
+    }
+}
+
+// Same location as providers/theme.sh: ${XDG_CONFIG_HOME:-$HOME/.config}/hss-theme/state.json.
+fn theme_state_path(
+    xdg_config_home: Option<std::ffi::OsString>,
+    home: Option<PathBuf>,
+) -> Option<PathBuf> {
+    let config = match xdg_config_home.filter(|value| !value.is_empty()) {
+        Some(config) => PathBuf::from(config),
+        None => home?.join(".config"),
+    };
+    Some(config.join("hss-theme").join("state.json"))
+}
+
+fn read_recorded_theme_variant(state: &Path) -> Option<&'static str> {
+    let text = fs::read_to_string(state).ok()?;
+    let value: serde_json::Value = serde_json::from_str(&text).ok()?;
+    match value.get("variant")?.as_str()? {
+        "dark" => Some("dark"),
+        "light" => Some("light"),
+        _ => None,
+    }
+}
+
+fn recorded_theme_variant() -> Option<&'static str> {
+    let home = std::env::var_os("HOME")
+        .filter(|value| !value.is_empty())
+        .map(PathBuf::from)
+        .or_else(dirs::home_dir);
+    theme_state_path(std::env::var_os("XDG_CONFIG_HOME"), home)
+        .and_then(|path| read_recorded_theme_variant(&path))
+}
+
+/// Capability ledger availability. Ledger problems never block installation; they
+/// only make every support label unverified.
+#[derive(Debug)]
+enum LedgerState {
+    Loaded(Box<CapabilityLedger>),
+    Missing,
+    Invalid(String),
+}
+
+const LEDGER_MISSING_TEXT: &str = "Harmonization: unverified (capability ledger not found)";
+const LEDGER_INVALID_TEXT: &str = "Harmonization: unverified (capability ledger invalid)";
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 enum PreflightField {
@@ -104,6 +229,8 @@ enum PreflightField {
     EnvShellLanguageChoiceOverride,
     Applications,
     EnvWallpaperDirOverride,
+    EnvThemeVariant,
+    EnvHarmonizationAdopt,
     EnvMonitorSetupEnabled,
     EnvMonitorConfig,
     EnvAutoContinueOnWarnings,
@@ -279,6 +406,7 @@ struct AppState {
     // Package registry and derived selection state
     package_registry: Option<PackagesRoot>,
     package_load_error: Option<String>,
+    capability_ledger: LedgerState,
     role_selection: Option<RoleSelection>,
     application_cursor: usize,
     role_cursor: usize,
@@ -346,6 +474,9 @@ impl AppState {
                 monitor_setup_enabled: false,
                 monitor_config: String::new(),
                 auto_continue_on_warnings: true,
+                theme_variant: ThemeVariant::KeepCurrent,
+                recorded_theme_variant: recorded_theme_variant(),
+                harmonization_adopt: HarmonizationAdopt::Automatic,
                 dry_run: false,
                 password: String::new(),
             },
@@ -380,6 +511,7 @@ impl AppState {
             user_added_src: HashMap::new(),
             package_registry: None,
             package_load_error: None,
+            capability_ledger: LedgerState::Missing,
             role_selection: None,
             application_cursor: 0,
             role_cursor: 0,
@@ -416,6 +548,7 @@ impl AppState {
                     }
                 }
                 s.role_selection = Some(RoleSelection::defaults(&registry));
+                s.capability_ledger = load_capability_ledger(s.setup_script.as_deref(), &registry);
                 s.package_registry = Some(registry);
                 sync_role_package_selection(&mut s);
                 force_required_selected(&mut s);
@@ -1523,6 +1656,37 @@ fn role_choice_column_widths(area: Rect) -> [u16; 2] {
     [name, available.saturating_sub(name)]
 }
 
+struct ChoiceEntry {
+    name: String,
+    description: String,
+    // Support label and explanation; None for the optional None row.
+    support: Option<(&'static str, String)>,
+}
+
+// Wrapped (name, description) cell lines for one choice. With room for every row,
+// the support explanation follows the description; otherwise only a short label is
+// kept under the name so focused descriptions stay readable on small terminals.
+fn choice_cell_lines(
+    entry: &ChoiceEntry,
+    name_width: u16,
+    description_width: u16,
+    detailed: bool,
+) -> (Vec<String>, Vec<String>) {
+    let mut name_lines = wrap_choice_description(&entry.name, name_width);
+    let mut description_lines = wrap_choice_description(&entry.description, description_width);
+    if let Some((label, text)) = &entry.support {
+        if detailed {
+            description_lines.extend(wrap_choice_description(text, description_width));
+        } else {
+            name_lines.extend(wrap_choice_description(
+                &format!("Support: {label}"),
+                name_width,
+            ));
+        }
+    }
+    (name_lines, description_lines)
+}
+
 fn draw_role_menu(f: &mut ratatui::Frame, app: &AppState, area: Rect) {
     let Some(role_name) = selected_application_role(app) else {
         return;
@@ -1540,35 +1704,20 @@ fn draw_role_menu(f: &mut ratatui::Frame, app: &AppState, area: Rect) {
         .as_ref()
         .and_then(|s| s.selected_package(role_name));
     let inner_width = choice_popup_width(area).saturating_sub(2);
-    let intro = wrap_choice_description(
+    let mut intro = wrap_choice_description(
         application_type_description(role_name),
         inner_width.saturating_sub(4),
     );
+    if let LedgerState::Invalid(error) = &app.capability_ledger {
+        intro.extend(wrap_choice_description(
+            &format!(
+                "Capability ledger error: {error}. Support labels are unverified; every choice stays selectable."
+            ),
+            inner_width.saturating_sub(4),
+        ));
+    }
     let [name_width, description_width] = role_choice_column_widths(area);
-    let mut items = Vec::new();
-    let mut total_rows = 0;
-    let mut tallest_item = 1;
-    let mut add_choice = |name: String, description: &str| {
-        let name_lines = wrap_choice_description(&name, name_width);
-        let description_lines = wrap_choice_description(description, description_width);
-        let height = name_lines.len().max(description_lines.len()).max(1);
-        total_rows += height;
-        tallest_item = tallest_item.max(height as u16);
-        items.push(
-            Row::new(vec![
-                Cell::from(Text::from(
-                    name_lines.into_iter().map(Line::from).collect::<Vec<_>>(),
-                )),
-                Cell::from(Text::from(
-                    description_lines
-                        .into_iter()
-                        .map(Line::from)
-                        .collect::<Vec<_>>(),
-                )),
-            ])
-            .height(height as u16),
-        );
-    };
+    let mut entries = Vec::new();
     if !role.required {
         let marker = if selected.is_some_and(BTreeSet::is_empty) {
             "[*]"
@@ -1587,7 +1736,11 @@ fn draw_role_menu(f: &mut ratatui::Frame, app: &AppState, area: Rect) {
             }
             _ => "Do not start a dock. The selected bar remains enabled.",
         };
-        add_choice(format!("{marker} None"), description);
+        entries.push(ChoiceEntry {
+            name: format!("{marker} None"),
+            description: description.to_string(),
+            support: None,
+        });
     }
     for option in &role.options {
         let marker = if primary == Some(option.package.as_str()) {
@@ -1598,20 +1751,59 @@ fn draw_role_menu(f: &mut ratatui::Frame, app: &AppState, area: Rect) {
             "[ ]"
         };
         let terminal = if option.terminal { " [TUI]" } else { "" };
-        let name = format!(
-            "{marker} {} [{}]{terminal}",
-            option.package,
-            option.source.as_str()
-        );
-        add_choice(
-            name,
-            app.pkg_descs
+        entries.push(ChoiceEntry {
+            name: format!(
+                "{marker} {} [{}]{terminal}",
+                option.package,
+                option.source.as_str()
+            ),
+            description: app
+                .pkg_descs
                 .get(&option.package)
-                .map(String::as_str)
-                .unwrap_or("No description available."),
-        );
+                .cloned()
+                .unwrap_or_else(|| "No description available.".to_string()),
+            support: Some(option_support(app, role_name, &option.package)),
+        });
     }
+    let row_height =
+        |(name, description): &(Vec<String>, Vec<String>)| name.len().max(description.len()).max(1);
+    let cells_for = |detailed: bool| -> Vec<(Vec<String>, Vec<String>)> {
+        entries
+            .iter()
+            .map(|entry| choice_cell_lines(entry, name_width, description_width, detailed))
+            .collect()
+    };
+    let detailed_cells = cells_for(true);
+    let detailed_rows: usize = detailed_cells.iter().map(row_height).sum();
+    // Framed intro, framed table with header, two footer rows and the popup border.
+    let detailed = intro.len() + 3 + detailed_rows + 3 + 2 + 2 <= area.height as usize;
+    let cells = if detailed {
+        detailed_cells
+    } else {
+        cells_for(false)
+    };
+    let total_rows: usize = cells.iter().map(row_height).sum();
+    let tallest_item = cells.iter().map(row_height).max().unwrap_or(1) as u16;
+    let items: Vec<Row> = cells
+        .into_iter()
+        .map(|(name_lines, description_lines)| {
+            let height = name_lines.len().max(description_lines.len()).max(1);
+            Row::new(vec![
+                Cell::from(Text::from(
+                    name_lines.into_iter().map(Line::from).collect::<Vec<_>>(),
+                )),
+                Cell::from(Text::from(
+                    description_lines
+                        .into_iter()
+                        .map(Line::from)
+                        .collect::<Vec<_>>(),
+                )),
+            ])
+            .height(height as u16)
+        })
+        .collect();
     let count = items.len();
+    let focused = app.role_cursor.min(count.saturating_sub(1));
     let available_height = area.height.saturating_sub(2);
     // A short terminal may need an unframed table to keep one complete row readable.
     let framed_table = available_height >= tallest_item.saturating_add(4);
@@ -1625,9 +1817,30 @@ fn draw_role_menu(f: &mut ratatui::Frame, app: &AppState, area: Rect) {
     } else {
         0
     };
+    // In the compact layout, explain the focused choice's support below the table,
+    // but only in rows that would otherwise stay empty.
+    let details = match entries
+        .get(focused)
+        .and_then(|entry| entry.support.as_ref())
+    {
+        Some((_, text)) if !detailed => {
+            let used = intro_height + total_rows + table_overhead as usize + 2 + 2;
+            let lines = wrap_choice_description(text, inner_width);
+            if used + lines.len() <= area.height as usize {
+                lines
+            } else {
+                Vec::new()
+            }
+        }
+        _ => Vec::new(),
+    };
     let (popup, rows) = choice_popup_layout(
         area,
-        [intro_height, total_rows + table_overhead as usize, 2],
+        [
+            intro_height,
+            total_rows + table_overhead as usize,
+            2 + details.len(),
+        ],
         minimum_table_height,
     );
     let cardinality = match role.selection {
@@ -1672,7 +1885,7 @@ fn draw_role_menu(f: &mut ratatui::Frame, app: &AppState, area: Rect) {
         Block::default()
     };
     let mut state = TableState::default();
-    state.select(Some(app.role_cursor.min(count.saturating_sub(1))));
+    state.select(Some(focused));
     f.render_stateful_widget(
         Table::new(
             items,
@@ -1704,16 +1917,15 @@ fn draw_role_menu(f: &mut ratatui::Frame, app: &AppState, area: Rect) {
     } else {
         "Space: choose/clear   [*]: selected"
     };
+    let mut footer: Vec<Line> = details.into_iter().map(Line::from).collect();
+    footer.push(Line::from(format!(
+        "{}/{} | ↑/↓ scroll | Enter/Esc: back",
+        app.role_cursor + 1,
+        count
+    )));
+    footer.push(Line::from(keys));
     f.render_widget(
-        Paragraph::new(vec![
-            Line::from(format!(
-                "{}/{} | ↑/↓ scroll | Enter/Esc: back",
-                app.role_cursor + 1,
-                count
-            )),
-            Line::from(keys),
-        ])
-        .style(Style::default().fg(app.theme.subtext0)),
+        Paragraph::new(footer).style(Style::default().fg(app.theme.subtext0)),
         rows[2],
     );
 }
@@ -1781,6 +1993,18 @@ fn draw_preflight_ui(f: &mut ratatui::Frame, app: &mut AppState, area: Rect) {
         "Wallpaper directory",
         pf.wallpaper_dir.clone(),
         sel(PreflightField::EnvWallpaperDirOverride),
+    ));
+    rows.push(mk(
+        "←/→",
+        "Appearance",
+        theme_variant_label(pf),
+        sel(PreflightField::EnvThemeVariant),
+    ));
+    rows.push(mk(
+        "←/→",
+        "Existing configuration",
+        pf.harmonization_adopt.label().to_string(),
+        sel(PreflightField::EnvHarmonizationAdopt),
     ));
     rows.push(mk(
         "Toggle",
@@ -2594,8 +2818,8 @@ fn draw_preflight_ui(f: &mut ratatui::Frame, app: &mut AppState, area: Rect) {
     // Confirm start install popup
     if app.editing && app.edit_kind == EditKind::ConfirmStartInstall {
         let area_w = area.width as i32;
-        let popup_w = (area_w * 3 / 5).max(40) as u16;
-        let popup_h = 6u16;
+        let popup_w = ((area_w * 3 / 5).max(60) as u16).min(area.width);
+        let popup_h = 8u16.min(area.height);
         let popup_x = area.x + (area.width.saturating_sub(popup_w)) / 2;
         let popup_y = area.y + (area.height.saturating_sub(popup_h)) / 2;
         let popup_rect = Rect {
@@ -2610,28 +2834,38 @@ fn draw_preflight_ui(f: &mut ratatui::Frame, app: &mut AppState, area: Rect) {
             .borders(Borders::ALL)
             .style(Style::default().bg(app.theme.surface0).fg(app.theme.text))
             .border_style(Style::default().fg(app.theme.mauve));
+        let inner = popup_block.inner(popup_rect);
         f.render_widget(popup_block, popup_rect);
-
-        let inner = Rect {
-            x: popup_rect.x + 1,
-            y: popup_rect.y + 1,
-            width: popup_rect.width - 2,
-            height: popup_rect.height - 2,
-        };
         let rows = Layout::default()
             .direction(Direction::Vertical)
-            .constraints([Constraint::Length(2), Constraint::Length(2)])
+            .constraints([
+                Constraint::Length(2),
+                Constraint::Length(2),
+                Constraint::Length(2),
+            ])
             .split(inner);
         let msg = Paragraph::new(Text::from(vec![Line::from(
             "This will run the setup now. Proceed?",
         )]))
         .style(Style::default().fg(app.theme.text));
         f.render_widget(msg, rows[0]);
+        let settings = Paragraph::new(Text::from(vec![
+            Line::from(format!(
+                "Appearance: {}",
+                theme_variant_label(&app.preflight)
+            )),
+            Line::from(format!(
+                "Existing configuration: {}",
+                app.preflight.harmonization_adopt.label()
+            )),
+        ]))
+        .style(Style::default().fg(app.theme.text));
+        f.render_widget(settings, rows[1]);
         let tip = Paragraph::new(Text::from(vec![Line::from(
             "Press Y/Enter to confirm, N/Esc to cancel",
         )]))
         .style(Style::default().fg(app.theme.subtext0));
-        f.render_widget(tip, rows[1]);
+        f.render_widget(tip, rows[2]);
     }
 }
 
@@ -2863,6 +3097,13 @@ fn spawn_setup(app: &mut AppState, flags: &[&str]) -> Result<()> {
             "false"
         },
     );
+    // Automatic choices export nothing, so setup applies its own defaults.
+    for (name, value) in harmonization_env(pf) {
+        match value {
+            Some(value) => cmd.env(name, value),
+            None => cmd.env_remove(name),
+        };
+    }
     cmd.env("SELECTED_PACMAN_PACKAGES", selected_pacman.clone());
     cmd.env("SELECTED_AUR_PACKAGES", selected_aur.clone());
     if let (Some(registry), Some(selection)) =
@@ -3001,15 +3242,56 @@ fn resolve_setup_script_path() -> Option<PathBuf> {
     candidates.into_iter().find(|c| c.exists())
 }
 
-fn load_package_registry(setup_script: Option<&Path>) -> Result<PackagesRoot> {
+fn registry_root(setup_script: Option<&Path>) -> Result<PathBuf> {
     let setup_script = setup_script
         .context("setup.sh was not resolved, so packages.json cannot be located relative to it")?;
     let resolved = fs::canonicalize(setup_script)
         .with_context(|| format!("resolve setup script {}", setup_script.display()))?;
-    let root = resolved
+    resolved
         .parent()
-        .context("resolved setup.sh path has no parent directory")?;
-    PackagesRoot::load(&root.join("packages.json"))
+        .map(Path::to_path_buf)
+        .context("resolved setup.sh path has no parent directory")
+}
+
+fn load_package_registry(setup_script: Option<&Path>) -> Result<PackagesRoot> {
+    PackagesRoot::load(&registry_root(setup_script)?.join("packages.json"))
+}
+
+// The ledger lives beside packages.json; a missing ledger keeps every choice selectable.
+fn load_capability_ledger(setup_script: Option<&Path>, registry: &PackagesRoot) -> LedgerState {
+    match registry_root(setup_script).and_then(|root| CapabilityLedger::load(&root, registry)) {
+        Ok(Some(ledger)) => LedgerState::Loaded(Box::new(ledger)),
+        Ok(None) => LedgerState::Missing,
+        Err(error) => LedgerState::Invalid(format!("{error:#}")),
+    }
+}
+
+/// Support label and one-line explanation for a role option, as shown in the chooser.
+fn option_support(app: &AppState, role_name: &str, package: &str) -> (&'static str, String) {
+    match &app.capability_ledger {
+        LedgerState::Loaded(ledger) => match ledger.option(role_name, package) {
+            Some(record) => (
+                record.support.as_str(),
+                format!("Support: {}. {}", record.support.as_str(), record.summary),
+            ),
+            None => (
+                "unverified",
+                "Harmonization: unverified (no capability record)".to_string(),
+            ),
+        },
+        LedgerState::Missing => ("unverified", LEDGER_MISSING_TEXT.to_string()),
+        LedgerState::Invalid(_) => ("unverified", LEDGER_INVALID_TEXT.to_string()),
+    }
+}
+
+fn harmonization_env(preflight: &PreflightConfig) -> [(&'static str, Option<&'static str>); 2] {
+    [
+        ("HSS_THEME_VARIANT", preflight.theme_variant.env_value()),
+        (
+            "HSS_HARMONIZATION_ADOPT",
+            preflight.harmonization_adopt.env_value(),
+        ),
+    ]
 }
 
 fn selected_application_role(app: &AppState) -> Option<&'static str> {
@@ -3755,7 +4037,9 @@ fn preflight_focus_next(app: &mut AppState) {
         PreflightField::EnvPromptDefaultYn => PreflightField::EnvShellLanguageChoiceOverride,
         PreflightField::EnvShellLanguageChoiceOverride => PreflightField::Applications,
         PreflightField::Applications => PreflightField::EnvWallpaperDirOverride,
-        PreflightField::EnvWallpaperDirOverride => PreflightField::EnvMonitorSetupEnabled,
+        PreflightField::EnvWallpaperDirOverride => PreflightField::EnvThemeVariant,
+        PreflightField::EnvThemeVariant => PreflightField::EnvHarmonizationAdopt,
+        PreflightField::EnvHarmonizationAdopt => PreflightField::EnvMonitorSetupEnabled,
         PreflightField::EnvMonitorSetupEnabled => PreflightField::EnvMonitorConfig,
         PreflightField::EnvMonitorConfig => PreflightField::EnvAutoContinueOnWarnings,
         PreflightField::EnvAutoContinueOnWarnings => PreflightField::Password,
@@ -3774,7 +4058,9 @@ fn preflight_focus_prev(app: &mut AppState) {
         PreflightField::EnvShellLanguageChoiceOverride => PreflightField::EnvPromptDefaultYn,
         PreflightField::Applications => PreflightField::EnvShellLanguageChoiceOverride,
         PreflightField::EnvWallpaperDirOverride => PreflightField::Applications,
-        PreflightField::EnvMonitorSetupEnabled => PreflightField::EnvWallpaperDirOverride,
+        PreflightField::EnvThemeVariant => PreflightField::EnvWallpaperDirOverride,
+        PreflightField::EnvHarmonizationAdopt => PreflightField::EnvThemeVariant,
+        PreflightField::EnvMonitorSetupEnabled => PreflightField::EnvHarmonizationAdopt,
         PreflightField::EnvMonitorConfig => PreflightField::EnvMonitorSetupEnabled,
         PreflightField::EnvAutoContinueOnWarnings => PreflightField::EnvMonitorConfig,
         PreflightField::Password => PreflightField::EnvAutoContinueOnWarnings,
@@ -3803,6 +4089,12 @@ fn adjust_preflight_field(app: &mut AppState, delta: i32) {
         }
         PreflightField::EnvDryRun => {
             app.preflight.dry_run = delta >= 0;
+        }
+        PreflightField::EnvThemeVariant => {
+            app.preflight.theme_variant = app.preflight.theme_variant.cycled(delta);
+        }
+        PreflightField::EnvHarmonizationAdopt => {
+            app.preflight.harmonization_adopt = app.preflight.harmonization_adopt.cycled(delta);
         }
         _ => {}
     }
@@ -3837,6 +4129,12 @@ fn toggle_boolean_field(app: &mut AppState) {
             app.preflight.auto_continue_on_warnings = !app.preflight.auto_continue_on_warnings
         }
         PreflightField::EnvDryRun => app.preflight.dry_run = !app.preflight.dry_run,
+        PreflightField::EnvThemeVariant => {
+            app.preflight.theme_variant = app.preflight.theme_variant.cycled(1)
+        }
+        PreflightField::EnvHarmonizationAdopt => {
+            app.preflight.harmonization_adopt = app.preflight.harmonization_adopt.cycled(1)
+        }
         _ => {}
     }
 }
@@ -4888,6 +5186,36 @@ mod tests {
         assert!(zed_row.contains('▶'));
         let none_row = rows.iter().find(|row| row.contains("[ ] None")).unwrap();
         assert_eq!(column(none_row, "Skip GUI editors"), description_x);
+
+        // Without room for every explanation, a short label stays under each app name.
+        app.capability_ledger = LedgerState::Missing;
+        let rows = render_choice_lines(&app, 120, 24, false);
+        let zed_y = rows
+            .iter()
+            .position(|row| row.contains("zed [pacman]"))
+            .unwrap();
+        assert_eq!(column(&rows[zed_y + 1], "Support: unverified"), name_x);
+        assert!(!rows[zed_y + 1].contains("zed"));
+        let screen = render_choice_screen(&app, 120, 24, false);
+        assert_eq!(screen.matches("Support: unverified").count(), 5);
+
+        // With room, the explanation follows each description in the description column.
+        let rows = render_choice_lines(&app, 120, 32, false);
+        let explanation = rows
+            .iter()
+            .find(|row| row.contains(LEDGER_MISSING_TEXT))
+            .unwrap();
+        assert_eq!(column(explanation, LEDGER_MISSING_TEXT), description_x);
+        let screen = render_choice_screen(&app, 120, 32, false);
+        assert!(!screen.contains("Support: unverified"));
+        let zed_description = &app.pkg_descs["zed"];
+        assert!(screen.contains(&format!("{zed_description} {LEDGER_MISSING_TEXT}")));
+        assert_eq!(
+            rows.iter()
+                .filter(|row| row.contains(LEDGER_MISSING_TEXT))
+                .count(),
+            5
+        );
     }
 
     #[test]
@@ -4942,6 +5270,38 @@ mod tests {
                         option.package
                     );
                 }
+                // Every choice keeps a visible text support label.
+                let mut labels: BTreeMap<&str, usize> = BTreeMap::new();
+                for option in &role.options {
+                    *labels
+                        .entry(option_support(&app, role_name, &option.package).0)
+                        .or_default() += 1;
+                }
+                for (label, expected) in labels {
+                    let shown = screen.matches(&format!("Support: {label}")).count();
+                    assert!(
+                        shown >= expected,
+                        "{role_name} shows {shown} {label} labels at {width}x{height}"
+                    );
+                }
+            }
+        }
+        // Taller terminals show each choice's support explanation after its description.
+        for (width, height) in [(80, 90), (120, 60)] {
+            for (index, role_name) in ROLE_ORDER.into_iter().enumerate() {
+                app.application_cursor = index;
+                let role = &app.package_registry.as_ref().unwrap().roles[role_name];
+                let screen = render_choice_screen(&app, width, height, false);
+                assert!(screen.contains(application_type_description(role_name)));
+                for option in &role.options {
+                    let (_, text) = option_support(&app, role_name, &option.package);
+                    assert!(text.starts_with("Support: "));
+                    assert!(
+                        screen.contains(&format!("{} {text}", app.pkg_descs[&option.package])),
+                        "support for {} clipped at {width}x{height}: {screen}",
+                        option.package
+                    );
+                }
             }
         }
     }
@@ -4966,6 +5326,11 @@ mod tests {
                 assert!(
                     screen.contains(&app.pkg_descs[package]),
                     "focused description for {package} clipped: {screen}"
+                );
+                let (label, _) = option_support(&app, role_name, package);
+                assert!(
+                    screen.contains(&format!("Support: {label}")),
+                    "focused support label for {package} clipped: {screen}"
                 );
                 assert!(screen.contains("scroll"));
                 handle_preflight_keys(&mut app, key(KeyCode::Down)).unwrap();
@@ -4996,6 +5361,22 @@ mod tests {
             );
             render_choice_screen(&app, width, height, false);
             render_choice_screen(&app, width, height, true);
+        }
+        let mut app = app;
+        for state in [
+            LedgerState::Missing,
+            LedgerState::Invalid("capability ledger is missing role options: x/y".to_string()),
+        ] {
+            app.capability_ledger = state;
+            for (width, height) in [(0, 0), (1, 1), (20, 4), (40, 8), (60, 10)] {
+                render_choice_screen(&app, width, height, false);
+            }
+        }
+        app.ui_mode = UiMode::Preflight;
+        app.editing = true;
+        app.edit_kind = EditKind::ConfirmStartInstall;
+        for (width, height) in [(20, 4), (40, 8), (60, 10)] {
+            render_app_screen(&mut app, width, height);
         }
     }
 
@@ -5154,6 +5535,384 @@ mod tests {
             package_start_blocker(&app).as_deref(),
             Some("Select exactly one Notifications")
         );
+    }
+
+    fn test_app() -> AppState {
+        let (tx, rx) = mpsc::channel();
+        let script = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("setup.sh");
+        let mut app = AppState::new(rx, tx, Some(script));
+        // Startup prerequisite popups depend on the host and are not under test here.
+        app.editing = false;
+        app.edit_kind = EditKind::None;
+        app
+    }
+
+    #[test]
+    fn shipped_capability_ledger_labels_every_choice() {
+        let app = test_app();
+        let LedgerState::Loaded(ledger) = &app.capability_ledger else {
+            panic!("shipped ledger must load: {:?}", app.capability_ledger);
+        };
+        for role_name in ROLE_ORDER {
+            for option in &app.package_registry.as_ref().unwrap().roles[role_name].options {
+                let record = ledger.option(role_name, &option.package).unwrap();
+                let (label, text) = option_support(&app, role_name, &option.package);
+                assert_eq!(label, record.support.as_str());
+                assert_eq!(
+                    text,
+                    format!("Support: {label}. {}", record.summary),
+                    "{role_name}/{}",
+                    option.package
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn missing_and_invalid_ledgers_keep_every_choice_selectable() {
+        let error = "capability ledger is missing role options: notifications/fnott";
+        for (state, text) in [
+            (LedgerState::Missing, LEDGER_MISSING_TEXT),
+            (LedgerState::Invalid(error.to_string()), LEDGER_INVALID_TEXT),
+        ] {
+            let mut app = test_app();
+            let invalid = matches!(state, LedgerState::Invalid(_));
+            app.capability_ledger = state;
+            let key = |code| KeyEvent::new(code, event::KeyModifiers::NONE);
+            open_application_role(&mut app, "notifications");
+            let packages: Vec<String> =
+                app.package_registry.as_ref().unwrap().roles["notifications"]
+                    .options
+                    .iter()
+                    .map(|option| option.package.clone())
+                    .collect();
+            let screen = render_choice_screen(&app, 120, 40, false);
+            for package in &packages {
+                assert_eq!(
+                    option_support(&app, "notifications", package).0,
+                    "unverified"
+                );
+                assert!(
+                    screen.contains(&format!("{} {text}", app.pkg_descs[package])),
+                    "{package}: {screen}"
+                );
+            }
+            let intro = format!(
+                "Capability ledger error: {error}. Support labels are unverified; every choice stays selectable."
+            );
+            assert_eq!(screen.matches(&intro).count(), usize::from(invalid));
+            assert!(render_choice_screen(&app, 60, 10, false).contains("Support: unverified"));
+
+            // Visit the default (first) choice last so every Space press selects.
+            for (index, package) in packages.iter().enumerate().rev() {
+                handle_preflight_keys(&mut app, key(KeyCode::Home)).unwrap();
+                for _ in 0..index {
+                    handle_preflight_keys(&mut app, key(KeyCode::Down)).unwrap();
+                }
+                handle_preflight_keys(&mut app, key(KeyCode::Char(' '))).unwrap();
+                assert_eq!(
+                    app.role_selection
+                        .as_ref()
+                        .unwrap()
+                        .selected_package("notifications"),
+                    Some(package.as_str())
+                );
+                assert!(package_start_blocker(&app).is_none());
+            }
+            let registry = app.package_registry.as_ref().unwrap();
+            let env = app
+                .role_selection
+                .as_ref()
+                .unwrap()
+                .export_env(registry)
+                .unwrap();
+            assert_eq!(env["ROLE_NOTIFICATIONS"], packages[0]);
+        }
+    }
+
+    #[test]
+    fn compact_chooser_explains_the_focused_choice_only_in_spare_rows() {
+        let mut app = test_app();
+        app.capability_ledger = LedgerState::Missing;
+        app.application_cursor = ROLE_ORDER.iter().position(|role| *role == "dock").unwrap();
+        app.role_cursor = 1;
+        let mut compact_with_details = false;
+        for height in 8..=40 {
+            let screen = render_choice_screen(&app, 120, height, false);
+            let compact = screen.contains("Support: unverified");
+            let details = screen.contains(LEDGER_MISSING_TEXT);
+            if compact && details {
+                compact_with_details = true;
+                // The explanation never displaces the intro, a choice or its description.
+                assert!(screen.contains(application_type_description("dock")));
+                for package in ["nwg-dock-hyprland", "nwg-panel"] {
+                    assert!(
+                        screen.contains(&app.pkg_descs[package]),
+                        "{height}: {screen}"
+                    );
+                }
+                assert!(screen.contains("Enter/Esc: back"));
+            }
+            assert!(compact || details, "no support text at height {height}");
+        }
+        assert!(compact_with_details);
+
+        // The None row has no support explanation.
+        app.role_cursor = 0;
+        for height in 8..=40 {
+            let rows = render_choice_lines(&app, 120, height, false);
+            let screen = rows.join(" ");
+            if screen.contains("Support: unverified") {
+                assert!(!screen.contains(LEDGER_MISSING_TEXT), "{height}: {screen}");
+            }
+        }
+    }
+
+    struct TempRoot(PathBuf);
+
+    impl TempRoot {
+        fn new(label: &str) -> Self {
+            let path = std::env::temp_dir().join(format!(
+                "hss-tui-{label}-{}-{:?}",
+                std::process::id(),
+                std::thread::current().id()
+            ));
+            let _ = fs::remove_dir_all(&path);
+            fs::create_dir_all(&path).unwrap();
+            Self(path)
+        }
+    }
+
+    impl Drop for TempRoot {
+        fn drop(&mut self) {
+            let _ = fs::remove_dir_all(&self.0);
+        }
+    }
+
+    #[test]
+    fn installer_loads_the_ledger_beside_packages_json_without_blocking() {
+        let root = TempRoot::new("ledger");
+        let manifest = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+        fs::write(root.0.join("setup.sh"), "#!/usr/bin/env bash\n").unwrap();
+        fs::copy(manifest.join("packages.json"), root.0.join("packages.json")).unwrap();
+        let load = || {
+            let (tx, rx) = mpsc::channel();
+            AppState::new(rx, tx, Some(root.0.join("setup.sh")))
+        };
+
+        let app = load();
+        assert!(app.package_load_error.is_none());
+        assert!(matches!(app.capability_ledger, LedgerState::Missing));
+        assert!(package_start_blocker(&app).is_none());
+
+        fs::write(root.0.join("capabilities.json"), "{\"schema_version\": 2}").unwrap();
+        let app = load();
+        let LedgerState::Invalid(error) = &app.capability_ledger else {
+            panic!("invalid ledger accepted: {:?}", app.capability_ledger);
+        };
+        assert!(error.contains("capabilities.json"), "{error}");
+        assert!(package_start_blocker(&app).is_none());
+
+        fs::copy(
+            manifest.join("capabilities.json"),
+            root.0.join("capabilities.json"),
+        )
+        .unwrap();
+        let app = load();
+        let LedgerState::Invalid(error) = &app.capability_ledger else {
+            panic!("ledger without fragments accepted");
+        };
+        assert!(error.contains("missing role options"), "{error}");
+        assert!(package_start_blocker(&app).is_none());
+    }
+
+    #[test]
+    fn preflight_offers_appearance_and_existing_configuration_settings() {
+        let mut app = test_app();
+        app.ui_mode = UiMode::Preflight;
+        app.preflight.recorded_theme_variant = None;
+        let screen = render_app_screen(&mut app, 120, 24);
+        for text in [
+            "Appearance",
+            "Keep current (dark for new installs)",
+            "Existing configuration",
+            "Automatic (setup decides)",
+            "Start unattended install",
+        ] {
+            assert!(screen.contains(text), "{text} missing: {screen}");
+        }
+        // Automatic defaults export nothing; setup keeps its own defaults.
+        assert_eq!(
+            harmonization_env(&app.preflight),
+            [
+                ("HSS_THEME_VARIANT", None),
+                ("HSS_HARMONIZATION_ADOPT", None)
+            ]
+        );
+        app.preflight.recorded_theme_variant = Some("light");
+        assert!(render_app_screen(&mut app, 120, 24).contains("Keep current (light)"));
+        assert_eq!(
+            harmonization_env(&app.preflight)[0],
+            ("HSS_THEME_VARIANT", None)
+        );
+
+        app.preflight_focus = PreflightField::EnvWallpaperDirOverride;
+        preflight_focus_next(&mut app);
+        assert_eq!(app.preflight_focus, PreflightField::EnvThemeVariant);
+        preflight_focus_next(&mut app);
+        assert_eq!(app.preflight_focus, PreflightField::EnvHarmonizationAdopt);
+        preflight_focus_next(&mut app);
+        assert_eq!(app.preflight_focus, PreflightField::EnvMonitorSetupEnabled);
+        preflight_focus_prev(&mut app);
+        preflight_focus_prev(&mut app);
+        assert_eq!(app.preflight_focus, PreflightField::EnvThemeVariant);
+        preflight_focus_prev(&mut app);
+        assert_eq!(app.preflight_focus, PreflightField::EnvWallpaperDirOverride);
+
+        let key = |code| KeyEvent::new(code, event::KeyModifiers::NONE);
+        app.preflight_focus = PreflightField::EnvThemeVariant;
+        let mut seen = Vec::new();
+        for code in [
+            KeyCode::Right,
+            KeyCode::Right,
+            KeyCode::Right,
+            KeyCode::Left,
+            KeyCode::Char(' '),
+            KeyCode::Char(' '),
+        ] {
+            handle_preflight_keys(&mut app, key(code)).unwrap();
+            seen.push(app.preflight.theme_variant);
+        }
+        assert_eq!(
+            seen,
+            [
+                ThemeVariant::Dark,
+                ThemeVariant::Light,
+                ThemeVariant::KeepCurrent,
+                ThemeVariant::Light,
+                ThemeVariant::KeepCurrent,
+                ThemeVariant::Dark
+            ]
+        );
+        assert_eq!(
+            harmonization_env(&app.preflight)[0],
+            ("HSS_THEME_VARIANT", Some("dark"))
+        );
+        handle_preflight_keys(&mut app, key(KeyCode::Right)).unwrap();
+        assert_eq!(app.preflight.theme_variant, ThemeVariant::Light);
+        assert_eq!(theme_variant_label(&app.preflight), "Light");
+        assert_eq!(
+            harmonization_env(&app.preflight)[0],
+            ("HSS_THEME_VARIANT", Some("light"))
+        );
+
+        app.preflight_focus = PreflightField::EnvHarmonizationAdopt;
+        let mut seen = Vec::new();
+        for code in [
+            KeyCode::Right,
+            KeyCode::Right,
+            KeyCode::Right,
+            KeyCode::Right,
+            KeyCode::Left,
+            KeyCode::Char(' '),
+            KeyCode::Char(' '),
+        ] {
+            handle_preflight_keys(&mut app, key(code)).unwrap();
+            seen.push(app.preflight.harmonization_adopt);
+        }
+        assert_eq!(
+            seen,
+            [
+                HarmonizationAdopt::Preview,
+                HarmonizationAdopt::Apply,
+                HarmonizationAdopt::Skip,
+                HarmonizationAdopt::Automatic,
+                HarmonizationAdopt::Skip,
+                HarmonizationAdopt::Automatic,
+                HarmonizationAdopt::Preview
+            ]
+        );
+        for (mode, value) in [
+            (HarmonizationAdopt::Automatic, None),
+            (HarmonizationAdopt::Preview, Some("preview")),
+            (HarmonizationAdopt::Skip, Some("skip")),
+            (HarmonizationAdopt::Apply, Some("apply")),
+        ] {
+            app.preflight.harmonization_adopt = mode;
+            assert_eq!(
+                harmonization_env(&app.preflight)[1],
+                ("HSS_HARMONIZATION_ADOPT", value)
+            );
+        }
+        assert!(render_app_screen(&mut app, 120, 24).contains("Apply harmonized configuration"));
+
+        // Unrelated preflight values are unaffected.
+        assert!(app.preflight.prompt_default_yes);
+        assert!(app.preflight.auto_continue_on_warnings);
+        assert!(!app.preflight.dry_run);
+
+        // The start confirmation repeats both choices, including the automatic defaults.
+        app.editing = true;
+        app.edit_kind = EditKind::ConfirmStartInstall;
+        for (variant, adopt, appearance, existing) in [
+            (
+                ThemeVariant::Light,
+                HarmonizationAdopt::Apply,
+                "Appearance: Light",
+                "Existing configuration: Apply harmonized configuration",
+            ),
+            (
+                ThemeVariant::KeepCurrent,
+                HarmonizationAdopt::Automatic,
+                "Appearance: Keep current (light)",
+                "Existing configuration: Automatic (setup decides)",
+            ),
+        ] {
+            app.preflight.theme_variant = variant;
+            app.preflight.harmonization_adopt = adopt;
+            for (width, height) in [(120, 40), (80, 24)] {
+                let screen = render_app_screen(&mut app, width, height);
+                assert!(screen.contains("Start unattended install?"));
+                assert!(screen.contains(appearance), "{screen}");
+                assert!(screen.contains(existing), "{screen}");
+                assert!(screen.contains("Press Y/Enter to confirm, N/Esc to cancel"));
+            }
+        }
+        handle_preflight_keys(&mut app, key(KeyCode::Esc)).unwrap();
+        assert!(!app.editing);
+        assert_eq!(app.preflight.theme_variant, ThemeVariant::KeepCurrent);
+    }
+
+    #[test]
+    fn keep_current_reads_the_recorded_theme_variant() {
+        assert_eq!(
+            theme_state_path(Some("/xdg".into()), Some(PathBuf::from("/home/u"))),
+            Some(PathBuf::from("/xdg/hss-theme/state.json"))
+        );
+        for xdg in [None, Some(std::ffi::OsString::new())] {
+            assert_eq!(
+                theme_state_path(xdg, Some(PathBuf::from("/home/u"))),
+                Some(PathBuf::from("/home/u/.config/hss-theme/state.json"))
+            );
+        }
+        assert_eq!(theme_state_path(None, None), None);
+
+        let root = TempRoot::new("theme-state");
+        let state = root.0.join("state.json");
+        assert_eq!(read_recorded_theme_variant(&state), None);
+        for (content, expected) in [
+            (
+                r#"{"schema_version": 1, "variant": "light", "batch": "complete"}"#,
+                Some("light"),
+            ),
+            (r#"{"variant": "dark"}"#, Some("dark")),
+            (r#"{"variant": "sepia"}"#, None),
+            (r#"{"variant": null}"#, None),
+            ("not json", None),
+        ] {
+            fs::write(&state, content).unwrap();
+            assert_eq!(read_recorded_theme_variant(&state), expected, "{content}");
+        }
     }
 
     #[test]

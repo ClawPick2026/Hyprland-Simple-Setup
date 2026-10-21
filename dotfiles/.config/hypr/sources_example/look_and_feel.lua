@@ -94,3 +94,18 @@ hl.animation({ leaf = "fadeLayersOut", enabled = true, speed = 1.39, bezier = "a
 hl.animation({ leaf = "workspaces", enabled = true, speed = 1.94, bezier = "almostLinear", style = "fade" })
 hl.animation({ leaf = "workspacesIn", enabled = true, speed = 1.21, bezier = "almostLinear", style = "fade" })
 hl.animation({ leaf = "workspacesOut", enabled = true, speed = 1.94, bezier = "almostLinear", style = "fade" })
+
+-- >>> hss-theme:hyprland >>>
+do
+    -- Generated colors and metrics for the active theme variant (hss_theme.py).
+    -- A missing or broken file leaves the values above in effect.
+    local base = os.getenv("XDG_CONFIG_HOME")
+    if base == nil or base == "" then
+        base = (os.getenv("HOME") or "") .. "/.config"
+    end
+    local ok, theme = pcall(dofile, base .. "/hss-theme/generated/hyprland/theme.lua")
+    if ok and type(theme) == "table" and type(theme.config) == "table" then
+        hl.config(theme.config)
+    end
+end
+-- <<< hss-theme:hyprland <<<

@@ -4,13 +4,33 @@
     "output": "",
     "position": "bottom",
     "layer": "top",
-    "height": 56,
+    "height": 52,
+    "css-name": "hss-dock",
+    "homogeneous": true,
+    "exclusive-zone": true,
+    "spacing": 6,
+    "padding-horizontal": 4,
+    "padding-vertical": 2,
+    "icons": "",
     "controls": "off",
     "controls-settings": {},
     "menu-start": "off",
-    "hyprland-taskbar": {},
     "modules-left": [],
-    "modules-center": ["hyprland-taskbar"],
-    "modules-right": []
+    "modules-center": [
+      "pinned",
+      "hyprland-taskbar"
+    ],
+    "modules-right": [],
+    "pinned": {
+      "icon-size": 32
+    },
+    "hyprland-taskbar": {
+      "image-size": 32,
+      "show-app-icon": true,
+      "show-app-name": false,
+      "all-outputs": true,
+      "all-workspaces": true,
+      "show-layout": false
+    }
   }
 ]

@@ -1,0 +1,59 @@
+/* Hyprland Simple Setup dock theme: {{variant_label}}. nwg-dock-hyprland reads CSS only at
+   startup and exits when an imported stylesheet is missing, so the theme is inline.
+   Add your own rules after this region. */
+window {
+  background: {{color.bg | rgba:@effects.shell_opacity}};
+  color: {{color.fg}};
+  border: 1px solid {{color.border}};
+  border-radius: {{metrics.radius_large | px}};
+}
+
+#box {
+  padding: {{metrics.space_s | px}} {{metrics.space_m | px}};
+}
+
+#active {
+  border-bottom: {{metrics.focus_width | px}} solid {{color.accent}};
+}
+
+button,
+image {
+  background: none;
+  border-style: none;
+  box-shadow: none;
+  color: {{color.fg}};
+}
+
+button {
+  padding: {{metrics.space_s | px}};
+  margin: 0 {{metrics.space_xs | px}};
+  border-radius: {{metrics.radius | px}};
+  font-family: "{{font.ui_family}}";
+  font-size: {{font.ui_size_px | px}};
+}
+
+button:hover {
+  background-color: {{color.hover}};
+}
+
+button:focus {
+  box-shadow: inset 0 0 0 {{metrics.focus_width | px}} {{color.focus}};
+}
+
+menu {
+  background: {{color.bg_alt}};
+  color: {{color.fg}};
+  border: 1px solid {{color.border}};
+  border-radius: {{metrics.radius | px}};
+}
+
+menu menuitem:hover {
+  background: {{color.hover}};
+}
+
+tooltip {
+  background: {{color.bg_alt}};
+  color: {{color.fg}};
+  border: 1px solid {{color.border}};
+  border-radius: {{metrics.radius | px}};
+}

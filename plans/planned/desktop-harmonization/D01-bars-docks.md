@@ -1,6 +1,6 @@
 # D01 — Bars and docks
 
-Status: product policy synchronized with the completed interview; implementation not started. Master section 9 and the [decision record](../desktop-harmonization-grill.md) define P01-P07; native frontend evidence remains pending.
+Status: product policy synchronized with the completed interview; implemented on branch `feat/harmonize-visual-design` (uncommitted, 2026-10-21); user-led VM acceptance pending, see [acceptance matrix](../../../Documents/desktop-harmonization-acceptance.md). Master section 9 and the [decision record](../desktop-harmonization-grill.md) define P01-P07; native frontend evidence remains pending.
 Master: [Desktop harmonization master](../desktop-harmonization-master.md).
 Source baseline: `610a18bac374e7e2ffd0bcb2d99b026131deedbc`, branch `feat/harmonize-visual-design`.
 Goal: preserve the active Waybar workflows across every bar choice and define reversible, independently selectable dock integration.
@@ -113,7 +113,7 @@ Provider backends must not import D01 widgets, styles, or frontend-owned filesys
 ## 5. Numbered work packages
 
 ### D01.1 — Freeze baseline and feasibility contributions
-Status: not started. Prerequisite: planning approval; source/version discovery may precede the foundation gate.
+Status: implemented; VM acceptance pending. Prerequisite: planning approval; source/version discovery may precede the foundation gate.
 Ownership: D01 contributes rows to F01's proposed capability ledger and F04's proposed coverage descriptor; producer owners integrate shared files.
 Deliverables: full matrix above traced through helpers, explicit/native-default gesture evidence, dependency closure requests and dock policy brief.
 Bounded future probes: alternative-bar custom controls/menus, keyboard reachability, task activation/pinning, output selection and autohide.
@@ -121,7 +121,7 @@ Validation: source-to-menu ID equality; distinguish confirmed routes from toolti
 Done: every active operation and option has a contract/evidence disposition; unresolved required support blocks parity rather than disappearing.
 
 ### D01.2 — Implement application theme mappings
-Status: not started. Prerequisites: foundation gate; D01.1 identities; approved P02 values and P05 compatibility.
+Status: implemented; VM acceptance pending. Prerequisites: foundation gate; D01.1 identities; approved P02 values and P05 compatibility.
 Ownership: D01's F03 renderer registrations and existing Waybar/Ironbar/nwg-panel app profiles; new dock/style paths remain proposed pending discovery.
 Deliverables: deterministic staged app outputs, validators, asset references and per-app reload/restart/deferred descriptors.
 Preserve behavior keys, user overrides and inactive extras; shared nwg-panel styling must have one deduplicated output owner.
@@ -129,7 +129,7 @@ Validation: F04 renderer fixtures for approved variants, missing assets, hostile
 Done: each selected bar/dock has declared visual coverage or a blocking limitation; renderers perform no live writes or activation.
 
 ### D01.3 — Wire complete bar presentation
-Status: not started. Prerequisites: foundation gate, D01.1 contracts; D01.2 styling; real providers before behavior acceptance.
+Status: implemented; VM acceptance pending. Prerequisites: foundation gate, D01.1 contracts; D01.2 styling; real providers before behavior acceptance.
 Ownership: existing app profiles, Waybar XML presentation and D01-owned formatting adapters; provider/helper extraction remains with F02/D02-D07.
 Deliverables: equivalent approved controls for all three bars, including all menu entries and explicit failure/stale feedback.
 Prefer verified native widgets; use bounded shared-provider interfaces where necessary, never a second desktop shell.
@@ -137,7 +137,7 @@ Validation: proposed `tests/shell/bars_parity.sh` traces every gesture to one in
 Done: every baseline operation has either a verified native implementation or an explicit disabled/explained unsupported control on a labeled limited option. No false success, silent substitute or missing-operation concealment; providers do not depend on widgets.
 
 ### D01.4 — Define dock workflows and output behavior
-Status: not started. Prerequisites: foundation gate, D01.1 findings, P01/P05 approval for required dock capabilities.
+Status: implemented; VM acceptance pending. Prerequisites: foundation gate, D01.1 findings, P01/P05 approval for required dock capabilities.
 Ownership: nwg-panel dock profile and app-specific nwg-dock renderer/configuration; output paths for the latter are proposed until verified.
 Deliverables: pin identity/order and launch-versus-focus rules, task states, monitor placement, reserved-space and autohide descriptors.
 Seed the primary terminal/browser/graphical file manager/enabled GUI editor when no user pins exist. Follow the focused output where natively supported; otherwise use the fixed primary output and label follow-focus unsupported. Preserve user assignments. Autohide, dock-specific keyboard switching and window actions are optional, not new mandatory features.
@@ -145,7 +145,7 @@ Validation: proposed `tests/shell/docks_behavior.sh` covers None transitions, ma
 Done: both docks meet approved outcomes or retain explicit blockers; None neither launches nor generates dock-specific state.
 
 ### D01.5 — Integrate lifecycle and reversible switching
-Status: not started. Prerequisites: D01.2-D01.4; F02 ownership/transactions; P06 before changed existing-install activation.
+Status: implemented; VM acceptance pending. Prerequisites: D01.2-D01.4; F02 ownership/transactions; P06 before changed existing-install activation.
 Ownership: D01 supplies specifications/tests; F02/I01 integrate `nwg_panel.sh`, `toggle_waybar.sh`, role routing, startup and installer changes.
 Deliverables: all nine bar/dock combinations; combined nwg-panel starts once, dock launch remains a no-op when shared, bar toggle leaves dock visible.
 Preserve current non-nwg toggle semantics until an explicit migration is approved; configured Waybar SIGUSR behavior is not the current toggle wrapper's behavior.
@@ -153,7 +153,7 @@ Validation: duplicate starts, malformed profiles, interrupted generation, consen
 Done: shared activation happens once, owned-process scope is proven, and restored files versus deferred runtime recovery are reported separately.
 
 ### D01.6 — Deliver parity and acceptance evidence
-Status: not started. Prerequisites: D01.2-D01.5; actual provider integration; P01-P07 disposition for affected claims.
+Status: implemented; VM acceptance pending. Prerequisites: D01.2-D01.5; actual provider integration; P01-P07 disposition for affected claims.
 Ownership: D01 domain tests and evidence contributions; F04 owns common infrastructure and I01 owns final integration acceptance.
 Deliverables: proposed bar/dock suites, per-operation effect evidence, visual captures, accessibility results and migration limitations.
 Validation: run existing regressions plus proposed suites; inspect real menus/status, mixed-DPI layouts, hotplug, keyboard focus and measured resource use.
@@ -204,12 +204,12 @@ Local wiki tools were unavailable and no web research occurred; future compatibi
 
 ## 9. Implementation checklist and confidence
 
-1. Not started — D01.1: reconcile exact operations, dependencies and feasibility evidence.
-2. Not started — D01.2: implement app mappings against frozen F03/F02 contracts.
-3. Not started — D01.3: provide complete approved presentation across all three bars.
-4. Not started — D01.4: implement approved dock workflows without new defaults.
-5. Not started — D01.5: verify combined ownership, switching, activation and rollback.
-6. Not started — D01.6: deliver effect, visual, accessibility and integration evidence.
+1. Implemented (VM acceptance pending) — D01.1: reconcile exact operations, dependencies and feasibility evidence.
+2. Implemented (VM acceptance pending) — D01.2: implement app mappings against frozen F03/F02 contracts.
+3. Implemented (VM acceptance pending) — D01.3: provide complete approved presentation across all three bars.
+4. Implemented (VM acceptance pending) — D01.4: implement approved dock workflows without new defaults.
+5. Implemented (VM acceptance pending) — D01.5: verify combined ownership, switching, activation and rollback.
+6. Implemented (VM acceptance pending) — D01.6: deliver effect, visual, accessibility and integration evidence.
 
 Planning confidence: **93/100** for source-grounded scope and ownership; runtime feasibility is not certified.
 Uncertainty remains in native gestures, alternative-app APIs, follow-focus support and provider feasibility. Product policy P01-P07 is resolved; VM-only tests cannot certify physical monitor/device behavior.

@@ -1,0 +1,548 @@
+{
+  "schema_version": 1,
+  "owner": "D03",
+  "description": "Notifications and attention (D03): native actions, truthful status, singleton ownership, retention and themes.",
+  "cases": [
+    {
+      "id": "D03-swaync-dnd",
+      "option": "notifications/swaync",
+      "capability": "notifications.dnd",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/notifications_contracts.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Select SwayNC; toggle DND from the bar or action_exec.sh notifications.dnd.toggle; send notify-send -u normal and -u critical: only the critical popup appears; status_read.sh notifications shows dnd true",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D03-swaync-dismiss",
+      "option": "notifications/swaync",
+      "capability": "notifications.dismiss",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/notifications_contracts.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Send three notifications, run action_exec.sh notifications.dismiss.all: all popups disappear; the control center still lists them",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D03-swaync-history",
+      "option": "notifications/swaync",
+      "capability": "notifications.history",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/notifications_contracts.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Run action_exec.sh notifications.history.open: the control center opens and lists earlier notifications",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D03-swaync-center",
+      "option": "notifications/swaync",
+      "capability": "notifications.center",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/notifications_contracts.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Run action_exec.sh notifications.center.toggle twice: the control center opens and closes",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D03-swaync-status",
+      "option": "notifications/swaync",
+      "capability": "notifications.status",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/notifications_contracts.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "With the provider stopped, status_read.sh notifications reports running false and no daemon starts; with it running, counts and DND match what is on screen; no notification text appears in the JSON",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D03-swaync-singleton",
+      "option": "notifications/swaync",
+      "capability": "notifications.singleton",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/notifications_lifecycle.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "With SwayNC selected and another notification daemon already running, log in: role_exec.sh refuses to start SwayNC (exit 10, logged in notifications.log) and the other daemon keeps running",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D03-swaync-retention",
+      "option": "notifications/swaync",
+      "capability": "notifications.retention",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/notifications_rendering.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Not applicable for a pass: SwayNC has no native cap or expiry; confirm the limitation text in the installer",
+      "result": "not-run",
+      "limits": "No provider supports 24-hour expiry natively; the option stays limited."
+    },
+    {
+      "id": "D03-swaync-lock-privacy",
+      "option": "notifications/swaync",
+      "capability": "notifications.lock_privacy",
+      "evidence_required": "visual",
+      "tests": [
+        {
+          "path": "tests/shell/notifications_contracts.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Lock with hyprlock (Super+L), send notify-send -u critical from another TTY or ssh: no popup or text is visible on the lock screen; unlock and the notification is handled normally",
+      "result": "not-run",
+      "limits": "Lock rendering cannot run headless; ext-session-lock-v1 and the absent above_lock/session_lock_xray settings are the only local evidence."
+    },
+    {
+      "id": "D03-swaync-transient",
+      "option": "notifications/swaync",
+      "capability": "notifications.transient",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/notifications_rendering.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Send notify-send -e 'transient'; after it closes it is not in the SwayNC history",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D03-mako-dnd",
+      "option": "notifications/mako",
+      "capability": "notifications.dnd",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/notifications_contracts.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Select Mako; toggle DND from the bar or action_exec.sh notifications.dnd.toggle; send notify-send -u normal and -u critical: only the critical popup appears; status_read.sh notifications shows dnd true",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D03-mako-dismiss",
+      "option": "notifications/mako",
+      "capability": "notifications.dismiss",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/notifications_contracts.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Send three notifications, run action_exec.sh notifications.dismiss.all: all popups disappear",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D03-mako-history",
+      "option": "notifications/mako",
+      "capability": "notifications.history",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/notifications_contracts.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Run action_exec.sh notifications.history.open: a notification explains that Mako has no browsable history",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D03-mako-center",
+      "option": "notifications/mako",
+      "capability": "notifications.center",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/notifications_contracts.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Run action_exec.sh notifications.center.toggle: a notification explains that Mako has no notification center",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D03-mako-status",
+      "option": "notifications/mako",
+      "capability": "notifications.status",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/notifications_contracts.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "With the provider stopped, status_read.sh notifications reports running false and no daemon starts; with it running, counts and DND match what is on screen; no notification text appears in the JSON",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D03-mako-singleton",
+      "option": "notifications/mako",
+      "capability": "notifications.singleton",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/notifications_lifecycle.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "With Mako selected and another notification daemon already running, log in: role_exec.sh refuses to start Mako (exit 10, logged in notifications.log) and the other daemon keeps running",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D03-mako-retention",
+      "option": "notifications/mako",
+      "capability": "notifications.retention",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/notifications_rendering.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Send 105 notifications and dismiss them: makoctl history -j | jq length stays at 100; restart mako: history is empty",
+      "result": "not-run",
+      "limits": "No provider supports 24-hour expiry natively; the option stays limited."
+    },
+    {
+      "id": "D03-mako-lock-privacy",
+      "option": "notifications/mako",
+      "capability": "notifications.lock_privacy",
+      "evidence_required": "visual",
+      "tests": [
+        {
+          "path": "tests/shell/notifications_contracts.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Lock with hyprlock (Super+L), send notify-send -u critical from another TTY or ssh: no popup or text is visible on the lock screen; unlock and the notification is handled normally",
+      "result": "not-run",
+      "limits": "Lock rendering cannot run headless; ext-session-lock-v1 and the absent above_lock/session_lock_xray settings are the only local evidence."
+    },
+    {
+      "id": "D03-mako-transient",
+      "option": "notifications/mako",
+      "capability": "notifications.transient",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/notifications_rendering.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Send notify-send -e 'transient'; after it closes it is not in the Mako history",
+      "result": "not-run",
+      "limits": "Mako stores transient notifications; its case is expected to show the documented limitation."
+    },
+    {
+      "id": "D03-dunst-dnd",
+      "option": "notifications/dunst",
+      "capability": "notifications.dnd",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/notifications_contracts.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Select Dunst; toggle DND from the bar or action_exec.sh notifications.dnd.toggle; send notify-send -u normal and -u critical: only the critical popup appears; status_read.sh notifications shows dnd true",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D03-dunst-dismiss",
+      "option": "notifications/dunst",
+      "capability": "notifications.dismiss",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/notifications_contracts.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Send three notifications, run action_exec.sh notifications.dismiss.all: all popups disappear",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D03-dunst-history",
+      "option": "notifications/dunst",
+      "capability": "notifications.history",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/notifications_contracts.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Run action_exec.sh notifications.history.open: a notification explains that Dunst has no browsable history",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D03-dunst-center",
+      "option": "notifications/dunst",
+      "capability": "notifications.center",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/notifications_contracts.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Run action_exec.sh notifications.center.toggle: a notification explains that Dunst has no notification center",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D03-dunst-status",
+      "option": "notifications/dunst",
+      "capability": "notifications.status",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/notifications_contracts.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "With the provider stopped, status_read.sh notifications reports running false and no daemon starts; with it running, counts and DND match what is on screen; no notification text appears in the JSON",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D03-dunst-singleton",
+      "option": "notifications/dunst",
+      "capability": "notifications.singleton",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/notifications_lifecycle.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "With Dunst selected and another notification daemon already running, log in: role_exec.sh refuses to start Dunst (exit 10, logged in notifications.log) and the other daemon keeps running",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D03-dunst-retention",
+      "option": "notifications/dunst",
+      "capability": "notifications.retention",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/notifications_rendering.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Send 105 notifications: dunstctl count history stays at 100; restart dunst: history is empty",
+      "result": "not-run",
+      "limits": "No provider supports 24-hour expiry natively; the option stays limited."
+    },
+    {
+      "id": "D03-dunst-lock-privacy",
+      "option": "notifications/dunst",
+      "capability": "notifications.lock_privacy",
+      "evidence_required": "visual",
+      "tests": [
+        {
+          "path": "tests/shell/notifications_contracts.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Lock with hyprlock (Super+L), send notify-send -u critical from another TTY or ssh: no popup or text is visible on the lock screen; unlock and the notification is handled normally",
+      "result": "not-run",
+      "limits": "Lock rendering cannot run headless; ext-session-lock-v1 and the absent above_lock/session_lock_xray settings are the only local evidence."
+    },
+    {
+      "id": "D03-dunst-transient",
+      "option": "notifications/dunst",
+      "capability": "notifications.transient",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/notifications_rendering.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Send notify-send -e 'transient'; after it closes it is not in the Dunst history",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D03-fnott-dnd",
+      "option": "notifications/fnott",
+      "capability": "notifications.dnd",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/notifications_contracts.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Select Fnott; action_exec.sh notifications.dnd.toggle shows an explanation that Fnott has no readable do-not-disturb and nothing changes",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D03-fnott-dismiss",
+      "option": "notifications/fnott",
+      "capability": "notifications.dismiss",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/notifications_contracts.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Send three notifications, run action_exec.sh notifications.dismiss.all: all popups disappear",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D03-fnott-history",
+      "option": "notifications/fnott",
+      "capability": "notifications.history",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/notifications_contracts.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Run action_exec.sh notifications.history.open: a notification explains that Fnott has no browsable history",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D03-fnott-center",
+      "option": "notifications/fnott",
+      "capability": "notifications.center",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/notifications_contracts.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Run action_exec.sh notifications.center.toggle: a notification explains that Fnott has no notification center",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D03-fnott-status",
+      "option": "notifications/fnott",
+      "capability": "notifications.status",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/notifications_contracts.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "With the provider stopped, status_read.sh notifications reports running false and no daemon starts; with it running, counts and DND match what is on screen; no notification text appears in the JSON",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D03-fnott-singleton",
+      "option": "notifications/fnott",
+      "capability": "notifications.singleton",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/notifications_lifecycle.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "With Fnott selected and another notification daemon already running, log in: role_exec.sh refuses to start Fnott (exit 10, logged in notifications.log) and the other daemon keeps running",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D03-fnott-retention",
+      "option": "notifications/fnott",
+      "capability": "notifications.retention",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/notifications_rendering.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Not applicable: Fnott keeps no history",
+      "result": "not-run",
+      "limits": "No provider supports 24-hour expiry natively; the option stays limited."
+    },
+    {
+      "id": "D03-fnott-lock-privacy",
+      "option": "notifications/fnott",
+      "capability": "notifications.lock_privacy",
+      "evidence_required": "visual",
+      "tests": [
+        {
+          "path": "tests/shell/notifications_contracts.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Lock with hyprlock (Super+L), send notify-send -u critical from another TTY or ssh: no popup or text is visible on the lock screen; unlock and the notification is handled normally",
+      "result": "not-run",
+      "limits": "Lock rendering cannot run headless; ext-session-lock-v1 and the absent above_lock/session_lock_xray settings are the only local evidence."
+    },
+    {
+      "id": "D03-theme-units",
+      "option": null,
+      "capability": null,
+      "evidence_required": "visual",
+      "tests": [
+        {
+          "path": "tests/shell/notifications_rendering.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "For each provider switch dark and light with Super+Shift+T and send a normal and a critical notification: Mocha/Latte surfaces, Noto Sans, Blue normal and Red critical accents; SwayNC, mako and dunst restyle immediately, fnott after its restart",
+      "result": "not-run",
+      "limits": "",
+      "context": "units swaync, mako, dunst, fnott"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 # Desktop harmonization master plan
 
-Status: planning complete; product policy resolved by the Grill Me interview. Native-capability verification and implementation remain not started. The interview authorizes documentation synchronization, not implementation.
+Status: implemented on branch `feat/harmonize-visual-design` (uncommitted, 2026-10-21): all twelve subplans (F01-F04, D01-D07, I01) are implemented with offline tests and native-capability evidence recorded in the capability ledger. User-led VM acceptance is pending; see [acceptance matrix](../../Documents/desktop-harmonization-acceptance.md) and [VM testing](../../Documents/desktop-harmonization-vm-testing.md). The plan family stays under `plans/planned/` until that acceptance.
 
 Planning date: 2026-09-20.
 
@@ -185,7 +185,7 @@ These assignments resolve planning ownership without choosing new API names or c
 
 ### Execution dependency graph
 
-This graph is the scheduling authority. It separates specification, fixture production, implementation and acceptance so a reference back to a producer's draft does not become a cycle. All nodes remain not started. `none` means no earlier graph node, not authorization to act. P01-P07 gates still apply.
+This graph is the scheduling authority. It separates specification, fixture production, implementation and acceptance so a reference back to a producer's draft does not become a cycle. All nodes are implemented on the branch; FINAL acceptance awaits the user-led VM run. `none` means no earlier graph node, not authorization to act. P01-P07 gates still apply.
 
 | Node | Depends on | Work covered |
 |---|---|---|
@@ -308,10 +308,10 @@ Current agent/multiplexer/triage behavior and configuration-reliability work are
 
 | Item | Planning status | Implementation status |
 |---|---|---|
-| Master and coordination contracts | Reconciled by parent | Not started |
-| F01-F04 foundation subplans | Four successful recovered drafts, inspected and saved | Not started |
-| D01-D07 domain subplans | Seven successful drafts, inspected and saved | Not started |
-| I01 integration subplan | Successful draft, inspected and reconciled | Not started |
+| Master and coordination contracts | Reconciled by parent | Implemented on branch; VM acceptance pending |
+| F01-F04 foundation subplans | Four successful recovered drafts, inspected and saved | Implemented on branch; VM acceptance pending |
+| D01-D07 domain subplans | Seven successful drafts, inspected and saved | Implemented on branch; VM acceptance pending |
+| I01 integration subplan | Successful draft, inspected and reconciled | Implemented on branch; VM acceptance pending |
 | Cross-plan review and parent reconciliation | Review completed; CPR-01 and CPR-02 accepted and corrected; parent refinements recorded | Not applicable |
 | Initial link, coverage, dependency and scope validation | Passed before interview: twelve subplans, 73 work packages, 17 roles, 73 option rows, four None states, 115 generic packages, 146 local links and acyclic 17-node execution graph | Not applicable |
 | Grill Me policy synchronization | Passed: 54 answers recorded; master and all twelve subplans synchronized; 160 links, preserved role/package coverage, acyclic graph and documentation/interview-metadata-only scope verified | Not started |

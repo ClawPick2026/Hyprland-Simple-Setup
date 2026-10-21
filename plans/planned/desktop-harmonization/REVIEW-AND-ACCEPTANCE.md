@@ -1,6 +1,6 @@
 # Planning review and acceptance
 
-Status: PASS for planning-document consistency, including the Grill Me policy amendment. Product decisions are recorded and synchronized; implementation and runtime acceptance remain unstarted.
+Status: PASS for planning-document consistency, including the Grill Me policy amendment. Product decisions are recorded and synchronized; implementation is complete on branch `feat/harmonize-visual-design` (uncommitted, 2026-10-21); runtime acceptance in the user-led VM is pending (see [acceptance matrix](../../../Documents/desktop-harmonization-acceptance.md)).
 
 Scope: the [master plan](../desktop-harmonization-master.md) and twelve linked subplans. This record evaluates the planning deliverable only. It does not approve implementation, package installation, live activation or release.
 
@@ -59,7 +59,7 @@ The parent directly checked the corrections. A second independent review of the 
 - Added the master's legacy-helper handoff table. F02 owns generic mechanisms, domain plans own provider semantics, D01 owns panel presentation and I01 serializes shared-path changes.
 - Added D05's ANSI-color requirement to F03.2's token responsibility. Palette values remain subject to P02, not silently approved.
 - Separated F03 theme-specific assertions from F04's common renderer/transaction test harness so they reuse fixtures rather than duplicate infrastructure.
-- Normalized canonical subplan statuses to planning complete and implementation not started. Technical designs remain proposals until their stated gates close.
+- Normalized canonical subplan statuses to planning complete and implemented on branch `feat/harmonize-visual-design` (uncommitted, 2026-10-21); user-led VM acceptance pending, see [acceptance matrix](../../../Documents/desktop-harmonization-acceptance.md). Technical designs remain proposals until their stated gates close.
 
 ## Initial document acceptance checks, before the interview
 

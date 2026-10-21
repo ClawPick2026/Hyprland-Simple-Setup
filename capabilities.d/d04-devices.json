@@ -1,0 +1,1077 @@
+{
+  "schema_version": 1,
+  "owner": "D04",
+  "capabilities": {
+    "network.open": {
+      "domain": "network",
+      "requirement": "required",
+      "outcome": "The selected network application opens (a running nm-applet is not duplicated); no connection or profile changes",
+      "failure_states": [
+        "missing-dependency",
+        "unavailable",
+        "failed"
+      ],
+      "actions": [
+        "network.open"
+      ]
+    },
+    "network.connect": {
+      "domain": "network",
+      "requirement": "required",
+      "outcome": "A native chooser that lists available connections and activates the user's choice opens",
+      "failure_states": [
+        "unsupported",
+        "missing-dependency",
+        "unavailable",
+        "failed"
+      ],
+      "actions": [
+        "network.connect.choose"
+      ]
+    },
+    "network.edit": {
+      "domain": "network",
+      "requirement": "required",
+      "outcome": "The native connection-profile editor opens; saving remains an explicit user action",
+      "failure_states": [
+        "unsupported",
+        "missing-dependency",
+        "unavailable",
+        "failed"
+      ],
+      "actions": [
+        "network.profile.edit"
+      ]
+    },
+    "network.radio": {
+      "domain": "network",
+      "requirement": "required",
+      "outcome": "The Wi-Fi radio switch changes and NetworkManager reports the requested state afterwards",
+      "failure_states": [
+        "denied",
+        "unavailable",
+        "timeout",
+        "failed",
+        "missing-dependency"
+      ],
+      "actions": [
+        "network.radio.set",
+        "network.radio.toggle"
+      ]
+    },
+    "network.status": {
+      "domain": "network",
+      "requirement": "required",
+      "outcome": "status_read.sh network reports backend, connectivity, primary type/state, Wi-Fi radio and signal without SSIDs or addresses",
+      "failure_states": [
+        "missing-dependency",
+        "unavailable"
+      ],
+      "actions": []
+    },
+    "bluetooth.open": {
+      "domain": "bluetooth",
+      "requirement": "required",
+      "outcome": "The selected Bluetooth manager opens",
+      "failure_states": [
+        "missing-dependency",
+        "unavailable",
+        "failed"
+      ],
+      "actions": [
+        "bluetooth.open"
+      ]
+    },
+    "bluetooth.radio": {
+      "domain": "bluetooth",
+      "requirement": "required",
+      "outcome": "The controller power changes after a successful state query and BlueZ reports the requested state afterwards",
+      "failure_states": [
+        "unavailable",
+        "denied",
+        "timeout",
+        "failed",
+        "missing-dependency"
+      ],
+      "actions": [
+        "bluetooth.radio.set",
+        "bluetooth.radio.toggle"
+      ]
+    },
+    "bluetooth.pairing": {
+      "domain": "bluetooth",
+      "requirement": "required",
+      "outcome": "Discovery, pairing, trust and connection are separate user actions handled by a pairing agent owned by the selected manager",
+      "failure_states": [
+        "unsupported",
+        "unavailable",
+        "failed"
+      ],
+      "actions": []
+    },
+    "bluetooth.status": {
+      "domain": "bluetooth",
+      "requirement": "required",
+      "outcome": "status_read.sh bluetooth distinguishes no controller, off, blocked and on and counts connected devices without aliases or addresses",
+      "failure_states": [
+        "missing-dependency",
+        "unavailable"
+      ],
+      "actions": []
+    },
+    "audio.open": {
+      "domain": "audio",
+      "requirement": "required",
+      "outcome": "The selected audio application opens (an open window is focused)",
+      "failure_states": [
+        "missing-dependency",
+        "unavailable",
+        "failed"
+      ],
+      "actions": [
+        "audio.open"
+      ]
+    },
+    "audio.streams": {
+      "domain": "audio",
+      "requirement": "required",
+      "outcome": "Per-application volume and output routing are available in the selected application (policy P04)",
+      "failure_states": [
+        "unsupported",
+        "missing-dependency",
+        "unavailable",
+        "failed"
+      ],
+      "actions": [
+        "audio.streams.open"
+      ]
+    },
+    "audio.hardware": {
+      "domain": "audio",
+      "requirement": "required",
+      "outcome": "Device-level controls open: output devices for stream mixers, the ALSA mixer for hardware mixers",
+      "failure_states": [
+        "missing-dependency",
+        "unavailable",
+        "failed"
+      ],
+      "actions": [
+        "audio.hardware.open"
+      ]
+    },
+    "audio.status": {
+      "domain": "audio",
+      "requirement": "required",
+      "outcome": "status_read.sh audio reports server, output/input volume and mute (null when unknown) and whether the app controls streams",
+      "failure_states": [
+        "missing-dependency",
+        "unavailable"
+      ],
+      "actions": []
+    }
+  },
+  "options": {
+    "network/network-manager-applet": {
+      "support": "limited",
+      "summary": "Tray applet; edits profiles with nm-connection-editor. Connections are chosen from its tray menu only.",
+      "limitations": [
+        "The connection chooser opens only from the applet's tray menu; bar and key actions for it report unsupported."
+      ],
+      "family": "gtk3",
+      "startup": "daemon",
+      "data_boundary": "Profiles and secrets stay in NetworkManager and the keyring; nothing is migrated",
+      "capabilities": {
+        "network.open": {
+          "support": "supported",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D04-004",
+            "E-D04-018"
+          ],
+          "note": "Starts the tray applet once"
+        },
+        "network.connect": {
+          "support": "unsupported",
+          "mechanism": "none",
+          "evidence": [
+            "E-D04-004",
+            "E-D04-018"
+          ],
+          "note": "No command opens the tray chooser"
+        },
+        "network.edit": {
+          "support": "supported",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D04-004",
+            "E-D04-018"
+          ],
+          "note": "nm-connection-editor is a dependency of the applet package"
+        },
+        "network.radio": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D04-002",
+            "E-D04-018"
+          ],
+          "note": "NetworkManager's nmcli, shared backend of every network option"
+        },
+        "network.status": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D04-003",
+            "E-D04-018"
+          ],
+          "note": ""
+        }
+      },
+      "theme": {
+        "support": "supported",
+        "units": [
+          "gtk3"
+        ],
+        "note": "Global GTK 3 mapping (F03); tray icon presentation belongs to the bar (D01)"
+      }
+    },
+    "network/nm-connection-editor": {
+      "support": "limited",
+      "summary": "Connection profile editor. It cannot activate connections.",
+      "limitations": [
+        "Choosing or activating a connection is not possible in nm-connection-editor; that action reports unsupported."
+      ],
+      "family": "gtk3",
+      "startup": "on-demand",
+      "data_boundary": "Profiles and secrets stay in NetworkManager and the keyring; nothing is migrated",
+      "capabilities": {
+        "network.open": {
+          "support": "supported",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D04-018"
+          ],
+          "note": ""
+        },
+        "network.connect": {
+          "support": "unsupported",
+          "mechanism": "none",
+          "evidence": [
+            "E-D04-004",
+            "E-D04-018"
+          ],
+          "note": "Profile editor only"
+        },
+        "network.edit": {
+          "support": "supported",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D04-018"
+          ],
+          "note": ""
+        },
+        "network.radio": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D04-002",
+            "E-D04-018"
+          ],
+          "note": "NetworkManager's nmcli, shared backend of every network option"
+        },
+        "network.status": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D04-003",
+            "E-D04-018"
+          ],
+          "note": ""
+        }
+      },
+      "theme": {
+        "support": "supported",
+        "units": [
+          "gtk3"
+        ],
+        "note": "Global GTK 3 mapping (F03)"
+      }
+    },
+    "network/networkmanager": {
+      "support": "full",
+      "summary": "nmtui in the selected terminal: separate connect and edit activities, Wi-Fi radio through NetworkManager.",
+      "limitations": [],
+      "family": "tui",
+      "startup": "terminal",
+      "data_boundary": "Profiles and secrets stay in NetworkManager; nothing is migrated",
+      "capabilities": {
+        "network.open": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D04-001",
+            "E-D04-018"
+          ],
+          "note": ""
+        },
+        "network.connect": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D04-001",
+            "E-D04-018"
+          ],
+          "note": "nmtui connect"
+        },
+        "network.edit": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D04-001",
+            "E-D04-018"
+          ],
+          "note": "nmtui edit"
+        },
+        "network.radio": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D04-002",
+            "E-D04-018"
+          ],
+          "note": "NetworkManager's nmcli, shared backend of every network option"
+        },
+        "network.status": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D04-003",
+            "E-D04-018"
+          ],
+          "note": ""
+        }
+      },
+      "theme": {
+        "support": "supported",
+        "units": [
+          "nmtui"
+        ],
+        "note": "Generated libnewt palette passed as NEWT_COLORS_FILE by the network provider; terminal palette and font from D05. Legacy nmtui.sh wrappers start nmtui without it until the bar is rewired (D01)."
+      }
+    },
+    "network/plasma-nm": {
+      "support": "unverified",
+      "summary": "Plasma network applet in its own window; profiles in the Plasma connection editor.",
+      "limitations": [
+        "Outside a Plasma session, password prompts requested by NetworkManager (reconnects, VPN, 802.1X) need the KDE kded6 agent; verify in the VM."
+      ],
+      "family": "kde",
+      "startup": "on-demand",
+      "data_boundary": "Profiles stay in NetworkManager; secrets in KWallet or Secret Service; nothing is migrated",
+      "capabilities": {
+        "network.open": {
+          "support": "supported",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D04-005",
+            "E-D04-018"
+          ],
+          "note": ""
+        },
+        "network.connect": {
+          "support": "supported",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D04-005",
+            "E-D04-018"
+          ],
+          "note": "plasmawindowed org.kde.plasma.networkmanagement"
+        },
+        "network.edit": {
+          "support": "supported",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D04-005",
+            "E-D04-018"
+          ],
+          "note": "kcmshell6 kcm_networkmanagement"
+        },
+        "network.radio": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D04-002",
+            "E-D04-018"
+          ],
+          "note": "NetworkManager's nmcli, shared backend of every network option"
+        },
+        "network.status": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D04-003",
+            "E-D04-018"
+          ],
+          "note": ""
+        }
+      },
+      "theme": {
+        "support": "unverified",
+        "units": [
+          "qt6ct",
+          "kdeglobals"
+        ],
+        "note": "Global Qt/KDE mapping (F03); QML applet adoption of the KDE color scheme needs VM review"
+      }
+    },
+    "bluetooth/blueman": {
+      "support": "full",
+      "summary": "Blueman manager with its own pairing agent; power control through BlueZ.",
+      "limitations": [],
+      "family": "gtk3",
+      "startup": "on-demand",
+      "data_boundary": "Bonds stay in BlueZ; nothing is migrated",
+      "capabilities": {
+        "bluetooth.open": {
+          "support": "supported",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D04-018"
+          ],
+          "note": ""
+        },
+        "bluetooth.radio": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D04-006",
+            "E-D04-020",
+            "E-D04-018"
+          ],
+          "note": "BlueZ bluetoothctl; successful power change on real hardware is a VM/hardware check"
+        },
+        "bluetooth.pairing": {
+          "support": "supported",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D04-007"
+          ],
+          "note": "blueman-manager activates blueman-applet, whose AuthAgent plugin registers the agent"
+        },
+        "bluetooth.status": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D04-006",
+            "E-D04-020",
+            "E-D04-018"
+          ],
+          "note": ""
+        }
+      },
+      "theme": {
+        "support": "supported",
+        "units": [
+          "gtk3"
+        ],
+        "note": "Global GTK 3 mapping (F03)"
+      }
+    },
+    "bluetooth/bluedevil": {
+      "support": "unverified",
+      "summary": "KDE Bluetooth settings module; pairing through its wizard.",
+      "limitations": [
+        "Pairing requests started by a device and file receiving need the KDE kded6 Bluetooth module; verify in the VM."
+      ],
+      "family": "kde",
+      "startup": "on-demand",
+      "data_boundary": "Bonds stay in BlueZ; nothing is migrated",
+      "capabilities": {
+        "bluetooth.open": {
+          "support": "supported",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D04-018"
+          ],
+          "note": ""
+        },
+        "bluetooth.radio": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D04-006",
+            "E-D04-020",
+            "E-D04-018"
+          ],
+          "note": "BlueZ bluetoothctl; successful power change on real hardware is a VM/hardware check"
+        },
+        "bluetooth.pairing": {
+          "support": "partial",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D04-008"
+          ],
+          "note": "Wizard agent for pairing started from the module; device-initiated requests need kded6"
+        },
+        "bluetooth.status": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D04-006",
+            "E-D04-020",
+            "E-D04-018"
+          ],
+          "note": ""
+        }
+      },
+      "theme": {
+        "support": "unverified",
+        "units": [
+          "qt6ct",
+          "kdeglobals"
+        ],
+        "note": "Global Qt/KDE mapping (F03); needs VM review"
+      }
+    },
+    "bluetooth/bluetui": {
+      "support": "limited",
+      "summary": "Bluetui in the selected terminal: scan, pair, trust and connect with its own agent.",
+      "limitations": [
+        "Bluetui does not start while Bluetooth is blocked by rfkill; unblock it first."
+      ],
+      "family": "tui",
+      "startup": "terminal",
+      "data_boundary": "Bonds stay in BlueZ; nothing is migrated",
+      "capabilities": {
+        "bluetooth.open": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D04-009",
+            "E-D04-018"
+          ],
+          "note": ""
+        },
+        "bluetooth.radio": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D04-006",
+            "E-D04-020",
+            "E-D04-018"
+          ],
+          "note": "BlueZ bluetoothctl; successful power change on real hardware is a VM/hardware check"
+        },
+        "bluetooth.pairing": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D04-009"
+          ],
+          "note": "Agent registered for bluetui's own requests"
+        },
+        "bluetooth.status": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D04-006",
+            "E-D04-020",
+            "E-D04-018"
+          ],
+          "note": ""
+        }
+      },
+      "theme": {
+        "support": "partial",
+        "units": [],
+        "note": "No color configuration in bluetui 0.8.2; it uses the terminal palette and font from D05"
+      }
+    },
+    "bluetooth/bluetuith": {
+      "support": "unverified",
+      "summary": "Bluetuith in the selected terminal with its own default pairing agent.",
+      "limitations": [
+        "PIN and passkey requests are answered automatically (0000/1024); devices that need a specific PIN cannot be paired."
+      ],
+      "family": "tui",
+      "startup": "terminal",
+      "data_boundary": "Bonds stay in BlueZ; nothing is migrated",
+      "capabilities": {
+        "bluetooth.open": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D04-018"
+          ],
+          "note": ""
+        },
+        "bluetooth.radio": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D04-006",
+            "E-D04-020",
+            "E-D04-018"
+          ],
+          "note": "BlueZ bluetoothctl; successful power change on real hardware is a VM/hardware check"
+        },
+        "bluetooth.pairing": {
+          "support": "partial",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D04-010"
+          ],
+          "note": "Confirmation prompts work; PIN/passkey entry is automatic"
+        },
+        "bluetooth.status": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D04-006",
+            "E-D04-020",
+            "E-D04-018"
+          ],
+          "note": ""
+        }
+      },
+      "theme": {
+        "support": "partial",
+        "units": [],
+        "note": "Native HJSON 'theme' key exists but is not managed (AUR package not verifiable locally); uses the terminal palette from D05"
+      }
+    },
+    "audio/pavucontrol": {
+      "support": "full",
+      "summary": "PulseAudio Volume Control: per-application volume and routing, output devices view.",
+      "limitations": [
+        "An already open window is focused without switching to the requested tab."
+      ],
+      "family": "gtk4",
+      "startup": "on-demand",
+      "data_boundary": "Audio policy stays in PipeWire/WirePlumber; nothing is migrated",
+      "capabilities": {
+        "audio.open": {
+          "support": "supported",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D04-018"
+          ],
+          "note": ""
+        },
+        "audio.streams": {
+          "support": "supported",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D04-012",
+            "E-D04-018"
+          ],
+          "note": "--tab=1 Playback"
+        },
+        "audio.hardware": {
+          "support": "supported",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D04-012",
+            "E-D04-018"
+          ],
+          "note": "--tab=3 Output Devices"
+        },
+        "audio.status": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D04-011",
+            "E-D04-018"
+          ],
+          "note": ""
+        }
+      },
+      "theme": {
+        "support": "supported",
+        "units": [
+          "gtk4"
+        ],
+        "note": "Global GTK 4 mapping (F03)"
+      }
+    },
+    "audio/pavucontrol-qt": {
+      "support": "full",
+      "summary": "Qt volume control: per-application volume and routing, output devices view.",
+      "limitations": [
+        "An already open window is focused without switching to the requested tab."
+      ],
+      "family": "qt6",
+      "startup": "on-demand",
+      "data_boundary": "Audio policy stays in PipeWire/WirePlumber; nothing is migrated",
+      "capabilities": {
+        "audio.open": {
+          "support": "supported",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D04-018"
+          ],
+          "note": ""
+        },
+        "audio.streams": {
+          "support": "supported",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D04-013",
+            "E-D04-018"
+          ],
+          "note": "--tab=1 Playback"
+        },
+        "audio.hardware": {
+          "support": "supported",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D04-013",
+            "E-D04-018"
+          ],
+          "note": "--tab=3 Output Devices"
+        },
+        "audio.status": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D04-011",
+            "E-D04-018"
+          ],
+          "note": ""
+        }
+      },
+      "theme": {
+        "support": "supported",
+        "units": [
+          "qt6ct"
+        ],
+        "note": "Global Qt 6 mapping (F03)"
+      }
+    },
+    "audio/qastools": {
+      "support": "limited",
+      "summary": "QasMixer ALSA hardware mixer. No per-application volume or routing.",
+      "limitations": [
+        "QasMixer controls ALSA hardware only; per-application volume and routing are unsupported."
+      ],
+      "family": "qt6",
+      "startup": "on-demand",
+      "data_boundary": "ALSA mixer state only; nothing is migrated",
+      "capabilities": {
+        "audio.open": {
+          "support": "supported",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D04-018"
+          ],
+          "note": ""
+        },
+        "audio.streams": {
+          "support": "unsupported",
+          "mechanism": "none",
+          "evidence": [
+            "E-D04-014",
+            "E-D04-018"
+          ],
+          "note": "ALSA only"
+        },
+        "audio.hardware": {
+          "support": "supported",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D04-014",
+            "E-D04-018"
+          ],
+          "note": ""
+        },
+        "audio.status": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D04-011",
+            "E-D04-018"
+          ],
+          "note": ""
+        }
+      },
+      "theme": {
+        "support": "supported",
+        "units": [
+          "qt6ct"
+        ],
+        "note": "Global Qt 6 mapping (F03)"
+      }
+    },
+    "audio/alsa-utils": {
+      "support": "limited",
+      "summary": "Alsamixer in the selected terminal. No per-application volume or routing.",
+      "limitations": [
+        "Alsamixer controls ALSA hardware only; per-application volume and routing are unsupported."
+      ],
+      "family": "tui",
+      "startup": "terminal",
+      "data_boundary": "ALSA mixer state only; nothing is migrated",
+      "capabilities": {
+        "audio.open": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D04-015",
+            "E-D04-018"
+          ],
+          "note": ""
+        },
+        "audio.streams": {
+          "support": "unsupported",
+          "mechanism": "none",
+          "evidence": [
+            "E-D04-015",
+            "E-D04-018"
+          ],
+          "note": "ALSA only"
+        },
+        "audio.hardware": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D04-015",
+            "E-D04-018"
+          ],
+          "note": ""
+        },
+        "audio.status": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D04-011",
+            "E-D04-018"
+          ],
+          "note": ""
+        }
+      },
+      "theme": {
+        "support": "supported",
+        "units": [
+          "alsamixer"
+        ],
+        "note": "alsamixer.rc maps elements to terminal color names; the D05 terminal palette supplies Catppuccin"
+      }
+    },
+    "audio/ncpamixer": {
+      "support": "unverified",
+      "summary": "Ncpamixer in the selected terminal: per-application volume and routing.",
+      "limitations": [
+        "Not installable in the verification userland (AUR); behavior is from upstream source and needs VM checks."
+      ],
+      "family": "tui",
+      "startup": "terminal",
+      "data_boundary": "Audio policy stays in PipeWire/WirePlumber; nothing is migrated",
+      "capabilities": {
+        "audio.open": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D04-018"
+          ],
+          "note": ""
+        },
+        "audio.streams": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D04-016",
+            "E-D04-018"
+          ],
+          "note": "-t p Playback"
+        },
+        "audio.hardware": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D04-016",
+            "E-D04-018"
+          ],
+          "note": "-t o Output Devices"
+        },
+        "audio.status": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D04-011",
+            "E-D04-018"
+          ],
+          "note": ""
+        }
+      },
+      "theme": {
+        "support": "partial",
+        "units": [],
+        "note": "Theme values are terminal color numbers; the default theme follows the D05 terminal palette, no managed unit"
+      }
+    }
+  },
+  "none_states": {},
+  "generic_packages": {},
+  "evidence": {
+    "E-D04-001": {
+      "kind": "documentation",
+      "source": "nmtui(1), NetworkManager 1.58.1-2 (installed man page)",
+      "environment": "Arch Linux ARM aarch64 research chroot (fake root), private D-Bus buses, no Wi-Fi/Bluetooth/sound hardware",
+      "command": "man -P cat nmtui",
+      "result": "nmtui has native 'connect' (activate/deactivate, like nm-applet) and 'edit' (profile editor, like nm-connection-editor) activities; no radio activity",
+      "date": "2026-10-20"
+    },
+    "E-D04-002": {
+      "kind": "real-effect",
+      "source": "nmcli 1.58.1 against NetworkManager 1.58.1 --no-daemon on a private system bus",
+      "environment": "Arch Linux ARM aarch64 research chroot (fake root), private D-Bus buses, no Wi-Fi/Bluetooth/sound hardware",
+      "command": "nmcli radio wifi off; nmcli radio wifi; nmcli radio wifi on; nmcli radio wifi",
+      "result": "exit 0 each; read-back 'disabled' then 'enabled'",
+      "date": "2026-10-20"
+    },
+    "E-D04-003": {
+      "kind": "real-effect",
+      "source": "nmcli 1.58.1, nmcli(1) EXIT STATUS",
+      "environment": "Arch Linux ARM aarch64 research chroot (fake root), private D-Bus buses, no Wi-Fi/Bluetooth/sound hardware",
+      "command": "nmcli -t -f RUNNING,STATE,CONNECTIVITY,NETWORKING,WIFI-HW,WIFI general; nmcli without a reachable NetworkManager",
+      "result": "terse line 'running:disconnected:unknown:enabled:enabled:enabled'; unreachable daemon exits nonzero (man page: 8 = NetworkManager not running)",
+      "date": "2026-10-20"
+    },
+    "E-D04-004": {
+      "kind": "static",
+      "source": "network-manager-applet 1.36.0-2, nm-connection-editor 1.36.0-2 (pacman -Qi; nm-applet --help)",
+      "environment": "Arch Linux ARM aarch64 research chroot (fake root), private D-Bus buses, no Wi-Fi/Bluetooth/sound hardware",
+      "command": "pacman -Qi network-manager-applet nm-connection-editor; nm-applet --help",
+      "result": "network-manager-applet depends on nm-connection-editor; nm-applet 'is not intended for command-line interaction' (no command opens its tray chooser)",
+      "date": "2026-10-20"
+    },
+    "E-D04-005": {
+      "kind": "documentation",
+      "source": "plasma-nm v6.8.0 (invent.kde.org/plasma/plasma-nm: applet/ConnectionItem.qml, applet/Toolbar.qml, kcms/kcm_connections/CMakeLists.txt, kded/secretagent.cpp; archlinux.org package file list)",
+      "environment": "Upstream source and documentation (not installable in the local userlands)",
+      "command": "source inspection",
+      "result": "applet lists connections with connect/disconnect and Wi-Fi/airplane toggles; kcm_networkmanagement ships in plasma-nm; NetworkManager-initiated secret prompts need the kded6 networkmanagement module",
+      "date": "2026-10-20"
+    },
+    "E-D04-006": {
+      "kind": "real-effect",
+      "source": "bluetoothctl 5.87 with bluetoothd 5.87 on a private system bus",
+      "environment": "Arch Linux ARM aarch64 research chroot (fake root), private D-Bus buses, no Wi-Fi/Bluetooth/sound hardware",
+      "command": "bluetoothctl show (no system bus; no bluetoothd; bluetoothd without controller); bluetoothctl list; bluetoothctl power on",
+      "result": "no bus: abort exit 134; no bluetoothd: blocks until killed (timeout exit 124); no controller: 'No default controller available' exit 1, list exit 0 with empty output, power on exit 1",
+      "date": "2026-10-20"
+    },
+    "E-D04-007": {
+      "kind": "static",
+      "source": "blueman 2.4.6-2 installed Python sources (blueman/main/Manager.py, plugins/applet/AuthAgent.py)",
+      "environment": "Arch Linux ARM aarch64 research chroot (fake root), private D-Bus buses, no Wi-Fi/Bluetooth/sound hardware",
+      "command": "grep RegisterAgent/AppletService in site-packages/blueman",
+      "result": "blueman-manager starts the blueman-applet D-Bus service when absent (stops it again on exit); the applet AuthAgent plugin registers the BlueZ pairing agent",
+      "date": "2026-10-20"
+    },
+    "E-D04-008": {
+      "kind": "documentation",
+      "source": "bluedevil v6.8.0 (src/kcm/bluetooth.cpp, src/wizard/bluewizard.cpp, src/kded/bluedevildaemon.cpp; archlinux.org file list)",
+      "environment": "Upstream source and documentation (not installable in the local userlands)",
+      "command": "source inspection",
+      "result": "KCM 'Pair Device' runs bluedevil-wizard with its own agent; device-initiated pairing/authorization needs the kded6 bluedevil module; KCM has an adapter power switch",
+      "date": "2026-10-20"
+    },
+    "E-D04-009": {
+      "kind": "static",
+      "source": "bluetui 0.8.2-1 (bluetui --help, /usr/share/doc/bluetui/Readme.md, binary strings; upstream src/app.rs)",
+      "environment": "Arch Linux ARM aarch64 research chroot (fake root), private D-Bus buses, no Wi-Fi/Bluetooth/sound hardware",
+      "command": "bluetui --help; strings /usr/bin/bluetui",
+      "result": "registers a BlueZ agent (not default) for its own pair requests; toggle_power/scan/pair/trust/connect keys; config.toml has keybindings only, no color keys; exits at start when rfkill-blocked",
+      "date": "2026-10-20"
+    },
+    "E-D04-010": {
+      "kind": "documentation",
+      "source": "bluetuith v0.2.7 (github.com/bluetuith-org/bluetuith cmd/cli.go, ui/theme/config.go; bluetooth-classic v0.0.8 agent.go)",
+      "environment": "Upstream source and documentation (not installable in the local userlands)",
+      "command": "source inspection",
+      "result": "registers and requests the default BlueZ agent; PIN/passkey requests are auto-answered (0000/1024) instead of prompting; HJSON 'theme' key accepts #rrggbb",
+      "date": "2026-10-20"
+    },
+    "E-D04-011": {
+      "kind": "real-effect",
+      "source": "wpctl from WirePlumber 0.5.18 with PipeWire 1.6.9 (null sink and source created with pw-cli)",
+      "environment": "Arch Linux ARM aarch64 research chroot (fake root), private D-Bus buses, no Wi-Fi/Bluetooth/sound hardware",
+      "command": "wpctl get-volume @DEFAULT_AUDIO_SINK@ (before and after creating nodes); wpctl set-volume ... 0.35; wpctl set-mute ... 1",
+      "result": "without a default node stdout is empty, stderr 'Translate ID error', exit 0; with nodes 'Volume: 1.00', then 'Volume: 0.35 [MUTED]'",
+      "date": "2026-10-20"
+    },
+    "E-D04-012": {
+      "kind": "documentation",
+      "source": "pavucontrol 1:6.2-2 (binary option strings) and upstream v6.2 src/pavuapplication.cc, MainWindow::selectTab",
+      "environment": "Arch Linux ARM aarch64 research chroot (fake root), private D-Bus buses, no Wi-Fi/Bluetooth/sound hardware",
+      "command": "strings /usr/bin/pavucontrol; upstream source",
+      "result": "-t/--tab is 1-based: 1 Playback (per-application streams, routing), 3 Output Devices; single instance switches the running window",
+      "date": "2026-10-20"
+    },
+    "E-D04-013": {
+      "kind": "static",
+      "source": "pavucontrol-qt 2.4.0-1 --help; upstream src/sinkinputwidget.cc",
+      "environment": "Arch Linux ARM aarch64 research chroot (fake root), private D-Bus buses, no Wi-Fi/Bluetooth/sound hardware",
+      "command": "QT_QPA_PLATFORM=offscreen pavucontrol-qt --help",
+      "result": "--tab/-t <tab> option; per-application volume and move-to-sink in the Playback tab (upstream source)",
+      "date": "2026-10-20"
+    },
+    "E-D04-014": {
+      "kind": "static",
+      "source": "qastools 1.5.0-1 (qasmixer --help, pacman -Ql) and upstream README",
+      "environment": "Arch Linux ARM aarch64 research chroot (fake root), private D-Bus buses, no Wi-Fi/Bluetooth/sound hardware",
+      "command": "qasmixer --help",
+      "result": "options select ALSA cards/devices only; README: mixer for ALSA; no PulseAudio/PipeWire stream controls",
+      "date": "2026-10-20"
+    },
+    "E-D04-015": {
+      "kind": "documentation",
+      "source": "alsamixer(1), alsa-utils 1.2.16-1 (installed man page)",
+      "environment": "Arch Linux ARM aarch64 research chroot (fake root), private D-Bus buses, no Wi-Fi/Bluetooth/sound hardware",
+      "command": "man -P cat alsamixer",
+      "result": "ALSA hardware mixer (playback/capture/all views); $XDG_CONFIG_HOME/alsamixer.rc 'color ELEMENT FG BG [ATTR]' with 22 theme elements and 8 color names",
+      "date": "2026-10-20"
+    },
+    "E-D04-016": {
+      "kind": "documentation",
+      "source": "ncpamixer 1.3.11 (github.com/fulhax/ncpamixer src/pa_input.cpp, src/ui/ui.cpp, src/pulsemixer.cpp)",
+      "environment": "Upstream source and documentation (not installable in the local userlands)",
+      "command": "source inspection",
+      "result": "Playback tab has per-stream volume and move-to-sink; -t p|r|o|i|c selects the tab; theme values are ncurses color numbers only",
+      "date": "2026-10-20"
+    },
+    "E-D04-017": {
+      "kind": "real-effect",
+      "source": "libnewt 0.52.25-2, slang 2.3.3-4 (whiptail)",
+      "environment": "Arch Linux ARM aarch64 research chroot (fake root), private D-Bus buses, no Wi-Fi/Bluetooth/sound hardware",
+      "command": "COLORTERM=truecolor NEWT_COLORS_FILE=<generated colors> script -qec 'whiptail --yesno ...'",
+      "result": "newline-separated name=#rrggbb,#rrggbb entries are accepted; output uses the generated colors as 24-bit SGR (e.g. 48;2;30;30;46 Mocha base, 48;2;239;241;245 Latte base)",
+      "date": "2026-10-20"
+    },
+    "E-D04-020": {
+      "kind": "real-effect",
+      "source": "toggle_bluetooth.sh and status_read.sh bluetooth with bluetoothctl 5.87, bluetoothd 5.87 and busctl (systemd 262.1) on a private system bus",
+      "environment": "Arch Linux ARM aarch64 research chroot (fake root), private D-Bus buses, no Wi-Fi/Bluetooth/sound hardware",
+      "command": "toggle_bluetooth.sh before and after starting bluetoothd without a controller; status_read.sh bluetooth",
+      "result": "exit 7 both times without any power request; notifications 'Bluetooth unchanged' with 'bluetoothd is not running' (answered at once through NameHasOwner, no hang) and 'no Bluetooth controller is present'; status controller absent",
+      "date": "2026-10-20"
+    },
+    "E-D04-018": {
+      "kind": "modeled-effect",
+      "source": "tests/shell/device_controls.sh",
+      "environment": "Arch Linux ARM aarch64 hermetic test userland (uid 1000), stateful PATH doubles",
+      "command": "bash tests/run.sh tests/shell/device_controls.sh",
+      "result": "all 13 options: native argv per operation, unsupported without substitution, radio set/toggle read back, no power-on after failed or empty query, status without aliases/SSIDs",
+      "date": "2026-10-20"
+    },
+    "E-D04-019": {
+      "kind": "static",
+      "source": "tests/shell/device_themes.sh with hss_theme.py",
+      "environment": "Arch Linux ARM aarch64 hermetic test userland (uid 1000), stateful PATH doubles",
+      "command": "bash tests/run.sh tests/shell/device_themes.sh",
+      "result": "nmtui and alsamixer units render valid native syntax for Mocha and Latte, apply only to selected members and preserve user lines",
+      "date": "2026-10-20"
+    }
+  }
+}

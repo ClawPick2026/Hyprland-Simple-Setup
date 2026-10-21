@@ -1,0 +1,1173 @@
+{
+  "schema_version": 1,
+  "owner": "D07",
+  "capabilities": {
+    "session.lock": {
+      "domain": "session",
+      "requirement": "required",
+      "outcome": "Hyprlock covers every output immediately; completed only when the locker process is observed",
+      "failure_states": [
+        "missing-dependency",
+        "unavailable",
+        "failed"
+      ],
+      "actions": [
+        "session.lock"
+      ]
+    },
+    "session.logout": {
+      "domain": "session",
+      "requirement": "required",
+      "outcome": "After confirmation only the current session ends (Hyprland exit, or logind terminate-session for the known session ID)",
+      "failure_states": [
+        "cancelled",
+        "unavailable",
+        "denied",
+        "timeout",
+        "failed",
+        "missing-dependency"
+      ],
+      "actions": [
+        "session.logout"
+      ]
+    },
+    "session.reboot": {
+      "domain": "session",
+      "requirement": "required",
+      "outcome": "After confirmation logind accepts the reboot request",
+      "failure_states": [
+        "cancelled",
+        "denied",
+        "timeout",
+        "failed",
+        "missing-dependency"
+      ],
+      "actions": [
+        "session.reboot"
+      ]
+    },
+    "session.shutdown": {
+      "domain": "session",
+      "requirement": "required",
+      "outcome": "After confirmation logind accepts the power-off request",
+      "failure_states": [
+        "cancelled",
+        "denied",
+        "timeout",
+        "failed",
+        "missing-dependency"
+      ],
+      "actions": [
+        "session.shutdown"
+      ]
+    },
+    "session.suspend": {
+      "domain": "session",
+      "requirement": "required",
+      "outcome": "logind accepts the suspend request without confirmation; Hypridle locks before sleep",
+      "failure_states": [
+        "denied",
+        "timeout",
+        "failed",
+        "missing-dependency"
+      ],
+      "actions": [
+        "session.suspend"
+      ]
+    },
+    "session.hibernate": {
+      "domain": "session",
+      "requirement": "optional",
+      "outcome": "Hibernate is requested only when logind reports CanHibernate yes or challenge",
+      "failure_states": [
+        "unsupported",
+        "denied",
+        "timeout",
+        "failed"
+      ],
+      "actions": [
+        "session.hibernate"
+      ]
+    },
+    "session.power_screen": {
+      "domain": "session",
+      "requirement": "required",
+      "outcome": "Wlogout opens with the same session actions and confirmations; hibernate is shown only when available",
+      "failure_states": [
+        "missing-dependency",
+        "unavailable",
+        "failed"
+      ],
+      "actions": [
+        "session.power_screen"
+      ]
+    },
+    "session.auth": {
+      "domain": "session",
+      "requirement": "required",
+      "outcome": "Hyprpolkitagent is the running authentication agent of the session; a foreign agent is reported and left running",
+      "failure_states": [
+        "conflict",
+        "missing-dependency",
+        "unavailable",
+        "timeout",
+        "failed"
+      ],
+      "actions": [
+        "session.auth.start"
+      ]
+    },
+    "session.status": {
+      "domain": "session",
+      "requirement": "required",
+      "outcome": "status_read.sh session reports hibernate availability, the authentication owner and lock state",
+      "failure_states": [
+        "unavailable"
+      ],
+      "actions": []
+    },
+    "session.idle": {
+      "domain": "session",
+      "requirement": "required",
+      "outcome": "Hypridle dims at 240 s, locks at 300 s and locks before sleep (existing behavior preserved)",
+      "failure_states": [
+        "missing-dependency"
+      ],
+      "actions": []
+    },
+    "appearance.compositor": {
+      "domain": "appearance",
+      "requirement": "required",
+      "outcome": "Hyprland borders, groups, rounding, opacity and shadows follow the active variant after a safe config reload",
+      "failure_states": [
+        "conflict",
+        "unavailable",
+        "failed"
+      ],
+      "actions": [
+        "theme.set"
+      ]
+    },
+    "appearance.lock_screen": {
+      "domain": "appearance",
+      "requirement": "required",
+      "outcome": "Hyprlock uses the active variant for background, text, input, focus, checking and error states",
+      "failure_states": [
+        "failed"
+      ],
+      "actions": [
+        "theme.set"
+      ]
+    },
+    "appearance.power_screen": {
+      "domain": "appearance",
+      "requirement": "required",
+      "outcome": "Wlogout uses the generated GTK palette and variant-matched Breeze icons",
+      "failure_states": [
+        "unavailable",
+        "conflict"
+      ],
+      "actions": [
+        "theme.set"
+      ]
+    },
+    "appearance.greeter": {
+      "domain": "appearance",
+      "requirement": "optional",
+      "outcome": "The SDDM greeter matches the desktop theme",
+      "failure_states": [
+        "unsupported"
+      ],
+      "actions": []
+    },
+    "appearance.terminal_tools": {
+      "domain": "appearance",
+      "requirement": "required",
+      "outcome": "btop and cava use the active palette; fastfetch, htop and other terminal tools follow the terminal palette",
+      "failure_states": [
+        "conflict",
+        "unavailable"
+      ],
+      "actions": [
+        "theme.set"
+      ]
+    },
+    "appearance.dialogs": {
+      "domain": "appearance",
+      "requirement": "required",
+      "outcome": "The Tk keybinding viewer reads the generated palette; Zenity, Satty, Qalculate and other GTK/Qt tools use the global mappings",
+      "failure_states": [
+        "failed"
+      ],
+      "actions": [
+        "theme.set"
+      ]
+    },
+    "wallpaper.change": {
+      "domain": "wallpaper",
+      "requirement": "required",
+      "outcome": "A random wallpaper is applied to every output, readiness is published and the Wlogout cache link is updated (preserved)",
+      "failure_states": [
+        "failed"
+      ],
+      "actions": []
+    },
+    "nightlight.toggle": {
+      "domain": "nightlight",
+      "requirement": "optional",
+      "outcome": "One key switches between daylight and warm color temperature",
+      "failure_states": [
+        "unsupported"
+      ],
+      "actions": []
+    },
+    "capture.annotate": {
+      "domain": "capture",
+      "requirement": "required",
+      "outcome": "Hyprshot window/output/region capture opens in Satty for annotation, copy and save (preserved)",
+      "failure_states": [
+        "cancelled",
+        "failed"
+      ],
+      "actions": []
+    },
+    "clipboard.history": {
+      "domain": "clipboard",
+      "requirement": "required",
+      "outcome": "Clipboard history opens in the selected terminal with a stable window identity (preserved)",
+      "failure_states": [
+        "failed",
+        "timeout"
+      ],
+      "actions": []
+    },
+    "notes.open": {
+      "domain": "notes",
+      "requirement": "required",
+      "outcome": "Notes open in the selected TUI editor inside the notes directory; names cannot escape it",
+      "failure_states": [
+        "usage",
+        "failed"
+      ],
+      "actions": []
+    },
+    "music.play": {
+      "domain": "music",
+      "requirement": "optional",
+      "outcome": "The Nightfall player streams the album with ffplay in a terminal (preserved; needs ffmpeg)",
+      "failure_states": [
+        "missing-dependency"
+      ],
+      "actions": []
+    },
+    "calculator.open": {
+      "domain": "calculator",
+      "requirement": "optional",
+      "outcome": "Super+Enter opens qalculate-gtk",
+      "failure_states": [
+        "missing-dependency"
+      ],
+      "actions": []
+    }
+  },
+  "options": {},
+  "none_states": {},
+  "generic_packages": {
+    "7zip": {
+      "class": "backend-dependency",
+      "owner": "D07",
+      "reason": "pacman/file_management: installer, archive and snapshot backends"
+    },
+    "arch-wiki-docs": {
+      "class": "outside-visual-scope",
+      "owner": "D07",
+      "reason": "pacman/core_hyprland: offline documentation opened in the browser"
+    },
+    "ark": {
+      "class": "themed-interface",
+      "owner": "D07",
+      "reason": "pacman/file_management: KDE archive manager",
+      "theme": {
+        "support": "supported",
+        "units": [
+          "qt6ct",
+          "kdeglobals"
+        ],
+        "note": "Global Qt/KDE mapping (F03)"
+      }
+    },
+    "bat": {
+      "class": "themed-interface",
+      "owner": "D07",
+      "reason": "pacman/cli_tools: terminal tools",
+      "theme": {
+        "support": "partial",
+        "units": [],
+        "note": "Terminal palette from D05; bat keeps its own syntax theme"
+      }
+    },
+    "bluez": {
+      "class": "backend-dependency",
+      "owner": "D07",
+      "reason": "pacman/system_integration: portals, keyring and Bluetooth backend (D04)"
+    },
+    "bluez-utils": {
+      "class": "backend-dependency",
+      "owner": "D07",
+      "reason": "pacman/system_integration: portals, keyring and Bluetooth backend (D04)"
+    },
+    "breeze": {
+      "class": "backend-dependency",
+      "owner": "D07",
+      "reason": "pacman/theming: fonts, icons and styles used by the theme (F03)"
+    },
+    "breeze-gtk": {
+      "class": "backend-dependency",
+      "owner": "D07",
+      "reason": "pacman/theming: fonts, icons and styles used by the theme (F03)"
+    },
+    "breeze5": {
+      "class": "backend-dependency",
+      "owner": "D07",
+      "reason": "pacman/theming: fonts, icons and styles used by the theme (F03)"
+    },
+    "brightnessctl": {
+      "class": "integrated-action",
+      "owner": "D07",
+      "reason": "pacman/cli_tools: media and backlight keys"
+    },
+    "btop": {
+      "class": "themed-interface",
+      "owner": "D07",
+      "reason": "pacman/cli_tools: system monitor",
+      "theme": {
+        "support": "supported",
+        "units": [
+          "btop"
+        ],
+        "note": "Generated theme in ~/.config/btop/themes selected as 'hss' (E-D07-005)"
+      }
+    },
+    "cava": {
+      "class": "themed-interface",
+      "owner": "D07",
+      "reason": "pacman/theming: audio visualizer",
+      "theme": {
+        "support": "supported",
+        "units": [
+          "cava"
+        ],
+        "note": "Gradient keys in the [color] section (E-D07-006)"
+      }
+    },
+    "ddcutil": {
+      "class": "integrated-action",
+      "owner": "D07",
+      "reason": "pacman/system_integration: external monitor brightness"
+    },
+    "duf": {
+      "class": "themed-interface",
+      "owner": "D07",
+      "reason": "pacman/cli_tools: terminal tools",
+      "theme": {
+        "support": "partial",
+        "units": [],
+        "note": "Uses the terminal palette from D05; duf has no theme file of its own"
+      }
+    },
+    "dysk": {
+      "class": "themed-interface",
+      "owner": "D07",
+      "reason": "pacman/cli_tools: terminal tools",
+      "theme": {
+        "support": "partial",
+        "units": [],
+        "note": "Uses the terminal palette from D05; dysk has no theme file of its own"
+      }
+    },
+    "eza": {
+      "class": "themed-interface",
+      "owner": "D07",
+      "reason": "pacman/cli_tools: terminal tools",
+      "theme": {
+        "support": "partial",
+        "units": [],
+        "note": "Uses the terminal palette from D05; LS_COLORS/EZA_COLORS are not managed"
+      }
+    },
+    "fastfetch": {
+      "class": "themed-interface",
+      "owner": "D07",
+      "reason": "pacman/cli_tools: system summary",
+      "theme": {
+        "support": "supported",
+        "units": [],
+        "note": "Named ANSI key colors follow the terminal palette (D05); no managed unit"
+      }
+    },
+    "fd": {
+      "class": "outside-visual-scope",
+      "owner": "D07",
+      "reason": "pacman/file_management: command-line tools"
+    },
+    "ffmpeg": {
+      "class": "backend-dependency",
+      "owner": "D07",
+      "reason": "pacman/cli_tools (being added): ffplay for the Music player"
+    },
+    "firewalld": {
+      "class": "backend-dependency",
+      "owner": "D07",
+      "reason": "pacman/cli_tools: firewall, notifications client and JSON tool used by helpers"
+    },
+    "fzf": {
+      "class": "themed-interface",
+      "owner": "D07",
+      "reason": "pacman/file_management: terminal tools",
+      "theme": {
+        "support": "partial",
+        "units": [],
+        "note": "ANSI colors follow the terminal palette (D05)"
+      }
+    },
+    "git": {
+      "class": "outside-visual-scope",
+      "owner": "D07",
+      "reason": "pacman/file_management: command-line tools"
+    },
+    "github-desktop-bin": {
+      "class": "themed-interface",
+      "owner": "D07",
+      "reason": "aur/gui_tools: Git client",
+      "theme": {
+        "support": "partial",
+        "units": [],
+        "note": "Electron app with its own light/dark setting; not managed"
+      }
+    },
+    "gnome-keyring": {
+      "class": "backend-dependency",
+      "owner": "D07",
+      "reason": "pacman/system_integration: portals, keyring and Bluetooth backend (D04)"
+    },
+    "grim": {
+      "class": "integrated-action",
+      "owner": "D07",
+      "reason": "pacman/desktop_evnironment: capture backends"
+    },
+    "grub-btrfs": {
+      "class": "backend-dependency",
+      "owner": "D07",
+      "reason": "pacman/file_management: installer, archive and snapshot backends"
+    },
+    "htop": {
+      "class": "themed-interface",
+      "owner": "D07",
+      "reason": "pacman/desktop_evnironment: terminal monitor",
+      "theme": {
+        "support": "partial",
+        "units": [],
+        "note": "Uses the terminal palette (D05); no managed unit"
+      }
+    },
+    "hyprcursor": {
+      "class": "backend-dependency",
+      "owner": "D07",
+      "reason": "pacman/core_hyprland: compositor libraries, portal and cursor backend"
+    },
+    "hyprgraphics": {
+      "class": "backend-dependency",
+      "owner": "D07",
+      "reason": "pacman/core_hyprland: compositor libraries, portal and cursor backend"
+    },
+    "hypridle": {
+      "class": "backend-dependency",
+      "owner": "D07",
+      "reason": "pacman/core_hyprland: idle and lock-before-sleep daemon (configuration owned by D07)"
+    },
+    "hyprland": {
+      "class": "themed-interface",
+      "owner": "D07",
+      "reason": "pacman/core_hyprland: compositor decorations",
+      "theme": {
+        "support": "supported",
+        "units": [
+          "hyprland"
+        ],
+        "note": "Generated Lua table loaded from a managed look_and_feel.lua region; literal values stay as fallback (E-D07-001)"
+      }
+    },
+    "hyprland-guiutils": {
+      "class": "themed-interface",
+      "owner": "D07",
+      "reason": "pacman/core_hyprland: Hyprland Qt dialogs",
+      "theme": {
+        "support": "unverified",
+        "units": [
+          "qt6ct"
+        ],
+        "note": "Qt dialogs styled by hyprland-qt-support; needs VM review"
+      }
+    },
+    "hyprland-qt-support": {
+      "class": "backend-dependency",
+      "owner": "D07",
+      "reason": "pacman/core_hyprland: compositor libraries, portal and cursor backend"
+    },
+    "hyprlock": {
+      "class": "themed-interface",
+      "owner": "D07",
+      "reason": "pacman/core_hyprland: lock screen",
+      "theme": {
+        "support": "supported",
+        "units": [
+          "hyprlock"
+        ],
+        "note": "Mocha fallback, then the generated palette through hyprlang source (E-D07-002)"
+      }
+    },
+    "hyprpaper": {
+      "class": "integrated-action",
+      "owner": "D07",
+      "reason": "pacman/core_hyprland: wallpaper backend used by change_wallpaper.sh (preserved)"
+    },
+    "hyprpicker": {
+      "class": "integrated-action",
+      "owner": "D07",
+      "reason": "pacman/core_hyprland: color picker key (hex to clipboard)"
+    },
+    "hyprpolkitagent": {
+      "class": "backend-dependency",
+      "owner": "D07",
+      "reason": "pacman/core_hyprland: managed authentication agent started by session.auth.start"
+    },
+    "hyprshot": {
+      "class": "integrated-action",
+      "owner": "D07",
+      "reason": "pacman/screenshots: capture of window, output or region piped to Satty (preserved)"
+    },
+    "hyprsunset": {
+      "class": "integrated-action",
+      "owner": "D07",
+      "reason": "pacman/core_hyprland: night light; no native toggle (E-D07-012)"
+    },
+    "hyprwayland-scanner": {
+      "class": "outside-visual-scope",
+      "owner": "D07",
+      "reason": "pacman/core_hyprland: build tool"
+    },
+    "inotify-tools": {
+      "class": "backend-dependency",
+      "owner": "D07",
+      "reason": "pacman/file_management: installer, archive and snapshot backends"
+    },
+    "input-remapper": {
+      "class": "themed-interface",
+      "owner": "D07",
+      "reason": "aur/system_integration: input remapping",
+      "theme": {
+        "support": "supported",
+        "units": [
+          "gtk3"
+        ],
+        "note": "Global GTK 3 mapping (F03)"
+      }
+    },
+    "intel-media-driver": {
+      "class": "outside-visual-scope",
+      "owner": "D07",
+      "reason": "pacman/graphics_driver: graphics drivers"
+    },
+    "iwd": {
+      "class": "backend-dependency",
+      "owner": "D07",
+      "reason": "pacman/desktop_evnironment: wireless backends for NetworkManager"
+    },
+    "jq": {
+      "class": "backend-dependency",
+      "owner": "D07",
+      "reason": "pacman/cli_tools: firewall, notifications client and JSON tool used by helpers"
+    },
+    "libnotify": {
+      "class": "backend-dependency",
+      "owner": "D07",
+      "reason": "pacman/cli_tools: firewall, notifications client and JSON tool used by helpers"
+    },
+    "libva-intel-driver": {
+      "class": "outside-visual-scope",
+      "owner": "D07",
+      "reason": "pacman/graphics_driver: graphics drivers"
+    },
+    "libva-mesa-driver": {
+      "class": "outside-visual-scope",
+      "owner": "D07",
+      "reason": "pacman/graphics_driver: graphics drivers"
+    },
+    "linux": {
+      "class": "outside-visual-scope",
+      "owner": "D07",
+      "reason": "pacman/kernel: kernel"
+    },
+    "linux-api-headers": {
+      "class": "outside-visual-scope",
+      "owner": "D07",
+      "reason": "pacman/kernel: kernel"
+    },
+    "linux-firmware": {
+      "class": "outside-visual-scope",
+      "owner": "D07",
+      "reason": "pacman/kernel: kernel"
+    },
+    "linux-headers": {
+      "class": "outside-visual-scope",
+      "owner": "D07",
+      "reason": "pacman/kernel: kernel"
+    },
+    "lshw": {
+      "class": "outside-visual-scope",
+      "owner": "D07",
+      "reason": "pacman/cli_tools: command-line tools"
+    },
+    "lsplug": {
+      "class": "integrated-action",
+      "owner": "D07",
+      "reason": "aur/cli_tools: USB device listing"
+    },
+    "mesa": {
+      "class": "outside-visual-scope",
+      "owner": "D07",
+      "reason": "pacman/graphics_driver: graphics drivers"
+    },
+    "noto-fonts": {
+      "class": "backend-dependency",
+      "owner": "D07",
+      "reason": "pacman/theming (being added): Noto Sans GUI font required by policy P02"
+    },
+    "ntfs-3g": {
+      "class": "outside-visual-scope",
+      "owner": "D07",
+      "reason": "pacman/cli_tools: command-line tools"
+    },
+    "nwg-look": {
+      "class": "themed-interface",
+      "owner": "D07",
+      "reason": "pacman/theming: toolkit settings tools",
+      "theme": {
+        "support": "supported",
+        "units": [
+          "qt5ct",
+          "qt6ct",
+          "gtk3"
+        ],
+        "note": "Global mappings (F03)"
+      }
+    },
+    "onefetch": {
+      "class": "themed-interface",
+      "owner": "D07",
+      "reason": "pacman/file_management: terminal tools",
+      "theme": {
+        "support": "partial",
+        "units": [],
+        "note": "ANSI colors follow the terminal palette (D05)"
+      }
+    },
+    "openssh": {
+      "class": "outside-visual-scope",
+      "owner": "D07",
+      "reason": "pacman/desktop_evnironment: system tools without a desktop interface"
+    },
+    "otf-font-awesome": {
+      "class": "backend-dependency",
+      "owner": "D07",
+      "reason": "pacman/theming: fonts, icons and styles used by the theme (F03)"
+    },
+    "pacsea-bin": {
+      "class": "themed-interface",
+      "owner": "D07",
+      "reason": "aur/cli_tools: terminal package and user managers",
+      "theme": {
+        "support": "unverified",
+        "units": [],
+        "note": "Terminal palette (D05); not verifiable locally"
+      }
+    },
+    "pipewire": {
+      "class": "backend-dependency",
+      "owner": "D07",
+      "reason": "pacman/audio: audio server and libraries for the audio role (D04)"
+    },
+    "pipewire-pulse": {
+      "class": "backend-dependency",
+      "owner": "D07",
+      "reason": "pacman/audio: audio server and libraries for the audio role (D04)"
+    },
+    "playerctl": {
+      "class": "integrated-action",
+      "owner": "D07",
+      "reason": "pacman/cli_tools: media and backlight keys"
+    },
+    "polkit-kde-agent": {
+      "class": "backend-dependency",
+      "owner": "D07",
+      "reason": "pacman/desktop_evnironment: KDE authentication agent; no longer started by setup because Hyprpolkitagent is the managed owner"
+    },
+    "psensor": {
+      "class": "themed-interface",
+      "owner": "D07",
+      "reason": "pacman/cli_tools: sensor monitor",
+      "theme": {
+        "support": "supported",
+        "units": [
+          "gtk3"
+        ],
+        "note": "Global GTK 3 mapping (F03)"
+      }
+    },
+    "pulseaudio-qt": {
+      "class": "backend-dependency",
+      "owner": "D07",
+      "reason": "pacman/audio: audio server and libraries for the audio role (D04)"
+    },
+    "pyprland": {
+      "class": "backend-dependency",
+      "owner": "D07",
+      "reason": "aur/core_hyprland: scratchpads"
+    },
+    "python": {
+      "class": "backend-dependency",
+      "owner": "D07",
+      "reason": "pacman/core_hyprland: runtime for helper scripts and the Tk keybinding viewer"
+    },
+    "python-pyquery": {
+      "class": "backend-dependency",
+      "owner": "D07",
+      "reason": "pacman/core_hyprland: runtime for helper scripts and the Tk keybinding viewer"
+    },
+    "python-requests": {
+      "class": "backend-dependency",
+      "owner": "D07",
+      "reason": "pacman/core_hyprland: runtime for helper scripts and the Tk keybinding viewer"
+    },
+    "qalculate-gtk": {
+      "class": "themed-interface",
+      "owner": "D07",
+      "reason": "pacman/gui_tools (being added): calculator bound to Super+Enter",
+      "theme": {
+        "support": "supported",
+        "units": [
+          "gtk3"
+        ],
+        "note": "Global GTK 3 mapping (F03)"
+      }
+    },
+    "qt5-wayland": {
+      "class": "backend-dependency",
+      "owner": "D07",
+      "reason": "pacman/desktop_evnironment: toolkit platform plugins and handler tools"
+    },
+    "qt5ct": {
+      "class": "themed-interface",
+      "owner": "D07",
+      "reason": "pacman/theming: toolkit settings tools",
+      "theme": {
+        "support": "supported",
+        "units": [
+          "qt5ct",
+          "qt6ct",
+          "gtk3"
+        ],
+        "note": "Global mappings (F03)"
+      }
+    },
+    "qt6-wayland": {
+      "class": "backend-dependency",
+      "owner": "D07",
+      "reason": "pacman/desktop_evnironment: toolkit platform plugins and handler tools"
+    },
+    "qt6ct": {
+      "class": "themed-interface",
+      "owner": "D07",
+      "reason": "pacman/theming: toolkit settings tools",
+      "theme": {
+        "support": "supported",
+        "units": [
+          "qt5ct",
+          "qt6ct",
+          "gtk3"
+        ],
+        "note": "Global mappings (F03)"
+      }
+    },
+    "reflector": {
+      "class": "integrated-action",
+      "owner": "D07",
+      "reason": "pacman/cli_tools: mirror refresh in the update workflow"
+    },
+    "rose-pine-cursor": {
+      "class": "backend-dependency",
+      "owner": "D07",
+      "reason": "aur/theming (being added): matching Xcursor theme for other toolkits (policy P02)"
+    },
+    "rose-pine-hyprcursor": {
+      "class": "backend-dependency",
+      "owner": "D07",
+      "reason": "aur/theming: Hyprland cursor theme (policy P02)"
+    },
+    "satty": {
+      "class": "themed-interface",
+      "owner": "D07",
+      "reason": "pacman/file_management: screenshot annotation",
+      "theme": {
+        "support": "supported",
+        "units": [
+          "gtk4"
+        ],
+        "note": "Global GTK 4 mapping (F03); the annotation color palette is user content and unchanged"
+      }
+    },
+    "sddm": {
+      "class": "themed-interface",
+      "owner": "D07",
+      "reason": "pacman/greeter: login greeter",
+      "theme": {
+        "support": "unsupported",
+        "units": [],
+        "note": "Greeter theming needs privileged writes outside the managed roots (E-D07-013); the existing Eucalyptus Drop setup is left untouched"
+      }
+    },
+    "slurp": {
+      "class": "integrated-action",
+      "owner": "D07",
+      "reason": "pacman/desktop_evnironment: capture backends"
+    },
+    "smartmontools": {
+      "class": "outside-visual-scope",
+      "owner": "D07",
+      "reason": "pacman/desktop_evnironment: system tools without a desktop interface"
+    },
+    "stow": {
+      "class": "backend-dependency",
+      "owner": "D07",
+      "reason": "pacman/file_management: installer, archive and snapshot backends"
+    },
+    "timeshift": {
+      "class": "themed-interface",
+      "owner": "D07",
+      "reason": "pacman/file_management: snapshot tool started with pkexec by snapshot.sh",
+      "theme": {
+        "support": "supported",
+        "units": [
+          "gtk3"
+        ],
+        "note": "Global GTK 3 mapping (F03); authentication by the polkit agent"
+      }
+    },
+    "tk": {
+      "class": "backend-dependency",
+      "owner": "D07",
+      "reason": "pacman/core_hyprland: runtime for helper scripts and the Tk keybinding viewer"
+    },
+    "tldr": {
+      "class": "themed-interface",
+      "owner": "D07",
+      "reason": "pacman/cli_tools: terminal tools",
+      "theme": {
+        "support": "partial",
+        "units": [],
+        "note": "Terminal palette from D05; bat keeps its own syntax theme"
+      }
+    },
+    "ttf-jetbrains-mono-nerd": {
+      "class": "backend-dependency",
+      "owner": "D07",
+      "reason": "pacman/theming: fonts, icons and styles used by the theme (F03)"
+    },
+    "ttf-nerd-fonts-symbols": {
+      "class": "backend-dependency",
+      "owner": "D07",
+      "reason": "pacman/theming: fonts, icons and styles used by the theme (F03)"
+    },
+    "ttf-nerd-fonts-symbols-common": {
+      "class": "backend-dependency",
+      "owner": "D07",
+      "reason": "pacman/theming: fonts, icons and styles used by the theme (F03)"
+    },
+    "usrgrp-manager-bin": {
+      "class": "themed-interface",
+      "owner": "D07",
+      "reason": "aur/cli_tools: terminal package and user managers",
+      "theme": {
+        "support": "unverified",
+        "units": [],
+        "note": "Terminal palette (D05); not verifiable locally"
+      }
+    },
+    "vulkan-intel": {
+      "class": "outside-visual-scope",
+      "owner": "D07",
+      "reason": "pacman/graphics_driver: graphics drivers"
+    },
+    "vulkan-nouveau": {
+      "class": "outside-visual-scope",
+      "owner": "D07",
+      "reason": "pacman/graphics_driver: graphics drivers"
+    },
+    "vulkan-radeon": {
+      "class": "outside-visual-scope",
+      "owner": "D07",
+      "reason": "pacman/graphics_driver: graphics drivers"
+    },
+    "waybar-module-pacman-updates-git": {
+      "class": "backend-dependency",
+      "owner": "D07",
+      "reason": "aur/system_integration: screen-share bridge, clipboard history backend and update counter"
+    },
+    "waypaper-git": {
+      "class": "themed-interface",
+      "owner": "D07",
+      "reason": "aur/theming: wallpaper picker",
+      "theme": {
+        "support": "supported",
+        "units": [
+          "gtk3"
+        ],
+        "note": "Global GTK 3 mapping (F03)"
+      }
+    },
+    "wget": {
+      "class": "outside-visual-scope",
+      "owner": "D07",
+      "reason": "pacman/desktop_evnironment: system tools without a desktop interface"
+    },
+    "wireless_tools": {
+      "class": "outside-visual-scope",
+      "owner": "D07",
+      "reason": "pacman/desktop_evnironment: system tools without a desktop interface"
+    },
+    "wireplumber": {
+      "class": "backend-dependency",
+      "owner": "D07",
+      "reason": "pacman/audio: audio server and libraries for the audio role (D04)"
+    },
+    "wl-clip-persist": {
+      "class": "backend-dependency",
+      "owner": "D07",
+      "reason": "pacman/core_hyprland: clipboard persistence daemon"
+    },
+    "wl-clipboard": {
+      "class": "integrated-action",
+      "owner": "D07",
+      "reason": "pacman/core_hyprland: clipboard copy for capture and history"
+    },
+    "wl-clipboard-history-git": {
+      "class": "backend-dependency",
+      "owner": "D07",
+      "reason": "aur/system_integration: screen-share bridge, clipboard history backend and update counter"
+    },
+    "wlogout": {
+      "class": "themed-interface",
+      "owner": "D07",
+      "reason": "aur/gui_tools: power screen",
+      "theme": {
+        "support": "supported",
+        "units": [
+          "wlogout"
+        ],
+        "note": "Imports the generated palette after its Mocha fallback (E-D07-003)"
+      }
+    },
+    "wpa_supplicant": {
+      "class": "backend-dependency",
+      "owner": "D07",
+      "reason": "pacman/desktop_evnironment: wireless backends for NetworkManager"
+    },
+    "xdg-desktop-portal-gtk": {
+      "class": "backend-dependency",
+      "owner": "D07",
+      "reason": "pacman/system_integration: portals, keyring and Bluetooth backend (D04)"
+    },
+    "xdg-desktop-portal-hyprland": {
+      "class": "backend-dependency",
+      "owner": "D07",
+      "reason": "pacman/core_hyprland: compositor libraries, portal and cursor backend"
+    },
+    "xdg-desktop-portal-kde": {
+      "class": "backend-dependency",
+      "owner": "D07",
+      "reason": "pacman/system_integration: portals, keyring and Bluetooth backend (D04)"
+    },
+    "xdg-user-dirs": {
+      "class": "backend-dependency",
+      "owner": "D07",
+      "reason": "pacman/file_management: installer, archive and snapshot backends"
+    },
+    "xdg-utils": {
+      "class": "backend-dependency",
+      "owner": "D07",
+      "reason": "pacman/desktop_evnironment: toolkit platform plugins and handler tools"
+    },
+    "xf86-video-amdgpu": {
+      "class": "outside-visual-scope",
+      "owner": "D07",
+      "reason": "pacman/graphics_driver: graphics drivers"
+    },
+    "xf86-video-ati": {
+      "class": "outside-visual-scope",
+      "owner": "D07",
+      "reason": "pacman/graphics_driver: graphics drivers"
+    },
+    "xf86-video-nouveau": {
+      "class": "outside-visual-scope",
+      "owner": "D07",
+      "reason": "pacman/graphics_driver: graphics drivers"
+    },
+    "xorg-server": {
+      "class": "outside-visual-scope",
+      "owner": "D07",
+      "reason": "pacman/graphics_driver: graphics drivers"
+    },
+    "xorg-xinit": {
+      "class": "outside-visual-scope",
+      "owner": "D07",
+      "reason": "pacman/graphics_driver: graphics drivers"
+    },
+    "xorg-xwayland": {
+      "class": "backend-dependency",
+      "owner": "D07",
+      "reason": "pacman/core_hyprland: runtime for helper scripts and the Tk keybinding viewer"
+    },
+    "xwaylandvideobridge": {
+      "class": "backend-dependency",
+      "owner": "D07",
+      "reason": "aur/system_integration: screen-share bridge, clipboard history backend and update counter"
+    },
+    "zoxide": {
+      "class": "outside-visual-scope",
+      "owner": "D07",
+      "reason": "pacman/cli_tools: command-line tools"
+    }
+  },
+  "evidence": {
+    "E-D07-001": {
+      "kind": "real-effect",
+      "source": "Hyprland 0.56.2 --verify-config (hss-verify-hypr fixture of sources_example)",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot (fake root), headless sway 1.x (pixman) with a private D-Bus session",
+      "command": "Hyprland --verify-config with no generated file, Mocha theme.lua, Latte theme.lua, a broken theme.lua and a probe table containing an unknown key",
+      "result": "verify-status 0 and no config errors for the first four; the probe reports 'look_and_feel.lua:108: unknown config key general.no_such_option_hss_probe', proving the region loads and applies the generated table"
+    },
+    "E-D07-002": {
+      "kind": "real-effect",
+      "source": "hyprlock 0.9.6-3 with hyprlang 0.6.8-5 in headless sway",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot (fake root), headless sway 1.x (pixman) with a private D-Bus session",
+      "command": "hyprlock -v -c hyprlock.conf with and without ~/.config/hss-theme/generated/hyprlock/colors.conf",
+      "result": "0 config errors in both cases ('# hyprlang noerror' silences the absent generated file); 'Locking session' and 'onLockLocked' logged"
+    },
+    "E-D07-003": {
+      "kind": "real-effect",
+      "source": "GTK 3.24.52 GtkCssProvider via PyGObject 3.58.1",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot (fake root), headless sway 1.x (pixman) with a private D-Bus session",
+      "command": "load wlogout style.css alone and with the appended file:// palette import; read button background/border/background-image",
+      "result": "no parsing errors; imported @define-color values override the Mocha fallback in rules defined earlier; -gtk-icontheme resolves Breeze icons"
+    },
+    "E-D07-004": {
+      "kind": "real-effect",
+      "source": "GTK 3.24.52 GtkCssProvider",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot (fake root), headless sway 1.x (pixman) with a private D-Bus session",
+      "command": "load a stylesheet whose @import target is missing",
+      "result": "the provider loads no rules at all; the wlogout import therefore lives in the managed region that is written only together with its generated palette"
+    },
+    "E-D07-005": {
+      "kind": "real-effect",
+      "source": "btop 1.4.7-1 in a pty (script), COLORTERM=truecolor",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot (fake root), headless sway 1.x (pixman) with a private D-Bus session",
+      "command": "btop with color_theme pointing outside its theme directories, by path inside ~/.config/btop/themes, and by name 'hss'",
+      "result": "outside theme directories btop falls back to Default; inside ~/.config/btop/themes both the path and the name render the generated accent (38;2;137;180;250)"
+    },
+    "E-D07-006": {
+      "kind": "real-effect",
+      "source": "cava 1.0.0-1 in a pty, fifo input",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot (fake root), headless sway 1.x (pixman) with a private D-Bus session",
+      "command": "cava -p config with gradient_color_N='#rrggbb' keys; strings /usr/bin/cava",
+      "result": "gradient colors appear as 24-bit SGR (e.g. 38;2;148;226;213); the 'theme' option exits when its file is missing, so colors stay inline"
+    },
+    "E-D07-007": {
+      "kind": "static",
+      "source": "hypridle 0.1.8 /usr/share/hypr/hypridle.conf and Hyprland 0.56.2 /usr/share/hypr/hyprland.lua",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot (fake root), headless sway 1.x (pixman) with a private D-Bus session",
+      "command": "grep dispatch /usr/share/hypr/*",
+      "result": "Lua-era samples use hyprctl dispatch 'hl.dsp.dpms({action = \"on\"})' and hyprctl dispatch 'hl.dsp.exit()'; hyprctl keyword is rejected with Lua configs"
+    },
+    "E-D07-008": {
+      "kind": "documentation",
+      "source": "hyprpolkitagent v0.2.0 (github.com/hyprwm/hyprpolkitagent src/core/PolkitListener.cpp, assets/hyprpolkitagent-service.in); polkit polkitbackendinteractiveauthority.c",
+      "date": "2026-10-20",
+      "environment": "Upstream source and documentation",
+      "command": "source inspection",
+      "result": "exits 1 when another agent is registered for the session; unit has Restart=on-failure and ConditionEnvironment=WAYLAND_DISPLAY"
+    },
+    "E-D07-009": {
+      "kind": "documentation",
+      "source": "wlogout 1.2.2 (github.com/ArtsyMacaw/wlogout main.c, man/wlogout.5.scd)",
+      "date": "2026-10-20",
+      "environment": "Upstream source and documentation",
+      "command": "source inspection",
+      "result": "button actions run through system() (/bin/sh -c) after the window closes; no native confirmation; layout keys label/action/text/keybind"
+    },
+    "E-D07-010": {
+      "kind": "modeled-effect",
+      "source": "tests/shell/session_auxiliary.sh",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 hermetic test userland (uid 1000), stateful PATH doubles",
+      "command": "bash tests/run.sh tests/shell/session_auxiliary.sh",
+      "result": "confirm/cancel/failed chooser never run power commands; logout only with identified session; hibernate only when CanHibernate is yes; foreign polkit agent is a conflict and untouched; Wlogout layout filtered; autostart migration; Notes containment"
+    },
+    "E-D07-011": {
+      "kind": "static",
+      "source": "tests/shell/session_auxiliary_rendering.sh with hss_theme.py, luac/lua 5.5",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 hermetic test userland (uid 1000), stateful PATH doubles",
+      "command": "bash tests/run.sh tests/shell/session_auxiliary_rendering.sh",
+      "result": "Hyprland, Hyprlock, Wlogout, btop and cava units render for Mocha and Latte, preserve user content and the Tk viewer reads palette.json with fallbacks"
+    },
+    "E-D07-012": {
+      "kind": "static",
+      "source": "hyprsunset 0.4.0-3 (--help, binary strings)",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot (fake root), headless sway 1.x (pixman) with a private D-Bus session",
+      "command": "hyprsunset --help; strings /usr/bin/hyprsunset",
+      "result": "temperature, gamma, identity and profile controls; no native toggle"
+    },
+    "E-D07-013": {
+      "kind": "static",
+      "source": "setup.sh configure_sddm_theme",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 hermetic test userland (uid 1000), stateful PATH doubles",
+      "command": "source inspection",
+      "result": "the greeter theme is cloned and copied with sudo into /usr/share/sddm/themes and selected in /etc/sddm.conf.d, outside the managed theme roots"
+    },
+    "E-D07-014": {
+      "kind": "static",
+      "source": "breeze-icons 6.31.0-1",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot (fake root), headless sway 1.x (pixman) with a private D-Bus session",
+      "command": "ls /usr/share/icons/{breeze,breeze-dark}/actions/32/system-*.svg",
+      "result": "system-lock-screen, system-log-out, system-suspend, system-suspend-hibernate, system-shutdown and system-reboot exist in both themes"
+    },
+    "E-D07-015": {
+      "kind": "documentation",
+      "source": "Hyprland 0.56.2 hyprctl --help (installed) and upstream v0.56.2 src/debug/HyprCtl.cpp",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot (fake root), headless sway 1.x (pixman) with a private D-Bus session",
+      "command": "hyprctl --help; upstream v0.56.2 src/debug/HyprCtl.cpp",
+      "result": "dispatch takes Lua with a Lua config ('hl.dsp.exit()') and the legacy name with hyprlang ('exit')"
+    }
+  }
+}

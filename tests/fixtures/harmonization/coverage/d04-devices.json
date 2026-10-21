@@ -1,0 +1,314 @@
+{
+  "schema_version": 1,
+  "owner": "D04",
+  "cases": [
+    {
+      "id": "D04-nmtui-connect-edit",
+      "option": "network/networkmanager",
+      "capability": "network.connect",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/device_controls.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Bar left click opens nmtui connect, right click nmtui edit in the selected terminal; connect to the VM network",
+      "result": "not-run",
+      "limits": "Real Wi-Fi association needs hardware"
+    },
+    {
+      "id": "D04-nmtui-theme",
+      "option": "network/networkmanager",
+      "capability": "network.connect",
+      "evidence_required": "visual",
+      "tests": [
+        {
+          "path": "tests/shell/device_themes.sh",
+          "state": "delivered"
+        },
+        {
+          "path": "tests/shell/device_controls.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "nmtui shows Catppuccin colors in dark and light variants; focused buttons readable",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D04-nm-applet-chooser-unsupported",
+      "option": "network/network-manager-applet",
+      "capability": "network.connect",
+      "evidence_required": "argv",
+      "tests": [
+        {
+          "path": "tests/shell/device_controls.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Chooser action shows an unsupported notification; tray menu still works",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D04-nm-applet-editor",
+      "option": "network/network-manager-applet",
+      "capability": "network.edit",
+      "evidence_required": "argv",
+      "tests": [
+        {
+          "path": "tests/shell/device_controls.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Editor action opens nm-connection-editor",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D04-nm-connection-editor",
+      "option": "network/nm-connection-editor",
+      "capability": "network.edit",
+      "evidence_required": "argv",
+      "tests": [
+        {
+          "path": "tests/shell/device_controls.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Profile editor opens; connect action reports unsupported",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D04-plasma-nm",
+      "option": "network/plasma-nm",
+      "capability": "network.connect",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/device_controls.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Applet window lists connections; Configure opens kcm_networkmanagement; reconnect prompt behavior outside Plasma",
+      "result": "not-run",
+      "limits": "plasma-nm not installable locally"
+    },
+    {
+      "id": "D04-network-radio",
+      "option": "network/networkmanager",
+      "capability": "network.radio",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/device_controls.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Toggle Wi-Fi from the bar; status shows disabled/enabled",
+      "result": "not-run",
+      "limits": "Hardware switch states need hardware"
+    },
+    {
+      "id": "D04-network-status",
+      "option": "network/networkmanager",
+      "capability": "network.status",
+      "evidence_required": "modeled-effect",
+      "tests": [
+        {
+          "path": "tests/shell/device_controls.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Bar shows connectivity and signal without SSID in shared status",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D04-blueman",
+      "option": "bluetooth/blueman",
+      "capability": "bluetooth.pairing",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/device_controls.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Pair a device from blueman-manager (USB passthrough)",
+      "result": "not-run",
+      "limits": "Needs Bluetooth hardware"
+    },
+    {
+      "id": "D04-bluedevil",
+      "option": "bluetooth/bluedevil",
+      "capability": "bluetooth.pairing",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/device_controls.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Pair through the KCM wizard; device-initiated pairing without kded6",
+      "result": "not-run",
+      "limits": "Not installable locally; needs hardware"
+    },
+    {
+      "id": "D04-bluetui",
+      "option": "bluetooth/bluetui",
+      "capability": "bluetooth.pairing",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/device_controls.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Scan, pair, trust and connect in bluetui",
+      "result": "not-run",
+      "limits": "Needs hardware"
+    },
+    {
+      "id": "D04-bluetuith",
+      "option": "bluetooth/bluetuith",
+      "capability": "bluetooth.pairing",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/device_controls.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Pair a device with confirmation; note PIN auto-answer",
+      "result": "not-run",
+      "limits": "AUR; needs hardware"
+    },
+    {
+      "id": "D04-bluetooth-radio-guard",
+      "option": "bluetooth/blueman",
+      "capability": "bluetooth.radio",
+      "evidence_required": "modeled-effect",
+      "tests": [
+        {
+          "path": "tests/shell/device_controls.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Super+Shift+B and bar right click toggle power; with no controller nothing powers on and the notification says unchanged",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D04-bluetooth-status",
+      "option": "bluetooth/bluetui",
+      "capability": "bluetooth.status",
+      "evidence_required": "modeled-effect",
+      "tests": [
+        {
+          "path": "tests/shell/device_controls.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Bar shows unavailable without controller, off/on/blocked otherwise",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D04-pavucontrol",
+      "option": "audio/pavucontrol",
+      "capability": "audio.streams",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/device_controls.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Streams action opens Playback; move a stream to another sink",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D04-pavucontrol-qt",
+      "option": "audio/pavucontrol-qt",
+      "capability": "audio.streams",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/device_controls.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Streams action opens Playback; per-app volume",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D04-qastools-limited",
+      "option": "audio/qastools",
+      "capability": "audio.streams",
+      "evidence_required": "argv",
+      "tests": [
+        {
+          "path": "tests/shell/device_controls.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Streams action reports unsupported; hardware opens QasMixer",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D04-alsamixer-limited",
+      "option": "audio/alsa-utils",
+      "capability": "audio.streams",
+      "evidence_required": "argv",
+      "tests": [
+        {
+          "path": "tests/shell/device_controls.sh",
+          "state": "delivered"
+        },
+        {
+          "path": "tests/shell/device_themes.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Streams action reports unsupported; hardware opens Alsamixer with the managed colors",
+      "result": "not-run",
+      "limits": ""
+    },
+    {
+      "id": "D04-ncpamixer",
+      "option": "audio/ncpamixer",
+      "capability": "audio.streams",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/device_controls.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "ncpamixer opens on Playback/Output Devices",
+      "result": "not-run",
+      "limits": "AUR; not installable locally"
+    },
+    {
+      "id": "D04-audio-status",
+      "option": "audio/pavucontrol-qt",
+      "capability": "audio.status",
+      "evidence_required": "real-effect",
+      "tests": [
+        {
+          "path": "tests/shell/device_controls.sh",
+          "state": "delivered"
+        }
+      ],
+      "vm_check": "Bar volume/mute match wpctl",
+      "result": "not-run",
+      "limits": ""
+    }
+  ]
+}

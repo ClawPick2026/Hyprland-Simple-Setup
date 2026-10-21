@@ -23,6 +23,51 @@ import logging
 from pathlib import Path
 from typing import Dict, List, Set, Tuple, Optional, Any, Union, Callable
 
+# Catppuccin Mocha (the default dark variant), used until the theme renderer has written
+# ~/.config/hss-theme/generated/palette.json or when that file is unreadable.
+FALLBACK_THEME: Dict[str, str] = {
+    "bg": "#1e1e2e",
+    "fg": "#cdd6f4",
+    "accent": "#89b4fa",
+    "surface0": "#313244",
+    "selection_bg": "#585b70",
+    "selection_fg": "#cdd6f4",
+    "ui_family": "Noto Sans",
+    "mono_family": "JetBrainsMono Nerd Font",
+}
+_HEX_COLOR = re.compile(r"^#[0-9a-fA-F]{6}$")
+
+
+def theme_palette_path() -> Path:
+    """Generated palette of the active theme variant (plan F03, theme-core unit)."""
+    config_home = os.environ.get("XDG_CONFIG_HOME") or os.path.expanduser("~/.config")
+    return Path(config_home) / "hss-theme" / "generated" / "palette.json"
+
+
+def load_theme(path: Optional[Path] = None) -> Dict[str, str]:
+    """Read colors and font families from palette.json, keeping the fallback for anything
+    missing or malformed. Never raises: the viewer must open without a theme."""
+    theme = dict(FALLBACK_THEME)
+    try:
+        with open(path or theme_palette_path(), "r", encoding="utf-8") as handle:
+            data = json.load(handle)
+    except (OSError, ValueError):
+        return theme
+    if not isinstance(data, dict):
+        return theme
+    colors = data.get("color") if isinstance(data.get("color"), dict) else {}
+    for key in ("bg", "fg", "accent", "surface0", "selection_bg", "selection_fg"):
+        value = colors.get(key)
+        if isinstance(value, str) and _HEX_COLOR.match(value):
+            theme[key] = value
+    fonts = data.get("font") if isinstance(data.get("font"), dict) else {}
+    for key in ("ui_family", "mono_family"):
+        value = fonts.get(key)
+        if isinstance(value, str) and value.strip() and all(ord(ch) >= 32 for ch in value):
+            theme[key] = value
+    return theme
+
+
 class KeybindsConfig:
     """Configuration and constants for the Keybinds application."""
     
@@ -32,17 +77,19 @@ class KeybindsConfig:
     HYPR_KEYBINDS_FILE: str = os.path.expanduser("~/.config/hypr/sources/keybindings.lua")
     HYPR_APP_VARIABLES_FILE: str = os.path.expanduser("~/.config/hypr/sources/app_variables.lua")
     
-    # Theme colors
-    BG_COLOR: str = "#2E3440"  # Dark background
-    FG_COLOR: str = "#ECEFF4"  # Light text
-    ACCENT_COLOR: str = "#88C0D0"  # Accent color
-    TREE_BG: str = "#3B4252"  # Slightly lighter background for tree
-    TREE_SELECTED: str = "#4C566A"  # Selection color
+    # Theme colors from the generated palette (Catppuccin Mocha or Latte)
+    THEME: Dict[str, str] = load_theme()
+    BG_COLOR: str = THEME["bg"]  # Window background
+    FG_COLOR: str = THEME["fg"]  # Text
+    ACCENT_COLOR: str = THEME["accent"]  # Headings and title
+    TREE_BG: str = THEME["surface0"]  # Raised surface for the tree
+    TREE_SELECTED: str = THEME["selection_bg"]  # Selection background
+    TREE_SELECTED_FG: str = THEME["selection_fg"]  # Selection text
     
-    # Font configuration
-    DEFAULT_FONT: Tuple[str, int] = ('JetBrains Mono', 10)
-    HEADING_FONT: Tuple[str, int, str] = ('JetBrains Mono', 10, 'bold')
-    TITLE_FONT: Tuple[str, int, str] = ('JetBrains Mono', 16, 'bold')
+    # Font configuration: families follow the theme; sizes stay as before
+    DEFAULT_FONT: Tuple[str, int] = (THEME["mono_family"], 10)
+    HEADING_FONT: Tuple[str, int, str] = (THEME["mono_family"], 10, 'bold')
+    TITLE_FONT: Tuple[str, int, str] = (THEME["ui_family"], 16, 'bold')
     
     # Categories and their patterns
     CATEGORIES: Dict[str, List[str]] = {
@@ -593,14 +640,18 @@ class KeybindsUI:
         
         style.map('Treeview',
             background=[('selected', KeybindsConfig.TREE_SELECTED)],
-            foreground=[('selected', KeybindsConfig.FG_COLOR)])
+            foreground=[('selected', KeybindsConfig.TREE_SELECTED_FG)])
         
         # Configure other widgets
+        style.configure("TFrame", background=KeybindsConfig.BG_COLOR)
+
         style.configure("TEntry",
             fieldbackground=KeybindsConfig.TREE_BG,
             foreground=KeybindsConfig.FG_COLOR,
+            insertcolor=KeybindsConfig.FG_COLOR,
             borderwidth=0,
             font=KeybindsConfig.DEFAULT_FONT)
+        style.map("TEntry", bordercolor=[('focus', KeybindsConfig.ACCENT_COLOR)])
         
         style.configure("TLabel",
             background=KeybindsConfig.BG_COLOR,
@@ -620,8 +671,15 @@ class KeybindsUI:
         style.configure("TButton",
             background=KeybindsConfig.TREE_BG,
             foreground=KeybindsConfig.FG_COLOR,
+            focuscolor=KeybindsConfig.ACCENT_COLOR,
             borderwidth=0,
             font=KeybindsConfig.DEFAULT_FONT)
+        style.map("TButton",
+            background=[('active', KeybindsConfig.TREE_SELECTED)],
+            foreground=[('active', KeybindsConfig.TREE_SELECTED_FG)])
+        style.map("TCheckbutton",
+            background=[('active', KeybindsConfig.BG_COLOR)],
+            foreground=[('active', KeybindsConfig.ACCENT_COLOR)])
     
     def _create_widgets(self) -> None:
         """Create and arrange the UI widgets."""
@@ -690,7 +748,7 @@ class KeybindsUI:
             bg=KeybindsConfig.TREE_BG,
             fg=KeybindsConfig.FG_COLOR,
             activebackground=KeybindsConfig.TREE_SELECTED,
-            activeforeground=KeybindsConfig.FG_COLOR)
+            activeforeground=KeybindsConfig.TREE_SELECTED_FG)
         self.context_menu.add_command(label="Toggle Favorite", command=self._toggle_favorite)
     
     def _setup_bindings(self) -> None:

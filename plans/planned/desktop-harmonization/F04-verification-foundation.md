@@ -1,6 +1,6 @@
 # F04 — Verification foundation
 
-Status: product policy synchronized with the completed interview; implementation not started. Apply master section 9 and the [decision record](../desktop-harmonization-grill.md); execution evidence remains pending.
+Status: product policy synchronized with the completed interview; implemented on branch `feat/harmonize-visual-design` (uncommitted, 2026-10-21); user-led VM acceptance pending, see [acceptance matrix](../../../Documents/desktop-harmonization-acceptance.md). Apply master section 9 and the [decision record](../desktop-harmonization-grill.md); execution evidence remains pending.
 Master: [Desktop harmonization master](../desktop-harmonization-master.md).
 Source baseline: `610a18bac374e7e2ffd0bcb2d99b026131deedbc`, branch `feat/harmonize-visual-design`.
 
@@ -100,7 +100,7 @@ A passing argv result must never satisfy a descriptor requiring a real effect.
 
 ### F04.1 — Establish discovery and coverage validation
 
-Status: not started. Prerequisite: F01 inventory draft and domain specification contributions; approved identities before integration.
+Status: implemented; VM acceptance pending. Prerequisite: F01 inventory draft and domain specification contributions; approved identities before integration.
 Deliver proposed `tests/shell/harmonization_coverage.sh` and `tests/fixtures/harmonization/coverage.json` under F04 ownership.
 Discover all existing options, all four optional None states and supporting-component assignments without silently rewriting the current 73-option guard.
 Define domain contribution rules and reject duplicate case IDs, unknown capabilities and missing owners. Reject nonexistent delivered test entry points; allow explicitly planned references with an owner, producing task and not-run result. This lets domain test specifications precede their implementations without a foundation gate cycle.
@@ -109,7 +109,7 @@ Done: every catalog option has a descriptor; requirements and unexecuted evidenc
 
 ### F04.2 — Extend the isolated fixture foundation
 
-Status: not started. Prerequisite: F04.1 evidence vocabulary; F02 isolation review.
+Status: implemented; VM acceptance pending. Prerequisite: F04.1 evidence vocabulary; F02 isolation review.
 Extend `tests/shell/roles_testlib.sh` and `tests/shell/harness_regressions.sh`; add proposed `tests/shell/harmonization_testlib.sh`, all under F04 ownership.
 Retain existing runner discovery and explicit-file behavior; source-only helpers must remain excluded.
 Add fixture-scoped stateful doubles, controllable clocks, failure injection, cleanup and side-effect recording without exposing production-only bypasses.
@@ -119,7 +119,7 @@ Done: offline fixtures fail closed before contacting host services and preserve 
 
 ### F04.3 — Make shared action and status assertions executable
 
-Status: not started. Prerequisite: F04.2 and frozen F02 invocation/status/lifecycle semantics.
+Status: implemented; VM acceptance pending. Prerequisite: F04.2 and frozen F02 invocation/status/lifecycle semantics.
 Deliver proposed `tests/shell/harmonization_contracts.sh` and reusable state-transition fixtures under proposed `tests/fixtures/harmonization/`, owned by F04.
 Assert literal argv, one invocation, cancellation without mutation, timeout, command failure, unsupported actions, stale/unknown status and missing hardware.
 Model state transitions independently of the adapter output; an echoed requested state is not an oracle.
@@ -129,7 +129,7 @@ Done: the foundation gate has meaningful modeled-effect coverage, explicitly dis
 
 ### F04.4 — Verify rendering and managed-theme transactions
 
-Status: not started. Prerequisite: F04.2, frozen F02 transaction interface and F03 renderer interface.
+Status: implemented; VM acceptance pending. Prerequisite: F04.2, frozen F02 transaction interface and F03 renderer interface.
 Deliver proposed `tests/shell/harmonization_renderers.sh` under F04 ownership; coordinate bounded extensions to existing reliability tests with F02.
 Own reusable transaction/coverage assertions and failure injection, not a second suite of toolkit token mappings. F03's `theme_rendering.sh` and `theme_activation.sh` consume these helpers for theme-specific assertions.
 Assert deterministic outputs, asset resolution, semantic-token mapping, format validation and coverage for every selected member.
@@ -140,7 +140,7 @@ Done: one representative renderer completes the transaction fixture and restores
 
 ### F04.5 — Establish visual evidence and semantic review
 
-Status: not started. Prerequisite: F03 reference proposal; P02 approval before accepting reference images.
+Status: implemented; VM acceptance pending. Prerequisite: F03 reference proposal; P02 approval before accepting reference images.
 Deliver proposed `tests/fixtures/harmonization/visual-protocol.md` and a capture metadata template in that proposed directory, owned by F04.
 Define capture preparation, reproducibility, privacy review, image pairing, semantic rubric and reviewer sign-off.
 Evaluate capture/diff tooling in a disposable session before proposing CI dependencies; do not assume compositor capture support.
@@ -149,7 +149,7 @@ Done: the user can manually compare reproducible scenes and distinguish renderin
 
 ### F04.6 — Integrate functional checks and the VM verification handoff
 
-Status: not started. Prerequisite: F04.1-F04.5 and F02/F03 representative fixtures; P07 policy is resolved.
+Status: implemented; VM acceptance pending. Prerequisite: F04.1-F04.5 and F02/F03 representative fixtures; P07 policy is resolved.
 Extend `tests/run.sh` and `.github/workflows/ci.yml` under F04 ownership; keep graphical/hardware jobs explicitly separated from offline checks.
 Verify bounded timeouts, cancellation, status freshness/error handling and process cleanup functionally. Record any observed usability/resource regressions, but do not impose numeric resource or screenshot budgets.
 Publish proposed `tests/fixtures/harmonization/evidence-template.json` for domain and I01 consumption.
@@ -230,12 +230,12 @@ Classify impossible native capabilities as limited under P05; escalate only new 
 
 ## 9. Implementation checklist and confidence
 
-1. Not started — F04.1: establish complete discovery descriptors and negative coverage validation.
-2. Not started — F04.2: extend isolated fixtures and prove fail-closed harness behavior.
-3. Not started — F04.3: implement shared action/status and singleton contract assertions.
-4. Not started — F04.4: implement renderer, selected-member and transaction/rollback tests.
-5. Not started — F04.5: establish reproducible visual evidence and semantic review.
-6. Not started: F04.6, integrate functional checks and the step-by-step VM handoff with I01.
+1. Implemented (VM acceptance pending) — F04.1: establish complete discovery descriptors and negative coverage validation.
+2. Implemented (VM acceptance pending) — F04.2: extend isolated fixtures and prove fail-closed harness behavior.
+3. Implemented (VM acceptance pending) — F04.3: implement shared action/status and singleton contract assertions.
+4. Implemented (VM acceptance pending) — F04.4: implement renderer, selected-member and transaction/rollback tests.
+5. Implemented (VM acceptance pending) — F04.5: establish reproducible visual evidence and semantic review.
+6. Implemented (VM acceptance pending): F04.6, integrate functional checks and the step-by-step VM handoff with I01.
 
 Planning confidence: **92/100** for repository-grounded architecture and ownership boundaries.
 Runtime feasibility remains unverified; concrete producer interfaces and missing native/VM evidence prevent stronger compatibility claims. Product policy P01-P07 is resolved.

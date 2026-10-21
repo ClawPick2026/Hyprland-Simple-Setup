@@ -177,6 +177,13 @@ if ! jq -e '
         {package:"cursor-cli", source:"official", executable:"cursor-agent", args:[], extra_packages:["curl","tar","gzip"], installer:{url:"https://cursor.com/install",shell:"bash",args:[]}, binary_paths:["{HOME}/.local/bin/cursor-agent"]}
       ])
       and all($options[]; .package as $package | $root.package_descriptions[$package] | type == "string" and length > 0)
+      and ([["hyprland_packages", "theming", "noto-fonts"], ["aur_packages", "theming", "rose-pine-cursor"],
+            ["hyprland_packages", "gui_tools", "qalculate-gtk"], ["hyprland_packages", "cli_tools", "ffmpeg"]]
+           | all(.[]; . as [$source, $category, $package]
+               | ($root[$source][$category] | index($package) != null)
+               and ($root.package_descriptions[$package] | type == "string" and length > 0)
+               and all($options[]; .package != $package and ((.extra_packages // []) | index($package) == null))
+               and ($required | index($package) == null)))
   )
 ' "$registry" >/dev/null; then
   printf 'not ok - package registry failed offline schema checks: %s\n' "$registry" >&2

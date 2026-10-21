@@ -1,0 +1,76 @@
+/* Wofi launcher and chooser: {{variant_label}}, generated from the shared theme tokens.
+   Edit below this region to customize; the region is replaced on theme changes. */
+@define-color hss_menu_bg {{color.bg}};
+@define-color hss_menu_surface {{color.surface0}};
+@define-color hss_menu_fg {{color.fg}};
+@define-color hss_menu_fg_muted {{color.fg_muted}};
+@define-color hss_menu_border {{color.border}};
+@define-color hss_menu_accent {{color.accent}};
+@define-color hss_menu_on_accent {{color.on_accent}};
+@define-color hss_menu_focus {{color.focus}};
+
+* {
+    font-family: "{{font.ui_family}}", "{{font.symbol_fallback}}", sans-serif;
+}
+
+window {
+    margin: 0px;
+    border: none;
+    background-color: transparent;
+}
+
+#outer-box {
+    margin: 0px;
+    padding: {{metrics.space_m}}px;
+    border: {{metrics.border}}px solid @hss_menu_accent;
+    border-radius: {{metrics.radius_large}}px;
+    background-color: @hss_menu_bg;
+}
+
+#input {
+    margin: {{metrics.space_s}}px;
+    padding: {{metrics.space_s}}px {{metrics.space_m}}px;
+    border: {{metrics.focus_width}}px solid @hss_menu_border;
+    border-radius: {{metrics.radius}}px;
+    color: @hss_menu_fg;
+    background-color: @hss_menu_surface;
+    box-shadow: none;
+}
+
+#input:focus {
+    border-color: @hss_menu_focus;
+}
+
+#inner-box {
+    margin: {{metrics.space_s}}px;
+    background-color: transparent;
+}
+
+#scroll {
+    margin: {{metrics.space_s}}px 0px;
+    border: none;
+}
+
+#entry {
+    padding: {{metrics.space_s}}px {{metrics.space_m}}px;
+    border: {{metrics.focus_width}}px solid transparent;
+    border-radius: {{metrics.radius}}px;
+    background-color: transparent;
+}
+
+#entry:selected {
+    border-color: @hss_menu_focus;
+    background-color: @hss_menu_accent;
+}
+
+#text {
+    color: @hss_menu_fg;
+}
+
+#text:selected {
+    color: @hss_menu_on_accent;
+}
+
+#img {
+    margin-right: {{metrics.space_m}}px;
+}

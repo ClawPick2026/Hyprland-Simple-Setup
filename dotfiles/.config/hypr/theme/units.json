@@ -1,0 +1,468 @@
+{
+  "schema_version": 1,
+  "units": [
+    {
+      "id": "theme-core",
+      "owner": "F03",
+      "description": "Resolved palette for scripts, GTK-CSS shell surfaces and status consumers",
+      "applies": {
+        "always": true
+      },
+      "outputs": [
+        {
+          "target": "theme:generated/palette.json",
+          "class": "generated",
+          "template": "core/palette.json.tmpl",
+          "validator": "json"
+        },
+        {
+          "target": "theme:generated/palette.css",
+          "class": "generated",
+          "template": "core/palette.css.tmpl",
+          "validator": "css"
+        },
+        {
+          "target": "theme:generated/palette.sh",
+          "class": "generated",
+          "template": "core/palette.sh.tmpl",
+          "validator": "none"
+        }
+      ],
+      "activation": []
+    },
+    {
+      "id": "gtk3",
+      "owner": "F03",
+      "description": "GTK 3 Breeze theme, icons, cursor, fonts and Catppuccin named colors",
+      "applies": {
+        "always": true
+      },
+      "depends": [
+        "theme-core"
+      ],
+      "outputs": [
+        {
+          "target": "theme:generated/gtk-3.0/colors.css",
+          "class": "generated",
+          "template": "gtk/gtk3-colors.css.tmpl",
+          "validator": "css"
+        },
+        {
+          "target": "config:gtk-3.0/gtk.css",
+          "class": "managed-region",
+          "comment": "/* */",
+          "position": "append",
+          "create_if_missing": true,
+          "validator": "css",
+          "content": "@import url(\"{{path.generated | uri}}/gtk-3.0/colors.css\");"
+        },
+        {
+          "target": "config:gtk-3.0/settings.ini",
+          "class": "managed-keys",
+          "format": "ini",
+          "create_if_missing": true,
+          "validator": "ini",
+          "keys": [
+            {
+              "section": "Settings",
+              "key": "gtk-theme-name",
+              "value": "{{assets.gtk_theme}}"
+            },
+            {
+              "section": "Settings",
+              "key": "gtk-icon-theme-name",
+              "value": "{{assets.icon_theme}}"
+            },
+            {
+              "section": "Settings",
+              "key": "gtk-cursor-theme-name",
+              "value": "{{cursor.xcursor_theme}}"
+            },
+            {
+              "section": "Settings",
+              "key": "gtk-cursor-theme-size",
+              "value": "{{cursor.size}}"
+            },
+            {
+              "section": "Settings",
+              "key": "gtk-font-name",
+              "value": "{{font.ui_family}} {{font.ui_size_pt}}"
+            },
+            {
+              "section": "Settings",
+              "key": "gtk-application-prefer-dark-theme",
+              "value": "{{is_dark_int}}"
+            }
+          ]
+        }
+      ],
+      "activation": [
+        {
+          "kind": "gsettings",
+          "schema": "org.gnome.desktop.interface",
+          "key": "gtk-theme",
+          "value": "{{assets.gtk_theme}}"
+        },
+        {
+          "kind": "gsettings",
+          "schema": "org.gnome.desktop.interface",
+          "key": "icon-theme",
+          "value": "{{assets.icon_theme}}"
+        },
+        {
+          "kind": "next-launch"
+        }
+      ],
+      "assets": [
+        {
+          "package": "breeze-gtk",
+          "paths": [
+            "/usr/share/themes/{{assets.gtk_theme}}"
+          ]
+        },
+        {
+          "package": "breeze-icons",
+          "paths": [
+            "/usr/share/icons/{{assets.icon_theme}}"
+          ]
+        },
+        {
+          "package": "rose-pine-cursor",
+          "paths": [
+            "/usr/share/icons/{{cursor.xcursor_theme}}"
+          ]
+        },
+        {
+          "package": "noto-fonts",
+          "paths": [
+            "/usr/share/fonts/noto/NotoSans-Regular.ttf"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "gtk4",
+      "owner": "F03",
+      "description": "GTK 4 and libadwaita color scheme, accent and Catppuccin named colors",
+      "applies": {
+        "always": true
+      },
+      "depends": [
+        "theme-core"
+      ],
+      "outputs": [
+        {
+          "target": "theme:generated/gtk-4.0/colors.css",
+          "class": "generated",
+          "template": "gtk/gtk4-colors.css.tmpl",
+          "validator": "css"
+        },
+        {
+          "target": "config:gtk-4.0/gtk.css",
+          "class": "managed-region",
+          "comment": "/* */",
+          "position": "append",
+          "create_if_missing": true,
+          "validator": "css",
+          "content": "@import url(\"{{path.generated | uri}}/gtk-4.0/colors.css\");"
+        },
+        {
+          "target": "config:gtk-4.0/settings.ini",
+          "class": "managed-keys",
+          "format": "ini",
+          "create_if_missing": true,
+          "validator": "ini",
+          "keys": [
+            {
+              "section": "Settings",
+              "key": "gtk-theme-name",
+              "value": "{{assets.gtk_theme}}"
+            },
+            {
+              "section": "Settings",
+              "key": "gtk-icon-theme-name",
+              "value": "{{assets.icon_theme}}"
+            },
+            {
+              "section": "Settings",
+              "key": "gtk-cursor-theme-name",
+              "value": "{{cursor.xcursor_theme}}"
+            },
+            {
+              "section": "Settings",
+              "key": "gtk-cursor-theme-size",
+              "value": "{{cursor.size}}"
+            },
+            {
+              "section": "Settings",
+              "key": "gtk-font-name",
+              "value": "{{font.ui_family}} {{font.ui_size_pt}}"
+            }
+          ]
+        }
+      ],
+      "activation": [
+        {
+          "kind": "gsettings",
+          "schema": "org.gnome.desktop.interface",
+          "key": "color-scheme",
+          "value": "{{assets.color_scheme_preference}}"
+        },
+        {
+          "kind": "gsettings",
+          "schema": "org.gnome.desktop.interface",
+          "key": "accent-color",
+          "value": "blue"
+        },
+        {
+          "kind": "next-launch"
+        }
+      ],
+      "assets": [
+        {
+          "package": "breeze-gtk",
+          "paths": [
+            "/usr/share/themes/{{assets.gtk_theme}}"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "desktop-fonts-cursor",
+      "owner": "F03",
+      "description": "Portal-visible font and cursor preferences",
+      "applies": {
+        "always": true
+      },
+      "depends": [
+        "theme-core"
+      ],
+      "outputs": [
+        {
+          "target": "theme:generated/cursor.env",
+          "class": "generated",
+          "template": "core/cursor.env.tmpl",
+          "validator": "none"
+        }
+      ],
+      "activation": [
+        {
+          "kind": "gsettings",
+          "schema": "org.gnome.desktop.interface",
+          "key": "font-name",
+          "value": "{{font.ui_family}} {{font.ui_size_pt}}"
+        },
+        {
+          "kind": "gsettings",
+          "schema": "org.gnome.desktop.interface",
+          "key": "monospace-font-name",
+          "value": "{{font.mono_family}} {{font.mono_size_pt}}"
+        },
+        {
+          "kind": "gsettings",
+          "schema": "org.gnome.desktop.interface",
+          "key": "cursor-theme",
+          "value": "{{cursor.xcursor_theme}}"
+        },
+        {
+          "kind": "gsettings",
+          "schema": "org.gnome.desktop.interface",
+          "key": "cursor-size",
+          "value": "{{cursor.size}}"
+        },
+        {
+          "kind": "relogin"
+        }
+      ],
+      "assets": [
+        {
+          "package": "rose-pine-hyprcursor",
+          "paths": [
+            "/usr/share/icons/{{cursor.hyprcursor_theme}}"
+          ]
+        },
+        {
+          "package": "ttf-jetbrains-mono-nerd",
+          "paths": [
+            "/usr/share/fonts/TTF/JetBrainsMonoNerdFont-Regular.ttf",
+            "/usr/share/fonts/TTF/JetBrainsMonoNLNerdFont-Regular.ttf"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "qt6ct",
+      "owner": "F03",
+      "description": "Qt 6 Breeze style, Catppuccin palette, icons and fonts through qt6ct",
+      "applies": {
+        "always": true
+      },
+      "depends": [
+        "theme-core"
+      ],
+      "outputs": [
+        {
+          "target": "theme:generated/qt/colors.conf",
+          "class": "generated",
+          "template": "qt/colors.conf.tmpl",
+          "validator": "ini"
+        },
+        {
+          "target": "config:qt6ct/qt6ct.conf",
+          "class": "managed-keys",
+          "format": "ini",
+          "create_if_missing": true,
+          "validator": "ini",
+          "keys": [
+            {
+              "section": "Appearance",
+              "key": "color_scheme_path",
+              "value": "{{path.generated}}/qt/colors.conf"
+            },
+            {
+              "section": "Appearance",
+              "key": "custom_palette",
+              "value": "true"
+            },
+            {
+              "section": "Appearance",
+              "key": "icon_theme",
+              "value": "{{assets.icon_theme}}"
+            },
+            {
+              "section": "Appearance",
+              "key": "style",
+              "value": "Breeze"
+            },
+            {
+              "section": "Fonts",
+              "key": "general",
+              "value": "\"{{font.ui_family}},{{font.ui_size_pt}},-1,5,400,0,0,0,0,0,0,0,0,0,0,1\""
+            },
+            {
+              "section": "Fonts",
+              "key": "fixed",
+              "value": "\"{{font.mono_family}},{{font.mono_size_pt}},-1,5,400,0,0,0,0,0,0,0,0,0,0,1\""
+            }
+          ]
+        }
+      ],
+      "activation": [
+        {
+          "kind": "next-launch"
+        }
+      ],
+      "assets": [
+        {
+          "package": "qt6ct",
+          "paths": [
+            "/usr/lib/qt6/plugins/platformthemes/libqt6ct.so"
+          ]
+        },
+        {
+          "package": "breeze",
+          "paths": [
+            "/usr/lib/qt6/plugins/styles/breeze6.so"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "qt5ct",
+      "owner": "F03",
+      "description": "Qt 5 Breeze style, Catppuccin palette, icons and fonts through qt5ct",
+      "applies": {
+        "always": true
+      },
+      "depends": [
+        "qt6ct"
+      ],
+      "outputs": [
+        {
+          "target": "config:qt5ct/qt5ct.conf",
+          "class": "managed-keys",
+          "format": "ini",
+          "create_if_missing": true,
+          "validator": "ini",
+          "keys": [
+            {
+              "section": "Appearance",
+              "key": "color_scheme_path",
+              "value": "{{path.generated}}/qt/colors.conf"
+            },
+            {
+              "section": "Appearance",
+              "key": "custom_palette",
+              "value": "true"
+            },
+            {
+              "section": "Appearance",
+              "key": "icon_theme",
+              "value": "{{assets.icon_theme}}"
+            },
+            {
+              "section": "Appearance",
+              "key": "style",
+              "value": "Breeze"
+            },
+            {
+              "section": "Fonts",
+              "key": "general",
+              "value": "\"{{font.ui_family}},{{font.ui_size_pt}},-1,5,50,0,0,0,0,0\""
+            },
+            {
+              "section": "Fonts",
+              "key": "fixed",
+              "value": "\"{{font.mono_family}},{{font.mono_size_pt}},-1,5,50,0,0,0,0,0\""
+            }
+          ]
+        }
+      ],
+      "activation": [
+        {
+          "kind": "next-launch"
+        }
+      ],
+      "assets": [
+        {
+          "package": "qt5ct",
+          "paths": [
+            "/usr/lib/qt/plugins/platformthemes/libqt5ct.so"
+          ]
+        },
+        {
+          "package": "breeze5",
+          "paths": [
+            "/usr/lib/qt/plugins/styles/breeze5.so"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "kdeglobals",
+      "owner": "F03",
+      "description": "KDE Frameworks color groups, icons, fonts and widget style",
+      "applies": {
+        "always": true
+      },
+      "depends": [
+        "theme-core"
+      ],
+      "outputs": [
+        {
+          "target": "config:kdeglobals",
+          "class": "managed-keys",
+          "format": "ini",
+          "create_if_missing": true,
+          "validator": "ini",
+          "keys_template": "kde/kdeglobals.ini.tmpl"
+        }
+      ],
+      "activation": [
+        {
+          "kind": "next-launch"
+        }
+      ]
+    }
+  ]
+}

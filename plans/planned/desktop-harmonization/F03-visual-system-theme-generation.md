@@ -1,6 +1,6 @@
 # F03 — Visual system and theme generation
 
-Status: product policy synchronized with the completed interview; implementation not started. Apply resolved master section 9 and the [decision record](../desktop-harmonization-grill.md); native renderer/asset evidence remains pending.
+Status: product policy synchronized with the completed interview; implemented on branch `feat/harmonize-visual-design` (uncommitted, 2026-10-21); user-led VM acceptance pending, see [acceptance matrix](../../../Documents/desktop-harmonization-acceptance.md). Apply resolved master section 9 and the [decision record](../desktop-harmonization-grill.md); native renderer/asset evidence remains pending.
 Source baseline: `610a18bac374e7e2ffd0bcb2d99b026131deedbc`.
 Branch supplied by coordinator: `feat/harmonize-visual-design`.
 Master: [Desktop harmonization master](../desktop-harmonization-master.md).
@@ -113,7 +113,7 @@ Global toolkit settings can affect unselected applications; preview must disclos
 
 ### F03.1 — Resolve appearance inventory and feasibility
 
-Status: not started. Prerequisites: F01 discovery and domain specification contributions; no production writes.
+Status: implemented; VM acceptance pending. Prerequisites: F01 discovery and domain specification contributions; no production writes.
 Deliverables: toolkit/resource evidence contribution to F01; P02 comparison sheets and bounded spike matrix.
 Inspect GTK2 lookup, font identities, cursor formats, Qt plugin combinations, KDE/QML coverage, and portal appearance propagation.
 Prove ordinary GTK4 and libadwaita behavior independently; identify sandbox/desktop-launch differences without changing catalog membership.
@@ -122,7 +122,7 @@ Done: each toolkit/resource assumption has evidence or an explicit blocker; no u
 
 ### F03.2 — Freeze semantic tokens and reference variants
 
-Status: not started. Prerequisites: F03.1; P02 approval for final values; F04 acceptance consultation.
+Status: implemented; VM acceptance pending. Prerequisites: F03.1; P02 approval for final values; F04 acceptance consultation.
 Deliverables: proposed `theme/tokens.json`, `theme/tokens.schema.json`, and `theme/README.md`; F03 owns these proposed paths.
 Define units, state pairs, variants, fallback behavior, schema compatibility, and override precedence without predetermining a catalog schema bump.
 Provide proposed reference sheets and accessibility expectations to domain owners, including constrained native styling.
@@ -131,7 +131,7 @@ Done: approved tokens resolve deterministically; reference and limitations are r
 
 ### F03.3 — Implement pure rendering and registration
 
-Status: not started. Prerequisites: F03.2; frozen F01 descriptor and F02.1 staging contract. Split this package into two ordered milestones rather than waiting for a completed F02 transaction implementation.
+Status: implemented; VM acceptance pending. Prerequisites: F03.2; frozen F01 descriptor and F02.1 staging contract. Split this package into two ordered milestones rather than waiting for a completed F02 transaction implementation.
 F03.3a delivers a pure sample renderer and staged output set with no live writes; F02.5 consumes that sample. F03.3b validates the renderer against the completed F02.5 implementation and F04 fixtures. F03.3a does not require F03.3b or complete domain renderers.
 Deliverables: proposed `scripts/lib/theme-render.py` and `theme/renderers/`; final language/interface requires foundation agreement.
 Use a repository-compatible runtime; do not introduce a plugin platform or dependency merely to render templates.
@@ -141,7 +141,7 @@ Done: one global renderer and a domain-owned representative fixture pass F04/F02
 
 ### F03.4 — Implement global toolkit and asset mappings
 
-Status: not started. Prerequisites: F03.1-F03.3; P02/P05; proven resource closure.
+Status: implemented; VM acceptance pending. Prerequisites: F03.1-F03.3; P02/P05; proven resource closure.
 Deliverables: managed appearance mappings for existing GTK2/3/4, qt5ct/qt6ct, `kdeglobals`, cursor/font/icon settings, and portal preferences.
 Keep libadwaita preference support separate from general GTK4 CSS; publish native-constrained mappings honestly.
 Resolve Qt palette paths through explicit destination context; preserve unrelated geometry, file-dialog, preview, and interaction keys.
@@ -151,7 +151,7 @@ Done: supported global mappings have observed effects; unsupported required appe
 
 ### F03.5 — Orchestrate preview, activation, and rollback
 
-Status: not started. Prerequisites: F03.3-F03.4; F02 transactions; P02 activation UX and P06 upgrade consent.
+Status: implemented; VM acceptance pending. Prerequisites: F03.3-F03.4; F02 transactions; P02 activation UX and P06 upgrade consent.
 Deliverables: selected-member application report and activation specification integrated through F02; I01 owns installer wiring.
 Preview distinguishes source changes, staged outputs, installed outputs, live effects, deferred restart, and unavailable applications.
 Validate each dependency-coherent unit before commit. Cancelled units leave their state unchanged; conflicting app configs are preserved and skipped while independent valid apps may apply. Report partial appearance and deferred activation. Never auto-launch absent applications.
@@ -161,7 +161,7 @@ Done: file rollback and runtime recovery/deferred reporting are demonstrated wit
 
 ### F03.6 — Verify accessibility, scaling, and domain adoption
 
-Status: not started. Prerequisites: F03.4-F03.5 and F04 fixtures; apply P07 manual VM visual/functional acceptance without numerical thresholds.
+Status: implemented; VM acceptance pending. Prerequisites: F03.4-F03.5 and F04 fixtures; apply P07 manual VM visual/functional acceptance without numerical thresholds.
 Deliverables: proposed `tests/shell/theme_rendering.sh`, `tests/shell/theme_activation.sh`, and `tests/fixtures/theme/`.
 These F03 suites own token resolution, toolkit mappings, serialization and theme-orchestration assertions. F04's `harmonization_renderers.sh` owns the reusable managed-transaction/coverage harness and failure injection; reuse its helpers instead of duplicating recovery tests.
 Foundation verification uses representative fixtures; later complete coverage incorporates domain implementations without blocking Gate A.
@@ -226,12 +226,12 @@ Residual risks include toolkit drift, CSS leakage, plugin conflicts, font/cursor
 
 ## 10. Implementation checklist and confidence
 
-1. Not started — F03.1: document toolkit/resource feasibility and P02 options.
-2. Not started — F03.2: obtain approvals and freeze tokens, variants, and references.
-3. Not started — F03.3: implement deterministic rendering on approved foundation contracts.
-4. Not started — F03.4: implement verified global mappings and asset closure.
-5. Not started — F03.5: integrate consented activation, preservation, and rollback.
-6. Not started — F03.6: verify foundation fixtures, accessibility, scaling, and later domain coverage.
+1. Implemented (VM acceptance pending) — F03.1: document toolkit/resource feasibility and P02 options.
+2. Implemented (VM acceptance pending) — F03.2: obtain approvals and freeze tokens, variants, and references.
+3. Implemented (VM acceptance pending) — F03.3: implement deterministic rendering on approved foundation contracts.
+4. Implemented (VM acceptance pending) — F03.4: implement verified global mappings and asset closure.
+5. Implemented (VM acceptance pending) — F03.5: integrate consented activation, preservation, and rollback.
+6. Implemented (VM acceptance pending) — F03.6: verify foundation fixtures, accessibility, scaling, and later domain coverage.
 
 Planning confidence: **91/100** for scope, ownership, and static evidence; runtime feasibility remains unverified.
 Confidence is limited by provisional foundation interfaces, unresolved user decisions, and absent graphical/version tests.

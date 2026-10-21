@@ -6,6 +6,60 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ---
 
+## [Unreleased] - Desktop harmonization
+
+Desktop harmonization on branch `feat/harmonize-visual-design`. Implemented and covered by offline tests; VM acceptance is pending and user-led. See [Desktop harmonization](Documents/desktop-harmonization.md), [VM testing](Documents/desktop-harmonization-vm-testing.md) and the [acceptance matrix](Documents/desktop-harmonization-acceptance.md).
+
+### Added
+
+- **Capability ledger (F01):** `capabilities.json` and `capabilities.d/` record native support and evidence for every option. The installer chooser labels each app `full`, `limited` or `unverified`. The ledger currently lists 20 full, 25 limited and 28 unverified options.
+- **Shared runtime (F02):** `action_exec.sh` (semantic actions with fixed exit codes), `status_read.sh` (typed status JSON), `menu_choose.sh` (shared chooser and No/Yes confirmation), window helpers, per-domain providers and managed-configuration rules: theme regions, managed keys and generated files under `~/.config/hss-theme/`. The setup reliability library moved into the installed layout as `scripts/lib/hss_reliability.sh`; the old path is a shim.
+- **Theme system (F03):** one token set renders Catppuccin Mocha (dark, default) and Latte (light) with Blue accents, Noto Sans, JetBrains Mono Nerd Font, Breeze icons and the Rose Pine cursor. Switch with `Super+Shift+T`, the bar's theme control, `action_exec.sh theme.set dark|light`, or the installer's **Appearance** setting (`HSS_THEME_VARIANT`). Running apps reload only through a safe native reload; others update at next launch or relogin.
+- **Verification foundation (F04):** coverage fragments for every option and None state (260 cases), an evidence template, a manual visual-review protocol and a fixture library. The test runner now removes host session variables. CI runs `hss_theme.py check`.
+- **Bars and docks (D01):** Waybar, Ironbar and nwg-panel share the same modules, gestures and status adapters. Docks get default pins and theme units, and a shared nwg-panel bar and dock run as one process.
+- **Launchers (D02):** `menu.applications` and `menu.commands` for all five launchers, and the shared chooser with confirmation. The repository picker shows unique labels.
+- **Notifications (D03):** do-not-disturb, dismiss, history, center and status actions for SwayNC, Mako, Dunst and fnott. Single-owner enforcement refuses to start a second daemon and never terminates the foreign one.
+- **Devices (D04):** network, Bluetooth and audio actions that use each app's native mode and report unsupported operations, plus a guarded Bluetooth radio toggle.
+- **Terminal workspace (D05):** theme units for shells, terminals, multiplexers and agents. Terminal themes never change font size.
+- **Applications (D06):** default handlers for the primary browser (links, HTML), file manager (folders) and GUI editor (text, scripts), with `HSS_HANDLERS_MODE=apply|preview|skip` and recorded previous associations. With GUI editor set to None, `hss-tui-editor.desktop` opens text files in the primary TUI editor.
+- **Session and auxiliary (D07):** session actions for lock, logout, reboot, shutdown, suspend and hibernate, and theme units for Hyprland, hyprlock, wlogout, btop, cava and the keybind viewer.
+- **Integration (I01):** setup consent through `HSS_HARMONIZATION_ADOPT=preview|apply|skip` (TUI: **Existing configuration**) with a preview report in the run directory. The `Super+Shift+T` binding is added only when that chord is free. Theme switches and handler changes are restorable with `./setup.sh --rollback RUN_ID`.
+- Packages: `noto-fonts`, `rose-pine-cursor` (AUR), `qalculate-gtk` and `ffmpeg`. File-manager extras install with their app: `gvfs` and `thunar-archive-plugin` (Thunar), `nemo-fileroller` (Nemo) and `gvfs` (PCManFM-Qt).
+
+### Changed
+
+- Logout, reboot and shutdown now ask for confirmation (No is the default). Lock is immediate, suspend is direct, and hibernate appears only when the system can hibernate. Logout ends only the current session.
+- Left-clicking the bar's notification control runs `notifications.primary`: SwayNC toggles its control center, while Mako, Dunst and fnott dismiss all popups. Right-click toggles do-not-disturb.
+- Bar audio, Bluetooth and network clicks go through `action_exec.sh`, so a limited app reports the missing action instead of opening another app.
+- Hyprpolkitagent is the only authentication agent setup starts. The KDE agent autostart is removed, and a running foreign agent is reported, not stopped.
+- Helix launches as `helix`, the executable Arch installs (previously `hx`). The VS Code desktop ID is now `code.desktop`.
+- The Waybar taskbar no longer forces the uninstalled `Numix-Circle` icon theme and follows the GTK icon theme (Breeze). On upgrade, `update-waybar-roles.py` removes only that exact stock value and keeps icon themes you chose yourself.
+- Hyprland application windows are fully opaque (opacity 1.0); shell surfaces stay slightly translucent.
+- The hyprlock placeholder text is English ("Password") and failures show the PAM message. Lock-screen colors come from the generated theme.
+- The stock `XCURSOR_THEME` line points at `BreezeX-RosePine-Linux`. Customized lines are left alone.
+- Runtime theme switching requires an installation that setup has adopted. Before adoption, it reports `unavailable` and changes nothing.
+
+### Fixed
+- Reruns no longer append a second copy of optional autostart lines (for example `fix-dolphin.sh`) that an earlier run already enabled.
+- An invalid `HSS_HARMONIZATION_ADOPT` or `HSS_THEME_VARIANT` is now explained on the console, not only in the run log.
+- `setup.sh --rollback` can undo a run whose write failed partway; the failed file is no longer recorded with content it never had.
+
+### Known limitations
+
+- A home directory path containing an apostrophe breaks the generated tmux, fish and vim theme includes.
+- No notification daemon offers a native 24-hour history expiry, so all four are `limited`. Fnott has no readable do-not-disturb, and Mako and Dunst have no browsable history.
+- Browsers follow only the system dark/light preference. Native widget shapes still differ between toolkits.
+- nwg-panel bars have no right-click menus or update count. Docks do not follow the focused output. Ironbar shows no microphone level.
+- Some apps apply the theme only at next launch (fnott, nwg-panel, nwg-dock-hyprland, Foot, Konsole, Herdr), and the Xcursor change applies after relogin.
+- The SDDM greeter is not themed. Rollback cannot undo runtime effects or package installs.
+- 28 options are `unverified` (for example tofi, Ghostty, Konsole, Herdr, plasma-nm, bluedevil, every graphical file manager, every GUI editor and every coding-agent session).
+
+### Verification status
+
+- Offline suites, ledger and coverage validation are delivered. No VM, live-session or hardware check has been run, and all 260 coverage cases are `not-run`. Physical hardware remains unverified.
+
+---
+
 ## [0.7.0] - 2026-09-20
 
 ## Release v0.7.0
@@ -34,6 +88,9 @@ Changes since `v0.6.0`.
 
 - Added `--list-runs` and `--rollback <run-id>`, with per-run manifests, backups, and file-change checks before rollback.
 - Added atomic managed-file updates and stricter failure reporting for configuration writes, run metadata, and rollback.
+- Dry-run rollback no longer deletes files, validated privileged deletions use sudo, and manifests whose final row lacks a newline are read correctly.
+- Generated Lua commands keep argument boundaries and literal characters.
+- Unselected role alternatives are removed from explicit and user-added package lists, and registry token checks match the Rust validator.
 - Application choosers now show descriptions, support scrolling, and prevent installation with empty required groups.
 - Live output supports mouse and keyboard scrolling, a scrollbar, compact/detail views, and a Follow control. Full output is saved separately.
 
@@ -48,6 +105,7 @@ Changes since `v0.6.0`.
 ### Tests and maintenance
 
 - Added Rust, shell, Python, and package-registry regression coverage, with separate Rust, shell, and JSON CI jobs.
+- Hosted CI, live pacman/AUR availability, and interactive or privileged-system checks were not run before release.
 
 ## Breaking Changes
 
@@ -62,32 +120,6 @@ Changes since `v0.6.0`.
 - For unattended installs, use `SHELL_LANGUAGE_CHOICE_OVERRIDE`; the older `FISH_LANGUAGE_CHOICE_OVERRIDE` remains a fallback.
 - Rollback restores only files recorded in a run's manifest. It does not undo package installations, service changes, Stow links, or entire directory copies.
 - Clicking agent troubleshooting shares diagnostic excerpts with the selected agent and its provider. Credential redaction is best-effort, not a secrecy guarantee.
-
----
-
-## [Unreleased]
-
-### Added
-- Added exclusive browser, terminal, shell, GUI editor, TUI editor, and launcher roles backed by `packages.json`.
-- Added per-run state, logs, manifests, scoped rollback with `--rollback`, and run discovery with `--list-runs`.
-- Added deterministic shell integration tests, offline package-registry checks, and separate Rust, shell, and JSON CI jobs.
-
-### Changed
-- Hyprland now uses the Lua configuration rooted at `hyprland.lua`; retained `.conf` files are backups.
-- Role-aware Lua, Fish, Waybar, and Pyprland consumers now use generated `~/.config/hypr/roles.json` metadata and safe argument arrays.
-- Installer logs moved from `~/Hyprland-Simple-Setup.log` to `${XDG_STATE_HOME:-$HOME/.local/state}/hyprland-simple-setup/runs/<run-id>/log`.
-- The Waybar clipboard and weather actions now honor the selected terminal and browser.
-
-### Fixed
-- Preserved argument boundaries and literal characters in generated Lua commands.
-- Removed unselected role alternatives from explicit and user-added package lists, and aligned registry token checks with Rust.
-- Prevented dry-run rollback from deleting files and used sudo for validated privileged deletions.
-- Propagated rollback, manifest, metadata, and required role-write failures instead of reporting false success; handled final manifest rows without a newline.
-
-### Verification status
-- Local build, lint, 17 Rust tests, 11 shell test programs, all 22 role options, and Hyprland 0.56.2 Lua verification passed.
-- Two independent reviews and focused rechecks confirmed all nine accepted findings resolved.
-- Hosted CI, live pacman/AUR availability, and interactive or privileged-system release checks remain unrun.
 
 ---
 

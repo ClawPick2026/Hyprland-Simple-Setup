@@ -77,9 +77,10 @@ def main() -> None:
     updater = WAYBAR_DIR / 'scripts/system_update.sh'
     assert updater.is_file()
     assert updater.stat().st_mode & 0o111
-    setup = (WAYBAR_DIR.parents[2] / 'setup.sh').read_text(encoding='utf-8')
+    # setup.sh refreshes the installer-managed helpers listed in this manifest.
+    managed = (WAYBAR_DIR.parents[2] / 'scripts/lib/installer-managed-files.txt').read_text(encoding='utf-8').splitlines()
     for name in ['system_update.sh', 'launch_system_update.sh', 'update_maintenance_action.sh']:
-        assert f'".config/waybar/scripts/{name}"' in setup
+        assert f'.config/waybar/scripts/{name}' in managed, name
 
     status_wrapper = (
         WAYBAR_DIR / "scripts/updates_status.sh"

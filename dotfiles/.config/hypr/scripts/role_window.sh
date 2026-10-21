@@ -23,5 +23,5 @@ case "$role:$package" in
 esac
 executable=$(jq -er --arg role "$role" '.roles[$role].executable' "$roles_file")
 mapfile -t args < <(jq -r --arg role "$role" '.roles[$role].args[]?' "$roles_file")
-exec "$HOME/.config/waybar/scripts/launch_qt_gui.sh" \
+exec "$HOME/.config/hypr/scripts/window_present.sh" \
   "$class" '70%' '70%' "$role" -- "$executable" "${args[@]}" "$@"

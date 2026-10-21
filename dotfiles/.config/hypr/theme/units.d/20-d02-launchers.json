@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "units": [
+    {
+      "id": "wofi",
+      "owner": "D02",
+      "description": "Wofi launcher and chooser colors, font, radius and visible focus (rendered region in the shipped menu.css; GTK 3 drops a whole stylesheet whose @import target is missing, so no import is used)",
+      "applies": {"members": ["launcher/wofi"]},
+      "depends": ["theme-core"],
+      "executables": ["wofi"],
+      "outputs": [
+        {"target": "config:wofi/menu.css", "class": "managed-region", "comment": "/* */", "position": "prepend",
+         "template": "d02/wofi-menu.css.tmpl", "validator": "css"}
+      ],
+      "activation": [{"kind": "next-launch"}]
+    },
+    {
+      "id": "rofi",
+      "owner": "D02",
+      "description": "Rofi launcher and chooser theme loaded with @theme from a managed region of config.rasi",
+      "applies": {"members": ["launcher/rofi"]},
+      "depends": ["theme-core"],
+      "executables": ["rofi"],
+      "outputs": [
+        {"target": "theme:generated/rofi/theme.rasi", "class": "generated", "template": "d02/rofi-hss.rasi.tmpl", "validator": "css"},
+        {"target": "config:rofi/config.rasi", "class": "managed-region", "comment": "//", "position": "prepend", "create_if_missing": true,
+         "validator": "css", "content": "@theme \"{{path.generated}}/rofi/theme.rasi\""}
+      ],
+      "activation": [{"kind": "next-launch"}]
+    },
+    {
+      "id": "fuzzel",
+      "owner": "D02",
+      "description": "Fuzzel launcher and chooser font, colors and border through include= in a managed region of fuzzel.ini",
+      "applies": {"members": ["launcher/fuzzel"]},
+      "depends": ["theme-core"],
+      "executables": ["fuzzel"],
+      "outputs": [
+        {"target": "theme:generated/fuzzel/theme.ini", "class": "generated", "template": "d02/fuzzel-hss.ini.tmpl", "validator": "ini"},
+        {"target": "config:fuzzel/fuzzel.ini", "class": "managed-region", "comment": "#", "position": "prepend", "create_if_missing": true,
+         "validator": "ini", "content": "include={{path.generated}}/fuzzel/theme.ini"}
+      ],
+      "activation": [{"kind": "next-launch"}]
+    },
+    {
+      "id": "tofi",
+      "owner": "D02",
+      "description": "tofi launcher and chooser font family, colors and border through include in a managed region of the tofi config",
+      "applies": {"members": ["launcher/tofi"]},
+      "depends": ["theme-core"],
+      "executables": ["tofi", "tofi-drun", "tofi-run"],
+      "outputs": [
+        {"target": "theme:generated/tofi/theme.conf", "class": "generated", "template": "d02/tofi-hss.conf.tmpl", "validator": "ini"},
+        {"target": "config:tofi/config", "class": "managed-region", "comment": "#", "position": "prepend", "create_if_missing": true,
+         "validator": "ini", "content": "include = {{path.generated}}/tofi/theme.conf"}
+      ],
+      "activation": [{"kind": "next-launch"}]
+    },
+    {
+      "id": "bemenu",
+      "owner": "D02",
+      "description": "Bemenu native color, font and border options; menu_exec.sh exports them as BEMENU_OPTS unless the user already set BEMENU_OPTS",
+      "applies": {"members": ["launcher/bemenu"]},
+      "depends": ["theme-core"],
+      "executables": ["bemenu", "bemenu-run"],
+      "outputs": [
+        {"target": "theme:generated/bemenu/bemenu.opts", "class": "generated", "template": "d02/bemenu.opts.tmpl", "validator": "none"}
+      ],
+      "activation": [{"kind": "next-launch"}]
+    }
+  ]
+}

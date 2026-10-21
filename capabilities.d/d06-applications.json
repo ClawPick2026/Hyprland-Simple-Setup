@@ -1,0 +1,1647 @@
+{
+  "schema_version": 1,
+  "owner": "D06",
+  "capabilities": {
+    "browser.open": {
+      "domain": "browser",
+      "requirement": "required",
+      "outcome": "The primary browser opens a literal URL passed by an action or handler",
+      "failure_states": [
+        "missing-dependency",
+        "failed"
+      ],
+      "actions": []
+    },
+    "handlers.url": {
+      "domain": "handlers",
+      "requirement": "required",
+      "outcome": "x-scheme-handler/http, x-scheme-handler/https and text/html resolve to the primary browser after setup, and the previous user entries can be restored",
+      "failure_states": [
+        "missing-dependency",
+        "unsupported",
+        "failed",
+        "conflict"
+      ],
+      "actions": []
+    },
+    "handlers.folder": {
+      "domain": "handlers",
+      "requirement": "required",
+      "outcome": "inode/directory resolves to the primary graphical file manager; the FileChooser portal backend is unchanged",
+      "failure_states": [
+        "missing-dependency",
+        "unsupported",
+        "failed",
+        "conflict"
+      ],
+      "actions": []
+    },
+    "handlers.text": {
+      "domain": "handlers",
+      "requirement": "required",
+      "outcome": "text/plain and application/x-shellscript resolve to the primary GUI editor, or with GUI editor None to hss-tui-editor.desktop, which opens the primary TUI editor in the selected terminal",
+      "failure_states": [
+        "missing-dependency",
+        "unsupported",
+        "failed",
+        "conflict"
+      ],
+      "actions": []
+    },
+    "files.browse": {
+      "domain": "files",
+      "requirement": "required",
+      "outcome": "Folders can be browsed, files opened with their associated application and text files edited",
+      "failure_states": [
+        "missing-dependency",
+        "failed"
+      ],
+      "actions": []
+    },
+    "files.mounts": {
+      "domain": "files",
+      "requirement": "required",
+      "outcome": "Already-mounted volumes are listed and browsable",
+      "failure_states": [
+        "missing-dependency",
+        "unsupported"
+      ],
+      "actions": []
+    },
+    "files.trash": {
+      "domain": "files",
+      "requirement": "required",
+      "outcome": "Deleted items go to a trash that can be listed and restored",
+      "failure_states": [
+        "missing-dependency",
+        "unsupported"
+      ],
+      "actions": []
+    },
+    "files.archives": {
+      "domain": "files",
+      "requirement": "required",
+      "outcome": "Archives can be opened and extracted",
+      "failure_states": [
+        "missing-dependency",
+        "unsupported"
+      ],
+      "actions": []
+    },
+    "editor.edit": {
+      "domain": "editor",
+      "requirement": "required",
+      "outcome": "The editor opens literal file paths for editing and saving",
+      "failure_states": [
+        "missing-dependency",
+        "failed"
+      ],
+      "actions": []
+    },
+    "calendar.open": {
+      "domain": "calendar",
+      "requirement": "required",
+      "outcome": "The calendar action opens the calendar: GUI calendars through the class-based focus/float helper, terminal calendars in the selected terminal",
+      "failure_states": [
+        "missing-dependency",
+        "failed"
+      ],
+      "actions": []
+    },
+    "calendar.local_events": {
+      "domain": "calendar",
+      "requirement": "required",
+      "outcome": "Local events can be viewed, created and edited without online accounts on a fresh profile",
+      "failure_states": [
+        "unsupported",
+        "unavailable",
+        "failed"
+      ],
+      "actions": []
+    }
+  },
+  "options": {
+    "browser/firefox": {
+      "support": "limited",
+      "summary": "Opens web links by default; follows the desktop dark/light preference",
+      "limitations": [
+        "Browser colours follow only the system dark/light preference, not the Catppuccin palette"
+      ],
+      "family": "gtk3",
+      "startup": "on-demand",
+      "data_boundary": "Browser profiles, bookmarks, passwords and settings are never read, migrated or rewritten",
+      "capabilities": {
+        "browser.open": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D06-010"
+          ],
+          "note": ""
+        },
+        "handlers.url": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D06-001",
+            "E-D06-008",
+            "E-D06-009"
+          ],
+          "note": ""
+        }
+      },
+      "theme": {
+        "support": "partial",
+        "units": [],
+        "note": "Native-constrained: follows the portal dark/light preference from F03 (E-D06-017); profiles and browser settings are never rewritten"
+      }
+    },
+    "browser/chromium": {
+      "support": "limited",
+      "summary": "Opens web links by default; follows the desktop dark/light preference",
+      "limitations": [
+        "Browser colours follow only the system dark/light preference, not the Catppuccin palette"
+      ],
+      "family": "custom",
+      "startup": "on-demand",
+      "data_boundary": "Browser profiles, bookmarks, passwords and settings are never read, migrated or rewritten",
+      "capabilities": {
+        "browser.open": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D06-010"
+          ],
+          "note": ""
+        },
+        "handlers.url": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D06-001",
+            "E-D06-008",
+            "E-D06-009"
+          ],
+          "note": ""
+        }
+      },
+      "theme": {
+        "support": "partial",
+        "units": [],
+        "note": "Native-constrained: follows the portal dark/light preference from F03 (E-D06-017); profiles and browser settings are never rewritten"
+      }
+    },
+    "browser/vivaldi": {
+      "support": "unverified",
+      "summary": "Opens web links by default; follows the desktop dark/light preference",
+      "limitations": [
+        "Browser colours follow only the system dark/light preference, not the Catppuccin palette",
+        "Vivaldi's declared MIME types were not checked; verify it accepts http/https defaults in the VM"
+      ],
+      "family": "custom",
+      "startup": "on-demand",
+      "data_boundary": "Browser profiles, bookmarks, passwords and settings are never read, migrated or rewritten",
+      "capabilities": {
+        "browser.open": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D06-010"
+          ],
+          "note": ""
+        },
+        "handlers.url": {
+          "support": "unverified",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D06-002",
+            "E-D06-008",
+            "E-D06-009"
+          ],
+          "note": ""
+        }
+      },
+      "theme": {
+        "support": "partial",
+        "units": [],
+        "note": "Native-constrained: follows the portal dark/light preference from F03 (E-D06-017); profiles and browser settings are never rewritten"
+      }
+    },
+    "browser/zen-browser-bin": {
+      "support": "limited",
+      "summary": "Opens web links by default; follows the desktop dark/light preference",
+      "limitations": [
+        "Browser colours follow only the system dark/light preference, not the Catppuccin palette"
+      ],
+      "family": "gtk3",
+      "startup": "on-demand",
+      "data_boundary": "Browser profiles, bookmarks, passwords and settings are never read, migrated or rewritten",
+      "capabilities": {
+        "browser.open": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D06-010"
+          ],
+          "note": ""
+        },
+        "handlers.url": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D06-002",
+            "E-D06-008",
+            "E-D06-009"
+          ],
+          "note": ""
+        }
+      },
+      "theme": {
+        "support": "partial",
+        "units": [],
+        "note": "Native-constrained: follows the portal dark/light preference from F03 (E-D06-017); profiles and browser settings are never rewritten"
+      }
+    },
+    "browser/brave-bin": {
+      "support": "limited",
+      "summary": "Opens web links by default; follows the desktop dark/light preference",
+      "limitations": [
+        "Browser colours follow only the system dark/light preference, not the Catppuccin palette"
+      ],
+      "family": "custom",
+      "startup": "on-demand",
+      "data_boundary": "Browser profiles, bookmarks, passwords and settings are never read, migrated or rewritten",
+      "capabilities": {
+        "browser.open": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D06-010"
+          ],
+          "note": ""
+        },
+        "handlers.url": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D06-002",
+            "E-D06-008",
+            "E-D06-009"
+          ],
+          "note": ""
+        }
+      },
+      "theme": {
+        "support": "partial",
+        "units": [],
+        "note": "Native-constrained: follows the portal dark/light preference from F03 (E-D06-017); profiles and browser settings are never rewritten"
+      }
+    },
+    "file_manager/dolphin": {
+      "support": "unverified",
+      "summary": "Graphical file manager; the default folder handler",
+      "limitations": [
+        "Mounts, trash and archive actions are expected from Dolphin's own dependencies and Ark, but were not exercised outside the VM"
+      ],
+      "family": "kde",
+      "startup": "on-demand",
+      "data_boundary": "Files, bookmarks and file manager settings are never migrated; only the documented appearance keys are managed",
+      "capabilities": {
+        "files.browse": {
+          "support": "supported",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D06-010",
+            "E-D06-011"
+          ],
+          "note": ""
+        },
+        "files.mounts": {
+          "support": "unverified",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D06-011"
+          ],
+          "note": ""
+        },
+        "files.trash": {
+          "support": "unverified",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D06-011"
+          ],
+          "note": ""
+        },
+        "files.archives": {
+          "support": "unverified",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D06-011"
+          ],
+          "note": ""
+        },
+        "handlers.folder": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D06-001",
+            "E-D06-008",
+            "E-D06-009"
+          ],
+          "note": ""
+        }
+      },
+      "theme": {
+        "support": "supported",
+        "units": [
+          "kde-color-scheme",
+          "dolphin"
+        ],
+        "note": "[UiSettings] ColorScheme pinned to the generated HSSCatppuccin scheme (E-D06-030); other dolphinrc keys untouched"
+      }
+    },
+    "file_manager/nautilus": {
+      "support": "unverified",
+      "summary": "Graphical file manager; the default folder handler",
+      "limitations": [
+        "Mounts, trash and archives come from gvfs and gnome-autoar (package dependencies) and were not exercised outside the VM",
+        "libadwaita follows the dark/light preference and accent, not every Catppuccin colour"
+      ],
+      "family": "libadwaita",
+      "startup": "on-demand",
+      "data_boundary": "Files, bookmarks and file manager settings are never migrated; only the documented appearance keys are managed",
+      "capabilities": {
+        "files.browse": {
+          "support": "supported",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D06-010",
+            "E-D06-011"
+          ],
+          "note": ""
+        },
+        "files.mounts": {
+          "support": "unverified",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D06-011"
+          ],
+          "note": ""
+        },
+        "files.trash": {
+          "support": "unverified",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D06-011"
+          ],
+          "note": ""
+        },
+        "files.archives": {
+          "support": "unverified",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D06-011"
+          ],
+          "note": ""
+        },
+        "handlers.folder": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D06-001",
+            "E-D06-008",
+            "E-D06-009"
+          ],
+          "note": ""
+        }
+      },
+      "theme": {
+        "support": "partial",
+        "units": [],
+        "note": "Uses the F03 global GTK 4/libadwaita units"
+      }
+    },
+    "file_manager/nemo": {
+      "support": "unverified",
+      "summary": "Graphical file manager; the default folder handler",
+      "limitations": [
+        "nemo-fileroller is installed with Nemo; archive extract/compress actions are not yet verified in the VM"
+      ],
+      "family": "gtk3",
+      "startup": "on-demand",
+      "data_boundary": "Files, bookmarks and file manager settings are never migrated; only the documented appearance keys are managed",
+      "capabilities": {
+        "files.browse": {
+          "support": "supported",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D06-010",
+            "E-D06-011"
+          ],
+          "note": ""
+        },
+        "files.mounts": {
+          "support": "unverified",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D06-011"
+          ],
+          "note": ""
+        },
+        "files.trash": {
+          "support": "unverified",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D06-011"
+          ],
+          "note": ""
+        },
+        "files.archives": {
+          "support": "unverified",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D06-011"
+          ],
+          "note": "Uses nemo-fileroller, installed with Nemo; not yet verified"
+        },
+        "handlers.folder": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D06-001",
+            "E-D06-008",
+            "E-D06-009"
+          ],
+          "note": ""
+        }
+      },
+      "theme": {
+        "support": "supported",
+        "units": [],
+        "note": "Uses the F03 global GTK 3 units"
+      }
+    },
+    "file_manager/thunar": {
+      "support": "unverified",
+      "summary": "Graphical file manager; the default folder handler",
+      "limitations": [
+        "gvfs and thunar-archive-plugin are installed with Thunar; trash, volume mounting and archive actions are not yet verified in the VM"
+      ],
+      "family": "gtk3",
+      "startup": "on-demand",
+      "data_boundary": "Files, bookmarks and file manager settings are never migrated; only the documented appearance keys are managed",
+      "capabilities": {
+        "files.browse": {
+          "support": "supported",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D06-010",
+            "E-D06-011"
+          ],
+          "note": ""
+        },
+        "files.mounts": {
+          "support": "unverified",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D06-011"
+          ],
+          "note": "Uses gvfs, installed with Thunar; not yet verified"
+        },
+        "files.trash": {
+          "support": "unverified",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D06-011"
+          ],
+          "note": "Uses gvfs, installed with Thunar; not yet verified"
+        },
+        "files.archives": {
+          "support": "unverified",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D06-011"
+          ],
+          "note": "Uses thunar-archive-plugin, installed with Thunar; not yet verified"
+        },
+        "handlers.folder": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D06-001",
+            "E-D06-008",
+            "E-D06-009"
+          ],
+          "note": ""
+        }
+      },
+      "theme": {
+        "support": "supported",
+        "units": [],
+        "note": "Uses the F03 global GTK 3 units"
+      }
+    },
+    "file_manager/pcmanfm-qt": {
+      "support": "unverified",
+      "summary": "Graphical file manager; the default folder handler",
+      "limitations": [
+        "gvfs is installed with PCManFM-Qt; trash is not yet verified in the VM"
+      ],
+      "family": "qt6",
+      "startup": "on-demand",
+      "data_boundary": "Files, bookmarks and file manager settings are never migrated; only the documented appearance keys are managed",
+      "capabilities": {
+        "files.browse": {
+          "support": "supported",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D06-010",
+            "E-D06-011"
+          ],
+          "note": ""
+        },
+        "files.mounts": {
+          "support": "unverified",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D06-011"
+          ],
+          "note": ""
+        },
+        "files.trash": {
+          "support": "unverified",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D06-011"
+          ],
+          "note": "Uses gvfs, installed with PCManFM-Qt; not yet verified"
+        },
+        "files.archives": {
+          "support": "unverified",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D06-011"
+          ],
+          "note": ""
+        },
+        "handlers.folder": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D06-001",
+            "E-D06-008",
+            "E-D06-009"
+          ],
+          "note": ""
+        }
+      },
+      "theme": {
+        "support": "supported",
+        "units": [],
+        "note": "Uses the F03 global Qt 6 (qt6ct) units"
+      }
+    },
+    "tui_file_manager/yazi": {
+      "support": "unverified",
+      "summary": "Terminal file manager opened in the selected terminal",
+      "limitations": [
+        "Trash restore and archive extraction (7zip) come from Yazi's built-in openers and were not exercised here"
+      ],
+      "family": "tui",
+      "startup": "terminal",
+      "data_boundary": "Files and the file manager's own settings are never migrated",
+      "capabilities": {
+        "files.browse": {
+          "support": "supported",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D06-012",
+            "E-D06-010"
+          ],
+          "note": ""
+        },
+        "files.mounts": {
+          "support": "supported",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D06-012"
+          ],
+          "note": ""
+        },
+        "files.trash": {
+          "support": "unverified",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D06-012"
+          ],
+          "note": ""
+        },
+        "files.archives": {
+          "support": "unverified",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D06-012"
+          ],
+          "note": ""
+        }
+      },
+      "theme": {
+        "support": "supported",
+        "units": [
+          "yazi"
+        ],
+        "note": "Generated `hss` flavor selected for dark and light terminals (E-D06-024)"
+      }
+    },
+    "tui_file_manager/ranger": {
+      "support": "limited",
+      "summary": "Terminal file manager opened in the selected terminal",
+      "limitations": [
+        "No system trash without trash-cli; archive listing/extraction needs atool"
+      ],
+      "family": "tui",
+      "startup": "terminal",
+      "data_boundary": "Files and the file manager's own settings are never migrated",
+      "capabilities": {
+        "files.browse": {
+          "support": "supported",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D06-012",
+            "E-D06-010"
+          ],
+          "note": ""
+        },
+        "files.mounts": {
+          "support": "supported",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D06-012"
+          ],
+          "note": ""
+        },
+        "files.trash": {
+          "support": "unsupported",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D06-012"
+          ],
+          "note": "No freedesktop trash without trash-cli"
+        },
+        "files.archives": {
+          "support": "unsupported",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D06-012"
+          ],
+          "note": "Archive listing and extraction need atool"
+        }
+      },
+      "theme": {
+        "support": "supported",
+        "units": [],
+        "note": "Default colorscheme uses ANSI colours, so it follows the terminal theme (E-D06-025)"
+      }
+    },
+    "tui_file_manager/lf": {
+      "support": "limited",
+      "summary": "Terminal file manager opened in the selected terminal",
+      "limitations": [
+        "No built-in trash or archive support"
+      ],
+      "family": "tui",
+      "startup": "terminal",
+      "data_boundary": "Files and the file manager's own settings are never migrated",
+      "capabilities": {
+        "files.browse": {
+          "support": "supported",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D06-012",
+            "E-D06-010"
+          ],
+          "note": ""
+        },
+        "files.mounts": {
+          "support": "supported",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D06-012"
+          ],
+          "note": ""
+        },
+        "files.trash": {
+          "support": "unsupported",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D06-012"
+          ],
+          "note": "No built-in trash"
+        },
+        "files.archives": {
+          "support": "unsupported",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D06-012"
+          ],
+          "note": "No built-in archive support"
+        }
+      },
+      "theme": {
+        "support": "supported",
+        "units": [],
+        "note": "Default colours use ANSI, so they follow the terminal theme (E-D06-025)"
+      }
+    },
+    "tui_file_manager/nnn": {
+      "support": "limited",
+      "summary": "Terminal file manager opened in the selected terminal",
+      "limitations": [
+        "Deletes permanently unless NNN_TRASH is set; archives need external tools",
+        "File-type colours use fixed 256-colour values unless NNN_FCOLORS is set in the session"
+      ],
+      "family": "tui",
+      "startup": "terminal",
+      "data_boundary": "Files and the file manager's own settings are never migrated",
+      "capabilities": {
+        "files.browse": {
+          "support": "supported",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D06-012",
+            "E-D06-010"
+          ],
+          "note": ""
+        },
+        "files.mounts": {
+          "support": "supported",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D06-012"
+          ],
+          "note": ""
+        },
+        "files.trash": {
+          "support": "unsupported",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D06-012"
+          ],
+          "note": "Deletes permanently unless NNN_TRASH is set with trash-cli or gio"
+        },
+        "files.archives": {
+          "support": "unsupported",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D06-012"
+          ],
+          "note": "Archives need external tools"
+        }
+      },
+      "theme": {
+        "support": "partial",
+        "units": [],
+        "note": "Contexts use ANSI; NNN_FCOLORS is an environment variable only (integration request for the session environment)"
+      }
+    },
+    "tui_file_manager/mc": {
+      "support": "limited",
+      "summary": "Terminal file manager opened in the selected terminal",
+      "limitations": [
+        "Midnight Commander has no trash: deletion is permanent"
+      ],
+      "family": "tui",
+      "startup": "terminal",
+      "data_boundary": "Files and the file manager's own settings are never migrated",
+      "capabilities": {
+        "files.browse": {
+          "support": "supported",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D06-012",
+            "E-D06-010"
+          ],
+          "note": ""
+        },
+        "files.mounts": {
+          "support": "supported",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D06-012"
+          ],
+          "note": ""
+        },
+        "files.trash": {
+          "support": "unsupported",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D06-012"
+          ],
+          "note": "No trash: deletion is permanent"
+        },
+        "files.archives": {
+          "support": "supported",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D06-012"
+          ],
+          "note": ""
+        }
+      },
+      "theme": {
+        "support": "supported",
+        "units": [
+          "mc"
+        ],
+        "note": "True-colour skin selected in ~/.config/mc/ini (E-D06-026)"
+      }
+    },
+    "tui_file_manager/vifm": {
+      "support": "limited",
+      "summary": "Terminal file manager opened in the selected terminal",
+      "limitations": [
+        "Uses vifm's own trash (restore with :restore), not the system trash",
+        "Archives need FUSE mount tools"
+      ],
+      "family": "tui",
+      "startup": "terminal",
+      "data_boundary": "Files and the file manager's own settings are never migrated",
+      "capabilities": {
+        "files.browse": {
+          "support": "supported",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D06-012",
+            "E-D06-010"
+          ],
+          "note": ""
+        },
+        "files.mounts": {
+          "support": "supported",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D06-012"
+          ],
+          "note": ""
+        },
+        "files.trash": {
+          "support": "partial",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D06-012"
+          ],
+          "note": "Own trash with :restore, not the freedesktop system trash"
+        },
+        "files.archives": {
+          "support": "unsupported",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D06-012"
+          ],
+          "note": "Archives need FUSE mount tools"
+        }
+      },
+      "theme": {
+        "support": "supported",
+        "units": [
+          "vifm"
+        ],
+        "note": "`hss` colorscheme with ANSI values (E-D06-027); applied when a vifmrc exists"
+      }
+    },
+    "tui_editor/neovim": {
+      "support": "full",
+      "summary": "Terminal editor; EDITOR and the terminal editor actions use the primary",
+      "limitations": [],
+      "family": "tui",
+      "startup": "terminal",
+      "data_boundary": "Editor plugins, sessions and settings are never migrated or downloaded by the theme",
+      "capabilities": {
+        "editor.edit": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D06-010"
+          ],
+          "note": ""
+        }
+      },
+      "theme": {
+        "support": "supported",
+        "units": [
+          "neovim"
+        ],
+        "note": "Generated `hss` colorscheme loaded right after lazy.nvim; never downloads plugins (E-D06-019, E-D06-020)"
+      }
+    },
+    "tui_editor/helix": {
+      "support": "full",
+      "summary": "Terminal editor; EDITOR and the terminal editor actions use the primary",
+      "limitations": [],
+      "family": "tui",
+      "startup": "terminal",
+      "data_boundary": "Editor plugins, sessions and settings are never migrated or downloaded by the theme",
+      "capabilities": {
+        "editor.edit": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D06-003",
+            "E-D06-010"
+          ],
+          "note": "The catalog launches helix, the executable Arch installs (E-D06-003)"
+        }
+      },
+      "theme": {
+        "support": "supported",
+        "units": [
+          "helix"
+        ],
+        "note": "Built-in catppuccin_mocha/catppuccin_latte; live reload with SIGUSR1 (E-D06-021)"
+      }
+    },
+    "tui_editor/vim": {
+      "support": "limited",
+      "summary": "Terminal editor; EDITOR and the terminal editor actions use the primary",
+      "limitations": [
+        "The colour scheme is enabled only when Vim uses ~/.config/vim/vimrc; ~/.vimrc and ~/.vim are left untouched"
+      ],
+      "family": "tui",
+      "startup": "terminal",
+      "data_boundary": "Editor plugins, sessions and settings are never migrated or downloaded by the theme",
+      "capabilities": {
+        "editor.edit": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D06-010"
+          ],
+          "note": ""
+        }
+      },
+      "theme": {
+        "support": "partial",
+        "units": [
+          "vim"
+        ],
+        "note": "Region in an existing XDG vimrc (E-D06-022)"
+      }
+    },
+    "tui_editor/nano": {
+      "support": "full",
+      "summary": "Terminal editor; EDITOR and the terminal editor actions use the primary",
+      "limitations": [],
+      "family": "tui",
+      "startup": "terminal",
+      "data_boundary": "Editor plugins, sessions and settings are never migrated or downloaded by the theme",
+      "capabilities": {
+        "editor.edit": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D06-010"
+          ],
+          "note": ""
+        }
+      },
+      "theme": {
+        "support": "supported",
+        "units": [],
+        "note": "Interface uses reverse video and ANSI colours from the terminal theme; included files cannot set interface colours (E-D06-023)"
+      }
+    },
+    "gui_editor/zed": {
+      "support": "unverified",
+      "summary": "Graphical editor; the default handler for text files",
+      "limitations": [
+        "Not run in this environment; verify text-file opening in the VM"
+      ],
+      "family": "custom",
+      "startup": "on-demand",
+      "data_boundary": "Workspaces, extensions, accounts and settings are never migrated",
+      "capabilities": {
+        "editor.edit": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D06-010"
+          ],
+          "note": ""
+        },
+        "handlers.text": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D06-002",
+            "E-D06-008",
+            "E-D06-009"
+          ],
+          "note": ""
+        }
+      },
+      "theme": {
+        "support": "partial",
+        "units": [],
+        "note": "Native-constrained: Zed's theme mode `system` follows dark/light (E-D06-018); settings are not rewritten"
+      }
+    },
+    "gui_editor/visual-studio-code-bin": {
+      "support": "unverified",
+      "summary": "Graphical editor; the default handler for text files",
+      "limitations": [
+        "Not run in this environment; verify text-file opening in the VM",
+        "The package installs code.desktop, which does not declare text/plain; setup still sets it as the text-file handler"
+      ],
+      "family": "electron",
+      "startup": "on-demand",
+      "data_boundary": "Workspaces, extensions, accounts and settings are never migrated",
+      "capabilities": {
+        "editor.edit": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D06-010"
+          ],
+          "note": ""
+        },
+        "handlers.text": {
+          "support": "unverified",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D06-004",
+            "E-D06-008",
+            "E-D06-009"
+          ],
+          "note": ""
+        }
+      },
+      "theme": {
+        "support": "partial",
+        "units": [],
+        "note": "Native-constrained: window.autoDetectColorScheme (Linux unverified, E-D06-018); settings and extensions untouched"
+      }
+    },
+    "gui_editor/cursor-bin": {
+      "support": "unverified",
+      "summary": "Graphical editor; the default handler for text files",
+      "limitations": [
+        "Not run in this environment; verify text-file opening in the VM",
+        "The desktop entry name cursor.desktop is not verified from the package"
+      ],
+      "family": "electron",
+      "startup": "on-demand",
+      "data_boundary": "Workspaces, extensions, accounts and settings are never migrated",
+      "capabilities": {
+        "editor.edit": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D06-010"
+          ],
+          "note": ""
+        },
+        "handlers.text": {
+          "support": "unverified",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D06-004",
+            "E-D06-008",
+            "E-D06-009"
+          ],
+          "note": ""
+        }
+      },
+      "theme": {
+        "support": "partial",
+        "units": [],
+        "note": "Native-constrained like VS Code (E-D06-018)"
+      }
+    },
+    "gui_editor/kate": {
+      "support": "unverified",
+      "summary": "Graphical editor; the default handler for text files",
+      "limitations": [
+        "Not run in this environment; verify text-file opening in the VM"
+      ],
+      "family": "kde",
+      "startup": "on-demand",
+      "data_boundary": "Workspaces, extensions, accounts and settings are never migrated",
+      "capabilities": {
+        "editor.edit": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D06-010"
+          ],
+          "note": ""
+        },
+        "handlers.text": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D06-001",
+            "E-D06-008",
+            "E-D06-009"
+          ],
+          "note": ""
+        }
+      },
+      "theme": {
+        "support": "supported",
+        "units": [
+          "kde-color-scheme",
+          "kate"
+        ],
+        "note": "[UiSettings] ColorScheme pinned to HSSCatppuccin; the editor theme follows automatically (E-D06-018, E-D06-030)"
+      }
+    },
+    "gui_editor/mousepad": {
+      "support": "unverified",
+      "summary": "Graphical editor; the default handler for text files",
+      "limitations": [
+        "Not run in this environment; verify text-file opening in the VM",
+        "The editor text colours use Mousepad's own style-scheme setting"
+      ],
+      "family": "gtk3",
+      "startup": "on-demand",
+      "data_boundary": "Workspaces, extensions, accounts and settings are never migrated",
+      "capabilities": {
+        "editor.edit": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D06-010"
+          ],
+          "note": ""
+        },
+        "handlers.text": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D06-001",
+            "E-D06-008",
+            "E-D06-009"
+          ],
+          "note": ""
+        }
+      },
+      "theme": {
+        "support": "partial",
+        "units": [],
+        "note": "GTK window colours from the F03 global units; GtkSourceView scheme is a user setting (E-D06-018)"
+      }
+    },
+    "calendar/merkuro": {
+      "support": "unverified",
+      "summary": "Calendar opened from the bar and shortcuts",
+      "limitations": [
+        "Needs the Akonadi services to start; check the first-run local calendar in the VM"
+      ],
+      "family": "kde",
+      "startup": "on-demand",
+      "data_boundary": "Calendars, accounts and events are never read, imported or migrated",
+      "capabilities": {
+        "calendar.open": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D06-034"
+          ],
+          "note": ""
+        },
+        "calendar.local_events": {
+          "support": "unverified",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D06-015"
+          ],
+          "note": "Akonadi creates a local Personal Calendar on first run; check in the VM"
+        }
+      },
+      "theme": {
+        "support": "partial",
+        "units": [],
+        "note": "Uses the F03 global Qt/KDE units"
+      }
+    },
+    "calendar/gnome-calendar": {
+      "support": "unverified",
+      "summary": "Calendar opened from the bar and shortcuts",
+      "limitations": [
+        "Needs evolution-data-server; check the first-run local calendar in the VM"
+      ],
+      "family": "libadwaita",
+      "startup": "on-demand",
+      "data_boundary": "Calendars, accounts and events are never read, imported or migrated",
+      "capabilities": {
+        "calendar.open": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D06-034"
+          ],
+          "note": ""
+        },
+        "calendar.local_events": {
+          "support": "unverified",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D06-016"
+          ],
+          "note": "The evolution-data-server local calendar is the default; check in the VM"
+        }
+      },
+      "theme": {
+        "support": "partial",
+        "units": [],
+        "note": "Uses the F03 global GTK 4/libadwaita units"
+      }
+    },
+    "calendar/korganizer": {
+      "support": "unverified",
+      "summary": "Calendar opened from the bar and shortcuts",
+      "limitations": [
+        "Needs the Akonadi services to start; check the first-run local calendar in the VM"
+      ],
+      "family": "kde",
+      "startup": "on-demand",
+      "data_boundary": "Calendars, accounts and events are never read, imported or migrated",
+      "capabilities": {
+        "calendar.open": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D06-034"
+          ],
+          "note": ""
+        },
+        "calendar.local_events": {
+          "support": "unverified",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D06-015"
+          ],
+          "note": "Akonadi creates a local Personal Calendar on first run; check in the VM"
+        }
+      },
+      "theme": {
+        "support": "partial",
+        "units": [],
+        "note": "Uses the F03 global Qt/KDE units"
+      }
+    },
+    "calendar/calcurse": {
+      "support": "full",
+      "summary": "Calendar opened from the bar and shortcuts",
+      "limitations": [],
+      "family": "tui",
+      "startup": "terminal",
+      "data_boundary": "Calendars, accounts and events are never read, imported or migrated",
+      "capabilities": {
+        "calendar.open": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D06-034"
+          ],
+          "note": ""
+        },
+        "calendar.local_events": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D06-013"
+          ],
+          "note": ""
+        }
+      },
+      "theme": {
+        "support": "supported",
+        "units": [
+          "calcurse"
+        ],
+        "note": "appearance.theme uses the Blue ANSI slot (E-D06-028)"
+      }
+    },
+    "calendar/khal": {
+      "support": "limited",
+      "summary": "Calendar opened from the bar and shortcuts",
+      "limitations": [
+        "Run `khal configure` once before first use; until then the calendar action exits with an error"
+      ],
+      "family": "tui",
+      "startup": "terminal",
+      "data_boundary": "Calendars, accounts and events are never read, imported or migrated",
+      "capabilities": {
+        "calendar.open": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D06-034"
+          ],
+          "note": ""
+        },
+        "calendar.local_events": {
+          "support": "unsupported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D06-014"
+          ],
+          "note": "ikhal cannot start until the native `khal configure` wizard has created a calendar"
+        }
+      },
+      "theme": {
+        "support": "supported",
+        "units": [
+          "khal"
+        ],
+        "note": "ikhal built-in dark/light theme follows the variant once khal is configured (E-D06-029)"
+      }
+    }
+  },
+  "none_states": {
+    "tui_file_manager": {
+      "behavior": "role_exec.sh tui_file_manager reports the role as unavailable and launches nothing; Super+E keeps the graphical file manager; installed TUI managers are not removed",
+      "theme": "no member units"
+    },
+    "gui_editor": {
+      "behavior": "No GUI editor is autostarted; editor actions open the primary TUI editor in the selected terminal and text files are associated with hss-tui-editor.desktop, which does the same",
+      "theme": "no member units"
+    }
+  },
+  "generic_packages": {},
+  "evidence": {
+    "E-D06-001": {
+      "kind": "static",
+      "source": "pacman -Fy; pacman -Fl <pkg>; extracted desktop files (firefox 158.0-1, chromium 153.0.8010.36-1, dolphin 26.08.2-1, thunar 4.20.10-1, nautilus 51.1-1, nemo 6.6.4-1, pcmanfm-qt 2.4.1-1, kate 26.08.2-1, mousepad 0.7.0-1, merkuro 26.08.2-2, gnome-calendar 51.0-1, korganizer 26.08.2-1, neovim 0.12.6-1, helix 25.07.1-2, vim 9.2.1178-1, khal 0.14.1-1)",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME (tmux/foot under headless sway where noted)",
+      "command": "pacman -Fl … | grep /applications/",
+      "result": "firefox.desktop and chromium.desktop declare text/html, http and https; org.kde.dolphin.desktop, thunar.desktop, org.gnome.Nautilus.desktop, nemo.desktop, pcmanfm-qt.desktop declare inode/directory; org.kde.kate.desktop and org.xfce.mousepad.desktop declare text/plain; org.kde.merkuro.calendar.desktop, org.gnome.Calendar.desktop, org.kde.korganizer.desktop declare text/calendar"
+    },
+    "E-D06-002": {
+      "kind": "static",
+      "source": "archlinux.org x86_64 file lists; AUR .SRCINFO and packaged desktop files (vivaldi 8.2.4133.89-1, zed 1.24.3-1, zen-browser-bin 1.23.2b-1, brave-bin 1.97.59-1)",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME (tmux/foot under headless sway where noted)",
+      "command": "curl file lists / desktop files",
+      "result": "vivaldi-stable.desktop (MimeType not read); dev.zed.Zed.desktop declares text/plain; zen.desktop and brave-browser.desktop declare text/html, http and https"
+    },
+    "E-D06-003": {
+      "kind": "static",
+      "source": "pacman -Ql helix 25.07.1-2",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME (tmux/foot under headless sway where noted)",
+      "command": "pacman -Ql helix; command -v hx",
+      "result": "Only /usr/bin/helix exists; the catalog executable and editor_bin `hx` are not on PATH"
+    },
+    "E-D06-004": {
+      "kind": "documentation",
+      "source": "visual-studio-code-bin 1.142.0-1 PKGBUILD and Microsoft .deb listing; cursor-bin 3.25.9-1",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME (tmux/foot under headless sway where noted)",
+      "command": "n/a",
+      "result": "VS Code installs code.desktop (catalog says visual-studio-code.desktop) declaring only its workspace MIME type; cursor.desktop is inferred, not verified"
+    },
+    "E-D06-005": {
+      "kind": "static",
+      "source": "/usr/bin/xdg-mime (xdg-utils 1.2.1-2)",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME (tmux/foot under headless sway where noted)",
+      "command": "read source",
+      "result": "default writes `mime=app.desktop` into [Default Applications] of $XDG_CONFIG_HOME/mimeapps.list for generic desktops (Hyprland); query reads <desktop>-mimeapps.list before mimeapps.list in config then data directories and requires an existing entry whose Exec resolves"
+    },
+    "E-D06-006": {
+      "kind": "real-effect",
+      "source": "xdg-utils 1.2.1-2",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME (tmux/foot under headless sway where noted)",
+      "command": "private XDG dirs: xdg-mime default/query with lists, a missing desktop file, hyprland-mimeapps.list and a missing XDG_CONFIG_HOME",
+      "result": "Lists are replaced by one value; a missing desktop file is written anyway (exit 0); hyprland-mimeapps.list overrides mimeapps.list; with no config directory nothing is written but exit is 0, so effective read-back is mandatory"
+    },
+    "E-D06-007": {
+      "kind": "real-effect",
+      "source": "glib2 2.90.1-1 gio",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME (tmux/foot under headless sway where noted)",
+      "command": "gio mime text/plain with a [Default Applications] entry",
+      "result": "gio reports the entry; the managed hss-tui-editor.desktop therefore declares MimeType=text/plain;application/x-shellscript;"
+    },
+    "E-D06-008": {
+      "kind": "real-effect",
+      "source": "tests/shell/application_handlers.sh case 12 with xdg-utils 1.2.1-2",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 hermetic test userland (uid 1000), tests/run.sh isolation",
+      "command": "hss_handlers_apply then hss_handlers_restore with the real xdg-mime and fixture desktop entries",
+      "result": "Six targets applied and read back by xdg-mime query; restore returned the previous text/plain default and removed added keys"
+    },
+    "E-D06-009": {
+      "kind": "modeled-effect",
+      "source": "tests/shell/application_handlers.sh cases 1-11 (stateful xdg-mime double)",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 hermetic test userland (uid 1000), tests/run.sh isolation",
+      "command": "preview, apply, idempotent reapply, restore with a later user edit, GUI editor None, missing entry, missing xdg-mime, xdg-mime failure, no-op double, desktop-specific override, unsafe metadata, dry run",
+      "result": "Distinct statuses applied/unchanged/missing-desktop-entry/missing-dependency/failed/mismatch/unsupported/invalid/disabled; restore keeps later user edits as conflicts; portal file untouched; Exec lines never run"
+    },
+    "E-D06-010": {
+      "kind": "argv",
+      "source": "tests/shell/application_workflows.sh",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 hermetic test userland (uid 1000), tests/run.sh isolation",
+      "command": "role_exec.sh for every browser, GUI editor, TUI editor and TUI file manager with literal URLs and paths",
+      "result": "Catalog argv plus literal argument; terminal apps via term_exec with hss-<role> identity; GUI editor None opens the TUI editor; TUI file manager None reports unavailable"
+    },
+    "E-D06-011": {
+      "kind": "static",
+      "source": "pacman -Si dolphin thunar nautilus nemo pcmanfm-qt kio libfm-qt; packages.json",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME (tmux/foot under headless sway where noted)",
+      "command": "inspect depends/optdepends",
+      "result": "Dolphin: solid/udisks2, kio trash, Ark in catalog; Nautilus: gvfs hard dependency, gnome-autoar; Nemo: gvfs, archive actions need nemo-fileroller + file-roller; Thunar: trash and mounts need optional gvfs, archive actions need thunar-archive-plugin; PCManFM-Qt: trash needs gvfs; none of gvfs, thunar-archive-plugin or nemo-fileroller is in the catalog"
+    },
+    "E-D06-012": {
+      "kind": "static",
+      "source": "man pages and built-in defaults: yazi 26.9.1 (embedded preset: trash-restore, extract openers), ranger 1.9.4, lf 42, nnn 5.3, mc 4.8.33, vifm 0.14.4",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME (tmux/foot under headless sway where noted)",
+      "command": "inspect",
+      "result": "Yazi trashes and restores natively and extracts with 7zip (catalog); ranger has no freedesktop trash without trash-cli and needs atool; lf has no trash or archives; nnn trash needs NNN_TRASH and trash-cli/gio; mc deletes permanently but browses archives natively; vifm has its own trash with :restore and needs FUSE tools for archives"
+    },
+    "E-D06-013": {
+      "kind": "real-effect",
+      "source": "calcurse 4.8.2-1",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME (tmux/foot under headless sway where noted)",
+      "command": "fresh HOME: calcurse -q -i synthetic.ics; calcurse -Q --from 10/21/2026 --days 1 (also tests/shell/calendar_workflows.sh in the research userland)",
+      "result": "Fresh profile initialises itself; the synthetic local event is imported and listed without any account"
+    },
+    "E-D06-014": {
+      "kind": "real-effect",
+      "source": "khal 0.14.1-1",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME (tmux/foot under headless sway where noted)",
+      "command": "fresh HOME: khal list; khal configure (scripted); khal new; khal list",
+      "result": "Without configuration khal and ikhal exit 1 asking for `khal configure`; after the native wizard a local vdir calendar accepts and lists a synthetic event; editing is interactive"
+    },
+    "E-D06-015": {
+      "kind": "static",
+      "source": "kdepim-runtime /usr/share/akonadi/firstrun/defaultcalendar; pacman -Si merkuro korganizer akonadi",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME (tmux/foot under headless sway where noted)",
+      "command": "inspect",
+      "result": "Akonadi creates a local `Personal Calendar` (ical resource) on first run; real effect needs a session (VM)"
+    },
+    "E-D06-016": {
+      "kind": "static",
+      "source": "evolution-data-server 3.62.1-1 schemas; pacman -Si gnome-calendar",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME (tmux/foot under headless sway where noted)",
+      "command": "inspect",
+      "result": "The built-in local `system` calendar is the default source; online accounts are optional; real effect needs a session (VM)"
+    },
+    "E-D06-017": {
+      "kind": "documentation",
+      "source": "Firefox widget/gtk/nsLookAndFeel.cpp; Chromium ui/linux/dark_mode_manager_linux",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME (tmux/foot under headless sway where noted)",
+      "command": "n/a",
+      "result": "Firefox and Chromium follow the portal org.freedesktop.appearance color-scheme; Zen (Gecko) and Vivaldi/Brave (Chromium) inherit this by derivation (inference)"
+    },
+    "E-D06-018": {
+      "kind": "documentation",
+      "source": "code.visualstudio.com/docs/configure/themes; zed.dev/docs/themes; docs.kde.org Kate colour themes; mousepad 0.7.0 gschema",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME (tmux/foot under headless sway where noted)",
+      "command": "n/a",
+      "result": "VS Code/Cursor window.autoDetectColorScheme (Linux unverified); Zed theme mode system; Kate editor theme follows the window colour scheme; Mousepad uses GTK plus a GtkSourceView scheme setting"
+    },
+    "E-D06-019": {
+      "kind": "real-effect",
+      "source": "neovim 0.12.6",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME (tmux/foot under headless sway where noted)",
+      "command": "nvim --headless --clean -u <rendered init.lua region> readback, both variants",
+      "result": "colors_name hss, Normal bg 1e1e2e (dark) / eff1f5 (light), terminal_color_4 follows the accent; --clean loads no user config or plugins; a later colorscheme call in init.lua overrides the earlier plugin colorscheme"
+    },
+    "E-D06-020": {
+      "kind": "static",
+      "source": "dotfiles/.config/nvim/init.lua",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME (tmux/foot under headless sway where noted)",
+      "command": "inspect",
+      "result": "An offline lazy.nvim bootstrap error or a missing nvim-tree aborts the rest of init.lua; the shipped region runs right after lazy setup and nvim-tree is now loaded with pcall"
+    },
+    "E-D06-021": {
+      "kind": "real-effect",
+      "source": "helix 25.07.1-2",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME (tmux/foot under headless sway where noted)",
+      "command": "/usr/lib/helix/runtime/themes listing; helix in tmux with theme = \"catppuccin_latte\"; pkill -USR1 -x helix",
+      "result": "Built-in catppuccin_mocha and catppuccin_latte exist; Latte background rendered; SIGUSR1 reloads the theme (\"Config refreshed\")"
+    },
+    "E-D06-022": {
+      "kind": "real-effect",
+      "source": "vim 9.2.1178",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME (tmux/foot under headless sway where noted)",
+      "command": "XDG vimrc with the rendered region: vim -Nes -u ~/.config/vim/vimrc readback, both variants; :h xdg-vimrc",
+      "result": "colors_name hss with the variant background; ~/.config/vim is used only without ~/.vimrc and ~/.vim/vimrc; creating a vimrc disables defaults.vim, so none is created"
+    },
+    "E-D06-023": {
+      "kind": "real-effect",
+      "source": "nano 9.2-1",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME (tmux/foot under headless sway where noted)",
+      "command": "nanorc include of interface colours; colour syntax probes in tmux",
+      "result": "`set` is not allowed in included files; only #rgb hex is accepted; the default interface uses reverse video and ANSI colours, so it follows the terminal theme"
+    },
+    "E-D06-024": {
+      "kind": "real-effect",
+      "source": "yazi 26.9.1",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME (tmux/foot under headless sway where noted)",
+      "command": "flavors/<name>.yazi/flavor.toml with [flavor] dark/light in foot under headless sway; ya env",
+      "result": "Flavor selected per terminal light/dark report; flavor colours rendered; missing flavor directory is an error"
+    },
+    "E-D06-025": {
+      "kind": "real-effect",
+      "source": "ranger 1.9.4, lf 42, nnn 5.3",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME (tmux/foot under headless sway where noted)",
+      "command": "default colours captured in tmux",
+      "result": "Ranger and lf defaults use ANSI 8 colours (terminal palette); nnn file-type colours use fixed 256-colour indices unless NNN_FCOLORS is set"
+    },
+    "E-D06-026": {
+      "kind": "real-effect",
+      "source": "mc 4.8.33 (S-Lang 2.3.3)",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME (tmux/foot under headless sway where noted)",
+      "command": "generated skin selected by [Midnight-Commander] skin= with COLORTERM=truecolor, both variants; quit with F10",
+      "result": "True-colour panels rendered (#1e1e2e / #eff1f5 backgrounds); mc rewrote ini and kept skin=; the default skin uses ANSI blue backgrounds"
+    },
+    "E-D06-027": {
+      "kind": "real-effect",
+      "source": "vifm 0.14.4",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME (tmux/foot under headless sway where noted)",
+      "command": "colors/hss.vifm with colorscheme hss in vifmrc; :colorscheme? in tmux",
+      "result": "Scheme active (directories ANSI blue); gui colours apply only with TERM *-direct, otherwise the cterm ANSI values are used"
+    },
+    "E-D06-028": {
+      "kind": "real-effect",
+      "source": "calcurse 4.8.2-1",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME (tmux/foot under headless sway where noted)",
+      "command": "appearance.theme=blue on default in conf",
+      "result": "Titles render ANSI blue; hex values are rejected; conf rewrites keep the key"
+    },
+    "E-D06-029": {
+      "kind": "real-effect",
+      "source": "khal 0.14.1-1 (khal.spec)",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME (tmux/foot under headless sway where noted)",
+      "command": "[view] theme = dark|light; ikhal in tmux",
+      "result": "Built-in ikhal dark and light themes render with ANSI colours; unknown themes are fatal"
+    },
+    "E-D06-030": {
+      "kind": "documentation",
+      "source": "invent.kde.org/frameworks/kcolorscheme kcolorschememanager.cpp (master 8bb948c4, v6.31.0) lines 68-84, 157-208, 305-313",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME (tmux/foot under headless sway where noted)",
+      "command": "n/a",
+      "result": "An empty [UiSettings] ColorScheme under a non-KDE platform theme (qt6ct) applies Breeze Light/Dark, not kdeglobals; a named scheme found in color-schemes is pinned"
+    },
+    "E-D06-031": {
+      "kind": "real-effect",
+      "source": "providers/theme.sh hss_theme_apply VARIANT --adopt (repository foundation)",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME (tmux/foot under headless sway where noted)",
+      "command": "apply dark then light into a private HOME with all D06 members and existing vimrc, vifmrc and khal config",
+      "result": "neovim, helix, vim, yazi, mc, vifm, khal, kde-color-scheme, dolphin, kate and calcurse applied or unchanged in both variants; validated with nvim, vim, helix, mc, vifm and khal"
+    },
+    "E-D06-032": {
+      "kind": "modeled-effect",
+      "source": "tests/shell/application_renderers.sh",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 hermetic test userland (uid 1000), tests/run.sh isolation",
+      "command": "hss_theme.py plan for both variants, None selections, bare home, user edits, PATH spies for nvim/git/curl and app binaries",
+      "result": "All D06 units render deterministically without running any program; init.lua/vimrc/vifmrc/khal config never created; Dolphin keys other than ColorScheme unchanged; user edits skipped-conflict"
+    },
+    "E-D06-033": {
+      "kind": "modeled-effect",
+      "source": "tests/shell/application_handlers.sh case 5; desktop-file-validate (desktop-file-utils)",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 hermetic test userland (uid 1000), tests/run.sh isolation",
+      "command": "validate hss-tui-editor.desktop; expand Exec per the Desktop Entry Specification and run it against role_exec.sh/term_exec.sh",
+      "result": "Entry validates; Exec is a constant sh -c program with file names as separate arguments; the primary TUI editor opens in the selected terminal with a literal file name"
+    },
+    "E-D06-034": {
+      "kind": "argv",
+      "source": "tests/shell/calendar_workflows.sh",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 hermetic test userland (uid 1000), tests/run.sh isolation",
+      "command": "float_calendar.sh and role_window.sh calendar for all five calendars",
+      "result": "GUI calendars use launch_qt_gui.sh with native class regex at 70%; calcurse and ikhal open in the selected terminal as hss-calendar"
+    }
+  }
+}

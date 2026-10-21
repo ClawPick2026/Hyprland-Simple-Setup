@@ -1,6 +1,6 @@
 # D07 — Session and auxiliary interfaces
 
-Status: product policy synchronized with the completed interview; implementation not started. Apply master section 9 and the [decision record](../desktop-harmonization-grill.md); native session/security evidence remains pending.
+Status: product policy synchronized with the completed interview; implemented on branch `feat/harmonize-visual-design` (uncommitted, 2026-10-21); user-led VM acceptance pending, see [acceptance matrix](../../../Documents/desktop-harmonization-acceptance.md). Apply master section 9 and the [decision record](../desktop-harmonization-grill.md); native session/security evidence remains pending.
 Master: [Desktop harmonization master](../desktop-harmonization-master.md).
 Supplied baseline: `610a18bac374e7e2ffd0bcb2d99b026131deedbc`, branch `feat/harmonize-visual-design`.
 
@@ -204,12 +204,12 @@ No local-wiki tools were available; no web research or upstream/version claim wa
 
 ## 8. Not-started checklist and confidence
 
-1. Not started — D07.1: reconcile inventory, dependencies and pre-foundation specifications.
-2. Not started — D07.2: implement approved secure session/authentication/power semantics.
-3. Not started — D07.3: render and validate session, greeter and compositor surfaces.
-4. Not started — D07.4: verify wallpaper, nightlight, capture and clipboard adapters.
-5. Not started — D07.5: adapt custom dialogs and auxiliary applications.
-6. Not started — D07.6: complete migration, evidence and integration acceptance.
+1. Implemented (VM acceptance pending) — D07.1: reconcile inventory, dependencies and pre-foundation specifications.
+2. Implemented (VM acceptance pending) — D07.2: implement approved secure session/authentication/power semantics.
+3. Implemented (VM acceptance pending) — D07.3: render and validate session, greeter and compositor surfaces.
+4. Implemented (VM acceptance pending) — D07.4: verify wallpaper, nightlight, capture and clipboard adapters.
+5. Implemented (VM acceptance pending) — D07.5: adapt custom dialogs and auxiliary applications.
+6. Implemented (VM acceptance pending) — D07.6: complete migration, evidence and integration acceptance.
 
 Planning confidence: **91/100** for source-grounded scope and ownership; runtime feasibility is unverified.
 Confidence is limited by native configuration surfaces, concrete foundation interfaces and absent graphical/security/hardware tests. Product choices are resolved in the interview.

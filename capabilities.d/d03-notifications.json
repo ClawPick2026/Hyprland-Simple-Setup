@@ -1,0 +1,919 @@
+{
+  "schema_version": 1,
+  "owner": "D03",
+  "capabilities": {
+    "notifications.popups": {
+      "domain": "notifications",
+      "requirement": "required",
+      "outcome": "Notifications sent to org.freedesktop.Notifications appear as themed popups with distinct normal and critical styling.",
+      "failure_states": [
+        "unavailable",
+        "conflict",
+        "missing-dependency",
+        "failed"
+      ]
+    },
+    "notifications.actions": {
+      "domain": "notifications",
+      "requirement": "required",
+      "outcome": "A notification's actions can be invoked through the provider's own interface (click, menu or client command).",
+      "failure_states": [
+        "unavailable",
+        "unsupported",
+        "failed"
+      ]
+    },
+    "notifications.dismiss": {
+      "domain": "notifications",
+      "requirement": "required",
+      "outcome": "notifications.dismiss.all removes every shown popup natively and completes only when the provider then reports none shown (accepted where no readback exists). notifications.primary (the bar's left click) runs notifications.center.toggle for SwayNC and notifications.dismiss.all for mako, dunst and fnott, matching the v0.7.0 gestures.",
+      "failure_states": [
+        "unavailable",
+        "conflict",
+        "missing-dependency",
+        "timeout",
+        "failed",
+        "usage"
+      ],
+      "actions": [
+        "notifications.dismiss.all",
+        "notifications.primary"
+      ]
+    },
+    "notifications.dnd": {
+      "domain": "notifications",
+      "requirement": "required",
+      "outcome": "notifications.dnd.set/toggle change the native do-not-disturb state and complete only when the readback matches; while on, ordinary popups are hidden and critical ones still appear.",
+      "failure_states": [
+        "unsupported",
+        "unavailable",
+        "conflict",
+        "missing-dependency",
+        "timeout",
+        "failed",
+        "usage"
+      ],
+      "actions": [
+        "notifications.dnd.set",
+        "notifications.dnd.toggle"
+      ]
+    },
+    "notifications.history": {
+      "domain": "notifications",
+      "requirement": "required",
+      "outcome": "notifications.history.open shows a native view in which retained notifications can be browsed.",
+      "failure_states": [
+        "unsupported",
+        "unavailable",
+        "conflict",
+        "missing-dependency",
+        "timeout",
+        "failed"
+      ],
+      "actions": [
+        "notifications.history.open"
+      ]
+    },
+    "notifications.center": {
+      "domain": "notifications",
+      "requirement": "optional",
+      "outcome": "notifications.center.toggle opens or closes the provider's notification center and completes when its visibility readback changed.",
+      "failure_states": [
+        "unsupported",
+        "unavailable",
+        "conflict",
+        "missing-dependency",
+        "timeout",
+        "failed"
+      ],
+      "actions": [
+        "notifications.center.toggle"
+      ]
+    },
+    "notifications.status": {
+      "domain": "notifications",
+      "requirement": "required",
+      "outcome": "status_read.sh notifications reports running, dnd, count, history_count, center_visible and inhibited from native readback, null when not observable, without starting a daemon or exposing notification content.",
+      "failure_states": [
+        "unavailable",
+        "missing-dependency",
+        "conflict"
+      ]
+    },
+    "notifications.retention": {
+      "domain": "notifications",
+      "requirement": "required",
+      "outcome": "Native history keeps at most 100 entries and drops entries older than 24 hours, both while running and before display after a restart (policy P03).",
+      "failure_states": [
+        "unsupported"
+      ]
+    },
+    "notifications.transient": {
+      "domain": "notifications",
+      "requirement": "optional",
+      "outcome": "Notifications marked transient by the sender are not kept in the native history.",
+      "failure_states": [
+        "unsupported"
+      ]
+    },
+    "notifications.singleton": {
+      "domain": "notifications",
+      "requirement": "required",
+      "outcome": "role_exec.sh notifications starts the selected provider only when nobody owns org.freedesktop.Notifications, does nothing when the selected provider owns it, and refuses a foreign owner with exit 10 without terminating it.",
+      "failure_states": [
+        "conflict"
+      ]
+    },
+    "notifications.lock_privacy": {
+      "domain": "notifications",
+      "requirement": "required",
+      "outcome": "While the session is locked no notification popup or content is visible, including critical notifications.",
+      "failure_states": [
+        "unsupported"
+      ]
+    }
+  },
+  "options": {
+    "notifications/swaync": {
+      "support": "limited",
+      "summary": "Popups, actions, dismissal, do-not-disturb with critical exception, browsable center and full status; no native history limits.",
+      "limitations": [
+        "SwayNC has no native history limit or 24-hour expiry: the control center keeps every notification until it is cleared or SwayNC restarts.",
+        "Dismiss all hides popups and keeps them in the control center (SwayNC's history)."
+      ],
+      "family": "libadwaita",
+      "startup": "dbus-activated",
+      "data_boundary": "Notifications live in SwayNC's memory only and are gone after a restart; nothing is migrated or logged.",
+      "capabilities": {
+        "notifications.popups": {
+          "support": "supported",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D03-007",
+            "E-D03-035"
+          ],
+          "note": ""
+        },
+        "notifications.actions": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D03-012"
+          ],
+          "note": "Click or swaync-client --action."
+        },
+        "notifications.dismiss": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D03-009",
+            "E-D03-032"
+          ],
+          "note": "swaync-client --hide-all; popups are not counted separately, so the outcome is accepted."
+        },
+        "notifications.dnd": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D03-007",
+            "E-D03-008",
+            "E-D03-032",
+            "E-D03-034"
+          ],
+          "note": "Critical popups still appear during DND by default."
+        },
+        "notifications.history": {
+          "support": "supported",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D03-009",
+            "E-D03-032"
+          ],
+          "note": "The control center lists retained notifications with their actions."
+        },
+        "notifications.center": {
+          "support": "supported",
+          "mechanism": "native-api",
+          "evidence": [
+            "E-D03-008",
+            "E-D03-032"
+          ],
+          "note": "Visibility read back through GetSubscribeData."
+        },
+        "notifications.status": {
+          "support": "supported",
+          "mechanism": "native-api",
+          "evidence": [
+            "E-D03-008",
+            "E-D03-032",
+            "E-D03-033"
+          ],
+          "note": "history_count is null because the control-center count already includes retained entries."
+        },
+        "notifications.retention": {
+          "support": "unsupported",
+          "mechanism": "none",
+          "evidence": [
+            "E-D03-010"
+          ],
+          "note": "No configuration key caps the control center or expires entries by age; nothing persists across restarts."
+        },
+        "notifications.transient": {
+          "support": "supported",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D03-011"
+          ],
+          "note": ""
+        },
+        "notifications.singleton": {
+          "support": "supported",
+          "mechanism": "native-api",
+          "evidence": [
+            "E-D03-005",
+            "E-D03-028",
+            "E-D03-037"
+          ],
+          "note": "Owner PID and comm from the D-Bus daemon; a second daemon also refuses to replace an owner."
+        },
+        "notifications.lock_privacy": {
+          "support": "unverified",
+          "mechanism": "none",
+          "evidence": [
+            "E-D03-029",
+            "E-D03-030"
+          ],
+          "note": "ext-session-lock-v1 requires the compositor to hide normal surfaces while locked and the repository enables no above_lock or session_lock_xray exception; checked in the VM with hyprlock."
+        }
+      },
+      "theme": {
+        "support": "supported",
+        "units": [
+          "swaync"
+        ],
+        "note": "Rendered color/font region in the shipped style.css, reloaded with swaync-client --reload-css (E-D03-013, E-D03-035)."
+      }
+    },
+    "notifications/mako": {
+      "support": "limited",
+      "summary": "Popups, actions, dismissal, do-not-disturb with critical exception and status; history is kept (100 entries) but cannot be browsed.",
+      "limitations": [
+        "Mako has no view to browse its history; the history action explains this (makoctl restore only shows the latest entry again).",
+        "Mako has no notification center and no 24-hour history expiry; history is lost when mako restarts.",
+        "Mako keeps sender-marked transient notifications in its history."
+      ],
+      "family": "custom",
+      "startup": "dbus-activated",
+      "data_boundary": "Notifications and up to 100 history entries live in mako's memory only; nothing is migrated or logged.",
+      "capabilities": {
+        "notifications.popups": {
+          "support": "supported",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D03-017",
+            "E-D03-035"
+          ],
+          "note": ""
+        },
+        "notifications.actions": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D03-015"
+          ],
+          "note": "Click or makoctl invoke/menu."
+        },
+        "notifications.dismiss": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D03-018",
+            "E-D03-032"
+          ],
+          "note": "makoctl dismiss --all; dismissed entries move to history."
+        },
+        "notifications.dnd": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D03-017",
+            "E-D03-025",
+            "E-D03-032",
+            "E-D03-034"
+          ],
+          "note": "Mode do-not-disturb from the managed mako unit hides ordinary popups and keeps critical ones; without that unit the mode has no visible effect."
+        },
+        "notifications.history": {
+          "support": "unsupported",
+          "mechanism": "none",
+          "evidence": [
+            "E-D03-015",
+            "E-D03-018"
+          ],
+          "note": "makoctl history only lists entries for scripts and restore re-shows one entry; there is no browsing view."
+        },
+        "notifications.center": {
+          "support": "unsupported",
+          "mechanism": "none",
+          "evidence": [
+            "E-D03-015"
+          ],
+          "note": "Mako has no notification center."
+        },
+        "notifications.status": {
+          "support": "supported",
+          "mechanism": "native-api",
+          "evidence": [
+            "E-D03-025",
+            "E-D03-031",
+            "E-D03-032",
+            "E-D03-033"
+          ],
+          "note": "center_visible and inhibited are null."
+        },
+        "notifications.retention": {
+          "support": "partial",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D03-016",
+            "E-D03-018"
+          ],
+          "note": "max-history=100 is managed; mako has no age-based expiry and keeps no history across restarts."
+        },
+        "notifications.transient": {
+          "support": "unsupported",
+          "mechanism": "none",
+          "evidence": [
+            "E-D03-016",
+            "E-D03-019"
+          ],
+          "note": "Mako has no transient criterion; transient notifications enter its history."
+        },
+        "notifications.singleton": {
+          "support": "supported",
+          "mechanism": "native-api",
+          "evidence": [
+            "E-D03-005",
+            "E-D03-028",
+            "E-D03-037"
+          ],
+          "note": "Owner PID and comm from the D-Bus daemon; a second daemon also refuses to replace an owner."
+        },
+        "notifications.lock_privacy": {
+          "support": "unverified",
+          "mechanism": "none",
+          "evidence": [
+            "E-D03-029",
+            "E-D03-030"
+          ],
+          "note": "ext-session-lock-v1 requires the compositor to hide normal surfaces while locked and the repository enables no above_lock or session_lock_xray exception; checked in the VM with hyprlock."
+        }
+      },
+      "theme": {
+        "support": "supported",
+        "units": [
+          "mako"
+        ],
+        "note": "include= of a generated file from a managed region at the top of ~/.config/mako/config, reloaded with makoctl reload (E-D03-020, E-D03-035, E-D03-036)."
+      }
+    },
+    "notifications/dunst": {
+      "support": "limited",
+      "summary": "Popups, actions, dismissal, do-not-disturb with critical exception and status; history is kept (100 entries) but cannot be browsed.",
+      "limitations": [
+        "Dunst has no view to browse its history; the history action explains this (dunstctl history-pop only shows the latest entry again).",
+        "Dunst has no notification center and no 24-hour history expiry; history is lost when dunst restarts.",
+        "Applying the theme creates a user dunstrc, after which dunst no longer reads /etc/dunst/dunstrc."
+      ],
+      "family": "custom",
+      "startup": "dbus-activated",
+      "data_boundary": "Notifications and up to 100 history entries live in dunst's memory only; nothing is migrated or logged.",
+      "capabilities": {
+        "notifications.popups": {
+          "support": "supported",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D03-023",
+            "E-D03-035"
+          ],
+          "note": ""
+        },
+        "notifications.actions": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D03-021"
+          ],
+          "note": "Click, dunstctl action or the native context menu."
+        },
+        "notifications.dismiss": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D03-024",
+            "E-D03-032"
+          ],
+          "note": "dunstctl close-all; closed entries move to history."
+        },
+        "notifications.dnd": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D03-023",
+            "E-D03-025",
+            "E-D03-032",
+            "E-D03-034"
+          ],
+          "note": "set-paused with readback; critical notifications appear because the managed region sets override_pause_level = 100."
+        },
+        "notifications.history": {
+          "support": "unsupported",
+          "mechanism": "none",
+          "evidence": [
+            "E-D03-021",
+            "E-D03-024"
+          ],
+          "note": "dunstctl history lists entries for scripts and history-pop re-shows one entry; there is no browsing view."
+        },
+        "notifications.center": {
+          "support": "unsupported",
+          "mechanism": "none",
+          "evidence": [
+            "E-D03-021"
+          ],
+          "note": "Dunst has no notification center."
+        },
+        "notifications.status": {
+          "support": "supported",
+          "mechanism": "native-api",
+          "evidence": [
+            "E-D03-025",
+            "E-D03-031",
+            "E-D03-032",
+            "E-D03-033"
+          ],
+          "note": "count is displayed plus waiting; center_visible and inhibited are null."
+        },
+        "notifications.retention": {
+          "support": "partial",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D03-021",
+            "E-D03-024"
+          ],
+          "note": "history_length = 100 is managed; dunst has no age-based expiry and keeps no history across restarts."
+        },
+        "notifications.transient": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D03-024"
+          ],
+          "note": "Managed rule match_transient = yes, history_ignore = yes."
+        },
+        "notifications.singleton": {
+          "support": "supported",
+          "mechanism": "native-api",
+          "evidence": [
+            "E-D03-005",
+            "E-D03-028",
+            "E-D03-037"
+          ],
+          "note": "Owner PID and comm from the D-Bus daemon; a second daemon also refuses to replace an owner."
+        },
+        "notifications.lock_privacy": {
+          "support": "unverified",
+          "mechanism": "none",
+          "evidence": [
+            "E-D03-029",
+            "E-D03-030"
+          ],
+          "note": "ext-session-lock-v1 requires the compositor to hide normal surfaces while locked and the repository enables no above_lock or session_lock_xray exception; checked in the VM with hyprlock."
+        }
+      },
+      "theme": {
+        "support": "supported",
+        "units": [
+          "dunst"
+        ],
+        "note": "Managed region at the top of ~/.config/dunst/dunstrc (dunst has no include and ignores drop-ins without a user dunstrc), reloaded with dunstctl reload (E-D03-022, E-D03-035, E-D03-036)."
+      }
+    },
+    "notifications/fnott": {
+      "support": "limited",
+      "summary": "Popups, actions, dismissal and status work; Fnott has no do-not-disturb readback and no notification history.",
+      "limitations": [
+        "Fnott cannot report whether it is paused and pausing also hides critical notifications, so do-not-disturb is unsupported.",
+        "Fnott keeps no notification history and has no notification center.",
+        "Theme changes apply the next time fnott starts (fnott has no reload)."
+      ],
+      "family": "custom",
+      "startup": "dbus-activated",
+      "data_boundary": "Notifications live in fnott's memory only and are gone when dismissed; nothing is migrated or logged.",
+      "capabilities": {
+        "notifications.popups": {
+          "support": "supported",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D03-035"
+          ],
+          "note": ""
+        },
+        "notifications.actions": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D03-026"
+          ],
+          "note": "Click or fnottctl actions with fnott's selection helper."
+        },
+        "notifications.dismiss": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D03-027",
+            "E-D03-032"
+          ],
+          "note": "fnottctl dismiss all with fnottctl list readback."
+        },
+        "notifications.dnd": {
+          "support": "unsupported",
+          "mechanism": "none",
+          "evidence": [
+            "E-D03-026",
+            "E-D03-027"
+          ],
+          "note": "fnottctl pause has no readback and also hides critical notifications."
+        },
+        "notifications.history": {
+          "support": "unsupported",
+          "mechanism": "none",
+          "evidence": [
+            "E-D03-026"
+          ],
+          "note": "Fnott keeps no history."
+        },
+        "notifications.center": {
+          "support": "unsupported",
+          "mechanism": "none",
+          "evidence": [
+            "E-D03-026"
+          ],
+          "note": "Fnott has no notification center."
+        },
+        "notifications.status": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D03-027",
+            "E-D03-032",
+            "E-D03-033"
+          ],
+          "note": "running and count only; dnd, history_count, center_visible and inhibited are null."
+        },
+        "notifications.retention": {
+          "support": "not-applicable",
+          "mechanism": "none",
+          "evidence": [
+            "E-D03-026"
+          ],
+          "note": "No history is kept."
+        },
+        "notifications.transient": {
+          "support": "not-applicable",
+          "mechanism": "none",
+          "evidence": [
+            "E-D03-026"
+          ],
+          "note": "No history is kept."
+        },
+        "notifications.singleton": {
+          "support": "supported",
+          "mechanism": "native-api",
+          "evidence": [
+            "E-D03-005",
+            "E-D03-028",
+            "E-D03-037"
+          ],
+          "note": "Owner PID and comm from the D-Bus daemon; a second daemon also refuses to replace an owner."
+        },
+        "notifications.lock_privacy": {
+          "support": "unverified",
+          "mechanism": "none",
+          "evidence": [
+            "E-D03-029",
+            "E-D03-030"
+          ],
+          "note": "ext-session-lock-v1 requires the compositor to hide normal surfaces while locked and the repository enables no above_lock or session_lock_xray exception; checked in the VM with hyprlock."
+        }
+      },
+      "theme": {
+        "support": "supported",
+        "units": [
+          "fnott"
+        ],
+        "note": "Managed keys in ~/.config/fnott/fnott.ini (no include; unknown keys are fatal, so only verified keys are written); applies on the next start (E-D03-027, E-D03-035)."
+      }
+    }
+  },
+  "none_states": {},
+  "generic_packages": {},
+  "evidence": {
+    "E-D03-001": {
+      "kind": "static",
+      "source": "/usr/share/dbus-1/services (swaync 0.12.6, mako 1.11.0, dunst 1.13.2, fnott 1.8.0)",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot",
+      "command": "cat /usr/share/dbus-1/services/{org.erikreider.swaync,org.erikreider.swaync.cc,fr.emersion.mako,org.knopwob.dunst,fnott}.service",
+      "result": "All four ship an activation file for org.freedesktop.Notifications; swaync also ships org.erikreider.swaync.cc.service (Exec=/usr/bin/swaync)"
+    },
+    "E-D03-002": {
+      "kind": "real-effect",
+      "source": "dbus-run-session bus, user service directory",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway, private D-Bus session",
+      "command": "XDG_DATA_HOME/dbus-1/services/org.freedesktop.Notifications.service Exec=/usr/bin/mako; notify-send",
+      "result": "The user-level service file wins over package files; mako was activated"
+    },
+    "E-D03-003": {
+      "kind": "real-effect",
+      "source": "makoctl, dunstctl, swaync-client, fnottctl with no daemon",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway, private D-Bus session",
+      "command": "makoctl mode; dunstctl is-paused; swaync-client -sw -D; fnottctl list",
+      "result": "makoctl and dunstctl D-Bus-activated org.freedesktop.Notifications (the bus picked swaync from the package files), then failed with rc 1; swaync-client, even with -sw, activated swaync through org.erikreider.swaync.cc; fnottctl uses a unix socket, returns rc 1 and activates nothing"
+    },
+    "E-D03-004": {
+      "kind": "real-effect",
+      "source": "busctl, dbus-send",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway, private D-Bus session",
+      "command": "busctl --user call org.freedesktop.DBus ... GetNameOwner / GetConnectionUnixProcessID s org.freedesktop.Notifications; dbus-send ... GetNameOwner; busctl --auto-start=no call ...; busctl --auto-start=no get-property ...",
+      "result": "Owner/PID queries and busctl --auto-start=no call (rc 1, name does not exist) activate nothing; busctl get-property ignores --auto-start=no and activated swaync"
+    },
+    "E-D03-005": {
+      "kind": "real-effect",
+      "source": "daemon start while another owns the name",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway, private D-Bus session",
+      "command": "mako running; start mako, dunst, fnott, swaync; swaync-client -sw -D",
+      "result": "Each second daemon exits 1 without replacing the owner (mako: Failed to acquire service name; dunst: Cannot acquire, Name is acquired by mako; fnott: not primary owner; swaync: Could not acquire notification name); swaync-client hung until timeout (rc 124)"
+    },
+    "E-D03-006": {
+      "kind": "documentation",
+      "source": "swaync-client(1), swaync 0.12.6",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot",
+      "command": "man swaync-client",
+      "result": "-t/-op/-cp panel; -d/-D/-dn/-df DND; -I/-In inhibition; -c count; --hide-all; -C close all; -a action; -R/-rs reload; -s/-swb subscribe; -sw skip-wait; no one-shot panel-visibility option"
+    },
+    "E-D03-007": {
+      "kind": "real-effect",
+      "source": "swaync 0.12.6",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway, private D-Bus session, grim",
+      "command": "swaync-client -dn; swaync-client -D; notify-send -u low|normal|critical; grim pixel diff after 2.5 s",
+      "result": "-D prints true; low and normal popups suppressed (0 changed pixels), critical popup shown (24184 px); suppressed ones still counted (-c increments); -df prints false"
+    },
+    "E-D03-008": {
+      "kind": "real-effect",
+      "source": "swaync 0.12.6 D-Bus org.erikreider.swaync.cc",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway, private D-Bus session",
+      "command": "swaync-client -c/-I/-In; busctl call ... GetSubscribeData / GetVisibility; swaync-client -op/-cp/-t",
+      "result": "-c prints an integer, -I true/false; GetSubscribeData '(bbub) dnd visible count inhibited'; GetVisibility 'b true' after -op; subscribe JSON {count,dnd,visible,inhibited}; open/close/toggle rc 0"
+    },
+    "E-D03-009": {
+      "kind": "real-effect",
+      "source": "swaync 0.12.6",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway, private D-Bus session",
+      "command": "popup timeout; --hide-all; -C; pkill swaync and restart swaync",
+      "result": "Expired popups stay in the control center; --hide-all removes the popup and keeps the count; -C sets count 0; restart drops the center (1 to 0); DND read false after restart here, so the upstream README claim of DND restore is unverified"
+    },
+    "E-D03-010": {
+      "kind": "static",
+      "source": "/etc/xdg/swaync/configSchema.json, swaync(5) 0.12.6",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot",
+      "command": "list schema properties",
+      "result": "No history-count cap, age expiry or persistence key; notification-visibility states are ignored/muted/transient/enabled"
+    },
+    "E-D03-011": {
+      "kind": "real-effect",
+      "source": "swaync 0.12.6",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway, private D-Bus session",
+      "command": "notify-send -e; swaync-client -c before/after timeout",
+      "result": "Transient notification not added to the control center (count unchanged)"
+    },
+    "E-D03-012": {
+      "kind": "real-effect",
+      "source": "swaync 0.12.6",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway, private D-Bus session",
+      "command": "notify-send -A a1=Do ...; swaync-client -a 0",
+      "result": "Action invoked; notify-send printed a1"
+    },
+    "E-D03-013": {
+      "kind": "real-effect",
+      "source": "swaync 0.12.6 with GTK 4.24.1",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway, private D-Bus session, grim",
+      "command": "$XDG_CONFIG_HOME/swaync/style.css with @import of a palette and @define-color names; swaync-client -rs; grim",
+      "result": "System CSS then user CSS loaded; imported @define-color applied; after changing the palette, -rs prints 'CSS reload success: true' and applies it; with the import target missing, the remaining rules still apply"
+    },
+    "E-D03-014": {
+      "kind": "real-effect",
+      "source": "python3-gobject Gtk.CssProvider, GTK 4.24.1 and 3.24.52",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway",
+      "command": "load_from_path with parsing-error handler; to_string()",
+      "result": "GTK4: a missing @import gives one parsing-error ('Failed to import') and every other rule is kept; @define-color accepted with no warning; an import after a rule is accepted. GTK3: a missing @import raises and the provider keeps nothing"
+    },
+    "E-D03-015": {
+      "kind": "documentation",
+      "source": "makoctl(1), mako 1.11.0",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot",
+      "command": "man makoctl",
+      "result": "dismiss [-a|-g|-h|-n id], restore, invoke, menu, list [-j], history [-j], reload, mode [-s|-a|-r|-t]; no center or visibility"
+    },
+    "E-D03-016": {
+      "kind": "documentation",
+      "source": "mako(5), mako 1.11.0",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot",
+      "command": "man 5 mako",
+      "result": "max-history default 5; history=1 keeps expired notifications; include= absolute or ~/; criteria mode=/urgency=; invisible=; style keys present; no age expiry; no transient criterion"
+    },
+    "E-D03-017": {
+      "kind": "real-effect",
+      "source": "mako 1.11.0",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway, private D-Bus session, grim",
+      "command": "config [mode=do-not-disturb] invisible=1 + [mode=do-not-disturb urgency=critical] invisible=0; makoctl mode -a do-not-disturb; notify-send normal/critical; grim",
+      "result": "makoctl mode lists 'default' and 'do-not-disturb' one per line; normal hidden (0 px) but listed by makoctl list; critical displayed (15600 px); -r/-t/-s change the list as documented"
+    },
+    "E-D03-018": {
+      "kind": "real-effect",
+      "source": "mako 1.11.0",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway, private D-Bus session",
+      "command": "makoctl dismiss --all; history -j | jq length; max-history=2 with 4 expired; restore; restart",
+      "result": "Dismissed and expired notifications enter history; history capped at 2; restore re-displays the latest; restart gives history 0 and modes reset to default"
+    },
+    "E-D03-019": {
+      "kind": "real-effect",
+      "source": "mako 1.11.0",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway, private D-Bus session",
+      "command": "notify-send -e; makoctl history -j | jq length",
+      "result": "Transient notification stored in history (3 to 4)"
+    },
+    "E-D03-020": {
+      "kind": "real-effect",
+      "source": "mako 1.11.0",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway, private D-Bus session",
+      "command": "include=/tmp/inc.conf (background-color=#ff0000); include=~/missing; makoctl reload with a bogus key",
+      "result": "Include applied; a missing include makes mako fail to parse its config and not start; reload rc 0; an invalid config reload returns rc 1 'fr.emersion.Mako.InvalidConfig' and the daemon keeps running"
+    },
+    "E-D03-021": {
+      "kind": "documentation",
+      "source": "dunstctl(1), dunst(1), dunst(5), dunst 1.13.2",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot",
+      "command": "man dunstctl; man dunst; man 5 dunst",
+      "result": "close/close-all/count/history/history-pop/history-rm/history-clear/is-paused/set-paused/get-/set-pause-level/reload/context; history_length default 20; override_pause_level default 0; match_transient/history_ignore rules; drop-ins only for the chosen base dunstrc; no include directive; no center"
+    },
+    "E-D03-022": {
+      "kind": "real-effect",
+      "source": "dunst 1.13.2",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway, private D-Bus session, grim",
+      "command": "$XDG_CONFIG_HOME/dunst/dunstrc.d/50-hss.conf with and without a user dunstrc",
+      "result": "Without a user dunstrc the drop-in is ignored; with a user dunstrc it applies; with a user dunstrc, /etc/dunst/dunstrc is not loaded (its critical override_pause_level 60 is lost)"
+    },
+    "E-D03-023": {
+      "kind": "real-effect",
+      "source": "dunst 1.13.2",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway, private D-Bus session, grim",
+      "command": "dunstctl set-paused true; is-paused; get-pause-level; set-pause-level 60; [urgency_critical] override_pause_level = 100",
+      "result": "is-paused true, level 100, normal and critical queued; at level 60 with /etc defaults critical shows and normal waits; with override 100 and set-paused true, critical shows and normal waits; unpause displays the queued ones"
+    },
+    "E-D03-024": {
+      "kind": "real-effect",
+      "source": "dunst 1.13.2",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway, private D-Bus session",
+      "command": "history_length=2; close-all; history-clear; history-pop; restart; notify-send -e; rule match_transient=yes history_ignore=yes; reload with a broken drop-in",
+      "result": "Cap holds at 2; closed and expired go to history; restart gives history 0; transient stored by default but excluded by the rule; dunstctl reload rc 0 even with a broken file"
+    },
+    "E-D03-025": {
+      "kind": "real-effect",
+      "source": "dunst 1.13.2 org.dunstproject.cmd0; mako fr.emersion.Mako",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway, private D-Bus session",
+      "command": "busctl --user --auto-start=no call org.freedesktop.Notifications ... Properties.Get / ListModes / ListNotifications / ListHistory",
+      "result": "dunst paused 'v b true', pauseLevel 'v u 100', displayedLength 'v u 0', waitingLength 'v u 1', historyLength 'v u 0'; mako Modes 'v as 2 \"default\" \"do-not-disturb\"', ListNotifications/ListHistory 'aa{sv} N ...'"
+    },
+    "E-D03-026": {
+      "kind": "documentation",
+      "source": "fnottctl(1), fnott.ini(5), fnott 1.8.0",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot",
+      "command": "man fnottctl; man 5 fnott.ini",
+      "result": "dismiss [id|all], dismiss-with-default-action, actions, list, pause, unpause, quit; no history, pause readback, reload or include; RGBA colors without '#'; sections main (unnamed or [main], may be reopened), low, normal, critical"
+    },
+    "E-D03-027": {
+      "kind": "real-effect",
+      "source": "fnott 1.8.0",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway, private D-Bus session",
+      "command": "include=; bogus key; fnottctl list/dismiss all/pause/unpause; pkill -HUP fnott",
+      "result": "'invalid key: include' and fnott exits; any unknown key is fatal; list prints one 'ID: summary' line per notification, rc 0 even when empty; dismiss all empties it; pause hides normal and critical with no readback; SIGHUP terminates fnott"
+    },
+    "E-D03-028": {
+      "kind": "real-effect",
+      "source": "busctl --user list, /proc/PID/comm",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway, private D-Bus session",
+      "command": "busctl --user list; cat /proc/$(pgrep -x NAME)/comm",
+      "result": "swaync owns org.erikreider.swaync, org.erikreider.swaync.cc and org.freedesktop.Notifications; mako, dunst and fnott own only org.freedesktop.Notifications; comm values: swaync, mako, dunst, fnott"
+    },
+    "E-D03-029": {
+      "kind": "documentation",
+      "source": "/usr/share/wayland-protocols/staging/ext-session-lock/ext-session-lock-v1.xml",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot",
+      "command": "read ext_session_lock_v1 description",
+      "result": "When locked the compositor must stop rendering normal clients and blank outputs; only lock surfaces and, at compositor discretion, privileged surfaces are rendered"
+    },
+    "E-D03-030": {
+      "kind": "static",
+      "source": "Hyprland 0.56.2 binary strings; repository sources_example/*.lua",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot",
+      "command": "strings /usr/bin/Hyprland | grep -i lock; grep above_lock|session_lock_xray in sources_example",
+      "result": "Implements ext-session-lock-v1; has misc:session_lock_xray ('keep rendering workspaces below your lockscreen') and an above_lock layer rule; the repository sets neither. Lock rendering itself was not exercised"
+    },
+    "E-D03-031": {
+      "kind": "real-effect",
+      "source": "mako 1.11.0, dunst 1.13.2",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway, private D-Bus session",
+      "command": "makoctl list -j | jq length; makoctl history -j | jq length; dunstctl count displayed|waiting|history",
+      "result": "Integer counts; mako list includes DND-hidden notifications; history JSON carries summary/body, so only counts are read"
+    },
+    "E-D03-032": {
+      "kind": "real-effect",
+      "source": "providers/notifications.sh through action_exec.sh and status_read.sh with swaync 0.12.6, mako 1.11.0, dunst 1.13.2, fnott 1.8.0",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway 1.12, private D-Bus session, grim",
+      "command": "HSS_ROLES_FILE=<provider> action_exec.sh --json notifications.dnd.set on | notifications.dnd.toggle | notifications.center.toggle | notifications.history.open | notifications.dismiss.all; status_read.sh notifications (daemon started with the rendered theme units)",
+      "result": "swaync: dnd.set/toggle completed with readback, center.toggle completed open then closed, history.open completed, dismiss.all accepted (popups hidden, center kept). mako and dunst: dnd.set/toggle completed with readback, dismiss.all completed (count 0, history_count 2), center/history unsupported with explanations. fnott: dnd unsupported, dismiss.all completed, center/history unsupported. Status reported running/dnd/count/history_count/center_visible/inhibited as documented, null where not observable."
+    },
+    "E-D03-033": {
+      "kind": "real-effect",
+      "source": "providers/notifications.sh with no daemon running",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway 1.12, private D-Bus session, grim",
+      "command": "status_read.sh notifications; action_exec.sh --json notifications.dnd.set on|dnd.toggle|dismiss.all|center.toggle|history.open for swaync, mako and dunst; busctl NameHasOwner org.freedesktop.Notifications and org.erikreider.swaync.cc; pgrep",
+      "result": "Status reported availability unavailable with running false and null fields; actions returned unavailable; afterwards neither bus name had an owner and no notification daemon process existed, so nothing was D-Bus-activated."
+    },
+    "E-D03-034": {
+      "kind": "visual",
+      "source": "DND through notifications.dnd.set on with the rendered theme configuration",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway 1.12, private D-Bus session, grim",
+      "command": "action_exec.sh notifications.dnd.set on; notify-send -u normal ...; notify-send -u critical ...; grim after 2.5 s",
+      "result": "SwayNC and mako showed only the critical popup; dunst showed the critical popup plus its native '(1 more)' waiting indicator without the normal notification's text."
+    },
+    "E-D03-035": {
+      "kind": "visual",
+      "source": "Rendered notification theme units, dark and light",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway 1.12, private D-Bus session, grim",
+      "command": "hss_theme.py plan --variant dark|light --units theme-core,swaync,mako,dunst,fnott --adopt; start each daemon with XDG_CONFIG_HOME at the rendered home; notify-send normal + critical; grim",
+      "result": "All four daemons started without configuration errors and showed Mocha (dark) or Latte (light) surfaces, Noto Sans text, Blue accents for normal and Red for critical notifications; fnott also accepted the corrected progress-color key."
+    },
+    "E-D03-036": {
+      "kind": "real-effect",
+      "source": "mako 1.11.0 and dunst 1.13.2 precedence of user settings after the managed include/region",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway 1.12, private D-Bus session, grim",
+      "command": "append background-color=#00ff00 after the mako include region; append [urgency_normal] background = \"#00ff00\" after the dunst region; notify-send; grim",
+      "result": "mako applied the user's top-level background to all popups (sections inside the included file do not capture later top-level keys); dunst applied the user's later urgency_normal background. User settings outside the regions take precedence."
+    },
+    "E-D03-037": {
+      "kind": "real-effect",
+      "source": "role_exec.sh notifications singleton check with real daemons",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway 1.12, private D-Bus session, grim",
+      "command": "start the selected daemon; role_exec.sh notifications; select a different provider; role_exec.sh notifications",
+      "result": "With the selected provider owning org.freedesktop.Notifications role_exec.sh exited 0 without starting anything; with a different provider selected it exited 10 with 'org.freedesktop.Notifications is owned by <comm> (pid N); not starting <provider>' and the owner kept running, for all four providers."
+    }
+  }
+}

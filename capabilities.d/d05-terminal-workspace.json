@@ -1,0 +1,995 @@
+{
+  "schema_version": 1,
+  "owner": "D05",
+  "capabilities": {
+    "shell.environment": {
+      "domain": "shell",
+      "requirement": "required",
+      "outcome": "Noninteractive and login shells start silently and keep inherited PATH additions, locale settings and the role environment written by setup",
+      "failure_states": [
+        "failed"
+      ],
+      "actions": []
+    },
+    "terminal.launch": {
+      "domain": "terminal",
+      "requirement": "required",
+      "outcome": "term_exec.sh runs a literal command argv in the selected terminal with a stable identity (class, app ID or Konsole tab title)",
+      "failure_states": [
+        "usage",
+        "missing-dependency",
+        "failed"
+      ],
+      "actions": []
+    },
+    "terminal.cwd": {
+      "domain": "terminal",
+      "requirement": "required",
+      "outcome": "term_exec.sh --cwd DIR starts the command in DIR; a missing, non-directory or inaccessible DIR fails with exit 2 and launches nothing",
+      "failure_states": [
+        "usage"
+      ],
+      "actions": []
+    },
+    "terminal.clipboard": {
+      "domain": "terminal",
+      "requirement": "required",
+      "outcome": "Native copy and paste bindings (Ctrl+Shift+C/V by default) work in the terminal",
+      "failure_states": [
+        "unsupported"
+      ],
+      "actions": []
+    },
+    "multiplexer.session": {
+      "domain": "multiplexer",
+      "requirement": "required",
+      "outcome": "A named session can be created, explicitly attached and detached without ending it",
+      "failure_states": [
+        "missing-dependency",
+        "unavailable",
+        "failed"
+      ],
+      "actions": []
+    },
+    "multiplexer.panes": {
+      "domain": "multiplexer",
+      "requirement": "required",
+      "outcome": "A pane can be split and started in a given working directory",
+      "failure_states": [
+        "missing-dependency",
+        "failed"
+      ],
+      "actions": []
+    },
+    "agent.launch": {
+      "domain": "agent",
+      "requirement": "required",
+      "outcome": "The selected agent runs in the selected terminal; click-only triage keeps its validated executable, read-only flags and at-most-once handoff",
+      "failure_states": [
+        "disabled",
+        "missing-dependency",
+        "failed",
+        "timeout"
+      ],
+      "actions": []
+    },
+    "agent.presentation": {
+      "domain": "agent",
+      "requirement": "optional",
+      "outcome": "The agent interface renders inside the themed terminal; agent-specific themes stay the user's choice",
+      "failure_states": [
+        "unsupported"
+      ],
+      "actions": []
+    }
+  },
+  "options": {
+    "shell/bash": {
+      "support": "full",
+      "summary": "Bash prompt colours follow the theme through the terminal palette; noninteractive shells stay silent",
+      "limitations": [
+        "Bash has no theme file of its own: the prompt uses ANSI palette slots, so colours follow the terminal theme"
+      ],
+      "family": "cli",
+      "startup": "terminal",
+      "data_boundary": "Shell rc files are edited only in managed lines or regions; history, user aliases and functions are never migrated",
+      "capabilities": {
+        "shell.environment": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D05-027",
+            "E-D05-037"
+          ],
+          "note": ""
+        }
+      },
+      "theme": {
+        "support": "supported",
+        "units": [],
+        "note": "Shipped prompt uses ANSI slots 4/3/1 and a visible [status] cue; terminal units provide the colours"
+      }
+    },
+    "shell/fish": {
+      "support": "full",
+      "summary": "Fish syntax and pager colours switch with the theme; Starship stays optional",
+      "limitations": [
+        "Colours apply to new shells; open shells keep their colours"
+      ],
+      "family": "cli",
+      "startup": "terminal",
+      "data_boundary": "Shell rc files are edited only in managed lines or regions; history, user aliases and functions are never migrated; fish_variables (universal variables) are never written",
+      "capabilities": {
+        "shell.environment": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D05-022",
+            "E-D05-037"
+          ],
+          "note": ""
+        }
+      },
+      "theme": {
+        "support": "supported",
+        "units": [
+          "fish",
+          "starship"
+        ],
+        "note": "Generated globals sourced from config.fish after fish_frozen_theme.fish"
+      }
+    },
+    "shell/zsh": {
+      "support": "full",
+      "summary": "Zsh gets a native coloured prompt from the terminal palette, without a prompt framework",
+      "limitations": [
+        "The prompt region is added to ~/.zshrc; with ZDOTDIR pointing elsewhere it is not read",
+        "A PROMPT set later in .zshrc or by a prompt tool takes precedence"
+      ],
+      "family": "cli",
+      "startup": "terminal",
+      "data_boundary": "Shell rc files are edited only in managed lines or regions; history, user aliases and functions are never migrated",
+      "capabilities": {
+        "shell.environment": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D05-024"
+          ],
+          "note": ""
+        }
+      },
+      "theme": {
+        "support": "supported",
+        "units": [
+          "zsh"
+        ],
+        "note": "Prepended .zshrc region with %F{N} ANSI slots"
+      }
+    },
+    "terminal/kitty": {
+      "support": "full",
+      "summary": "Kitty colours and font family switch live with the theme (SIGUSR1)",
+      "limitations": [
+        "Colour lines placed before the theme region are overridden; put overrides after it"
+      ],
+      "family": "custom",
+      "startup": "on-demand",
+      "data_boundary": "Only colours and font family are managed; font size, bindings and user settings are preserved",
+      "capabilities": {
+        "terminal.launch": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D05-001",
+            "E-D05-004"
+          ],
+          "note": ""
+        },
+        "terminal.cwd": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D05-001",
+            "E-D05-004",
+            "E-D05-012"
+          ],
+          "note": ""
+        },
+        "terminal.clipboard": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D05-035"
+          ],
+          "note": ""
+        }
+      },
+      "theme": {
+        "support": "supported",
+        "units": [
+          "kitty"
+        ],
+        "note": "Generated include at the end of kitty.conf; activation SIGUSR1 (E-D05-002, E-D05-003, E-D05-005)"
+      }
+    },
+    "terminal/alacritty": {
+      "support": "full",
+      "summary": "Alacritty colours and font family switch live through its [general] import",
+      "limitations": [
+        "An existing alacritty.toml needs the import line in [general] (shipped on fresh installs); its own [colors] values override the theme"
+      ],
+      "family": "custom",
+      "startup": "on-demand",
+      "data_boundary": "Only colours and font family are managed; font size, bindings and user settings are preserved",
+      "capabilities": {
+        "terminal.launch": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D05-001",
+            "E-D05-007"
+          ],
+          "note": ""
+        },
+        "terminal.cwd": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D05-001",
+            "E-D05-007",
+            "E-D05-012"
+          ],
+          "note": ""
+        },
+        "terminal.clipboard": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D05-035"
+          ],
+          "note": ""
+        }
+      },
+      "theme": {
+        "support": "supported",
+        "units": [
+          "alacritty"
+        ],
+        "note": "Generated file imported from [general] import; live reload (E-D05-006); no managed region because regions cannot be placed inside [general]"
+      }
+    },
+    "terminal/foot": {
+      "support": "full",
+      "summary": "Foot colours and font family follow the theme in new windows",
+      "limitations": [
+        "Applies to new foot windows; running windows keep their colours (foot signals only switch preloaded sections)"
+      ],
+      "family": "custom",
+      "startup": "on-demand",
+      "data_boundary": "Only colours and font family are managed; font size, bindings and user settings are preserved",
+      "capabilities": {
+        "terminal.launch": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D05-001",
+            "E-D05-009"
+          ],
+          "note": ""
+        },
+        "terminal.cwd": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D05-001",
+            "E-D05-009"
+          ],
+          "note": ""
+        },
+        "terminal.clipboard": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D05-035"
+          ],
+          "note": ""
+        }
+      },
+      "theme": {
+        "support": "supported",
+        "units": [
+          "foot"
+        ],
+        "note": "Prepended include of [colors-<variant>] (E-D05-008); next launch"
+      }
+    },
+    "terminal/ghostty": {
+      "support": "unverified",
+      "summary": "Ghostty colours and font family follow the theme (documented reload with SIGUSR2)",
+      "limitations": [
+        "Not tested locally: Ghostty is not available for this test environment",
+        "Theme values come from an included file that Ghostty applies after config.ghostty, so remove the region to use your own colours"
+      ],
+      "family": "gtk4",
+      "startup": "on-demand",
+      "data_boundary": "Only colours and font family are managed; font size, bindings and user settings are preserved",
+      "capabilities": {
+        "terminal.launch": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D05-001",
+            "E-D05-010"
+          ],
+          "note": ""
+        },
+        "terminal.cwd": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D05-001",
+            "E-D05-010"
+          ],
+          "note": ""
+        },
+        "terminal.clipboard": {
+          "support": "unverified",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D05-010"
+          ],
+          "note": "Upstream default copy/paste is Ctrl+Shift+C/V; not checked locally"
+        }
+      },
+      "theme": {
+        "support": "unverified",
+        "units": [
+          "ghostty"
+        ],
+        "note": "config-file include from config.ghostty; SIGUSR2 reload documented only (E-D05-010)"
+      }
+    },
+    "terminal/konsole": {
+      "support": "unverified",
+      "summary": "Konsole uses an HSS colour scheme profile; the font comes from the desktop monospace font",
+      "limitations": [
+        "Not tested locally: Konsole is not available in this test environment",
+        "The profile does not set a font because Konsole fonts always include a size",
+        "Applies to new Konsole windows"
+      ],
+      "family": "kde",
+      "startup": "on-demand",
+      "data_boundary": "Only colours and font family are managed; font size, bindings and user settings are preserved",
+      "capabilities": {
+        "terminal.launch": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D05-001",
+            "E-D05-011"
+          ],
+          "note": ""
+        },
+        "terminal.cwd": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D05-001",
+            "E-D05-011"
+          ],
+          "note": ""
+        },
+        "terminal.clipboard": {
+          "support": "unverified",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D05-011"
+          ],
+          "note": "Upstream default copy/paste is Ctrl+Shift+C/V; not checked locally"
+        }
+      },
+      "theme": {
+        "support": "unverified",
+        "units": [
+          "konsole"
+        ],
+        "note": "Generated hss-catppuccin.colorscheme/.profile and konsolerc DefaultProfile (E-D05-011)"
+      }
+    },
+    "multiplexer/tmux": {
+      "support": "full",
+      "summary": "tmux status, borders, menus and popups follow the theme and reload live",
+      "limitations": [
+        "The theme is sourced from ~/.config/tmux/tmux.conf; if you use ~/.tmux.conf, add its source-file line there yourself",
+        "Live reload reaches the default tmux server socket only"
+      ],
+      "family": "tui",
+      "startup": "terminal",
+      "data_boundary": "Sessions are never killed, detached or reattached by theme changes; layouts and bindings are preserved",
+      "capabilities": {
+        "multiplexer.session": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D05-014"
+          ],
+          "note": ""
+        },
+        "multiplexer.panes": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D05-014"
+          ],
+          "note": ""
+        }
+      },
+      "theme": {
+        "support": "supported",
+        "units": [
+          "tmux"
+        ],
+        "note": "Generated file sourced from a tmux.conf region; reload via tmux source-file when `tmux: server` runs (E-D05-013, E-D05-015)"
+      }
+    },
+    "multiplexer/zellij": {
+      "support": "full",
+      "summary": "Zellij uses a Catppuccin theme with Blue accents that switches live",
+      "limitations": [
+        "Zellij uses the first theme line in config.kdl; remove the managed theme region to pick another theme"
+      ],
+      "family": "tui",
+      "startup": "terminal",
+      "data_boundary": "Sessions are never killed, detached or reattached by theme changes; layouts and bindings are preserved",
+      "capabilities": {
+        "multiplexer.session": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D05-019"
+          ],
+          "note": ""
+        },
+        "multiplexer.panes": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D05-019"
+          ],
+          "note": ""
+        }
+      },
+      "theme": {
+        "support": "supported",
+        "units": [
+          "zellij"
+        ],
+        "note": "themes/hss.kdl plus a theme region; live (E-D05-016 to E-D05-018); locked mode, layouts and bindings unchanged"
+      }
+    },
+    "multiplexer/herdr-bin": {
+      "support": "unverified",
+      "summary": "Herdr uses its native Catppuccin theme for the active variant",
+      "limitations": [
+        "Not tested locally: Herdr is not available in this test environment",
+        "Theme changes apply after Herdr is restarted or reattached",
+        "An existing [theme] table in Herdr's config.toml blocks the managed theme region"
+      ],
+      "family": "tui",
+      "startup": "terminal",
+      "data_boundary": "Sessions are never killed, detached or reattached by theme changes; layouts and bindings are preserved",
+      "capabilities": {
+        "multiplexer.session": {
+          "support": "unverified",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D05-020",
+            "E-D05-021"
+          ],
+          "note": ""
+        },
+        "multiplexer.panes": {
+          "support": "unverified",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D05-020"
+          ],
+          "note": ""
+        }
+      },
+      "theme": {
+        "support": "unverified",
+        "units": [
+          "herdr"
+        ],
+        "note": "[theme] name = catppuccin-mocha|catppuccin-latte (documented, E-D05-020)"
+      }
+    },
+    "agent/pi": {
+      "support": "unverified",
+      "summary": "Pi's default `system` theme follows the terminal palette",
+      "limitations": [
+        "Real agent sessions need your account and were not run here; triage dispatch is covered by tests"
+      ],
+      "family": "tui",
+      "startup": "terminal",
+      "data_boundary": "No agent configuration, credentials or history are read or migrated",
+      "capabilities": {
+        "agent.launch": {
+          "support": "unverified",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D05-033"
+          ],
+          "note": "Modeled triage tests only; no authenticated agent was run"
+        },
+        "agent.presentation": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D05-028"
+          ],
+          "note": "Terminal-inherited; agent configuration is not written"
+        }
+      },
+      "theme": {
+        "support": "supported",
+        "units": [],
+        "note": "No agent units: presentation is inherited from the terminal theme"
+      }
+    },
+    "agent/opencode": {
+      "support": "unverified",
+      "summary": "OpenCode runs in the themed terminal; its default theme uses its own colours",
+      "limitations": [
+        "Real agent sessions need your account and were not run here; triage dispatch is covered by tests",
+        "Choose OpenCode's `system` theme to use the terminal palette"
+      ],
+      "family": "tui",
+      "startup": "terminal",
+      "data_boundary": "No agent configuration, credentials or history are read or migrated",
+      "capabilities": {
+        "agent.launch": {
+          "support": "unverified",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D05-033"
+          ],
+          "note": "Modeled triage tests only; no authenticated agent was run"
+        },
+        "agent.presentation": {
+          "support": "partial",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D05-029"
+          ],
+          "note": "Terminal-inherited; agent configuration is not written"
+        }
+      },
+      "theme": {
+        "support": "partial",
+        "units": [],
+        "note": "No agent units: presentation is inherited from the terminal theme"
+      }
+    },
+    "agent/claude-code": {
+      "support": "unverified",
+      "summary": "Claude Code runs in the themed terminal; its default themes use their own colours",
+      "limitations": [
+        "Real agent sessions need your account and were not run here; triage dispatch is covered by tests",
+        "Choose a *-ansi theme in Claude Code to use the terminal palette"
+      ],
+      "family": "tui",
+      "startup": "terminal",
+      "data_boundary": "No agent configuration, credentials or history are read or migrated",
+      "capabilities": {
+        "agent.launch": {
+          "support": "unverified",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D05-033"
+          ],
+          "note": "Modeled triage tests only; no authenticated agent was run"
+        },
+        "agent.presentation": {
+          "support": "partial",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D05-030"
+          ],
+          "note": "Terminal-inherited; agent configuration is not written"
+        }
+      },
+      "theme": {
+        "support": "partial",
+        "units": [],
+        "note": "No agent units: presentation is inherited from the terminal theme"
+      }
+    },
+    "agent/codex-cli": {
+      "support": "unverified",
+      "summary": "Codex CLI uses terminal colours except for its syntax theme",
+      "limitations": [
+        "Real agent sessions need your account and were not run here; triage dispatch is covered by tests",
+        "Code blocks use Codex's own syntax theme"
+      ],
+      "family": "tui",
+      "startup": "terminal",
+      "data_boundary": "No agent configuration, credentials or history are read or migrated",
+      "capabilities": {
+        "agent.launch": {
+          "support": "unverified",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D05-033"
+          ],
+          "note": "Modeled triage tests only; no authenticated agent was run"
+        },
+        "agent.presentation": {
+          "support": "partial",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D05-031"
+          ],
+          "note": "Terminal-inherited; agent configuration is not written"
+        }
+      },
+      "theme": {
+        "support": "partial",
+        "units": [],
+        "note": "No agent units: presentation is inherited from the terminal theme"
+      }
+    },
+    "agent/cursor-cli": {
+      "support": "unverified",
+      "summary": "Cursor CLI runs in the themed terminal and detects light or dark",
+      "limitations": [
+        "Real agent sessions need your account and were not run here; triage dispatch is covered by tests",
+        "Accent colours are not configurable"
+      ],
+      "family": "tui",
+      "startup": "terminal",
+      "data_boundary": "No agent configuration, credentials or history are read or migrated",
+      "capabilities": {
+        "agent.launch": {
+          "support": "unverified",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D05-033"
+          ],
+          "note": "Modeled triage tests only; no authenticated agent was run"
+        },
+        "agent.presentation": {
+          "support": "partial",
+          "mechanism": "native-ui",
+          "evidence": [
+            "E-D05-032"
+          ],
+          "note": "Terminal-inherited; agent configuration is not written"
+        }
+      },
+      "theme": {
+        "support": "partial",
+        "units": [],
+        "note": "No agent units: presentation is inherited from the terminal theme"
+      }
+    }
+  },
+  "none_states": {
+    "agent": {
+      "behavior": "No agent is installed, launched or offered for triage; notifications fall back to plain notifications; existing CLIs are not uninstalled",
+      "theme": "no member units"
+    }
+  },
+  "generic_packages": {
+    "starship": {
+      "class": "themed-interface",
+      "owner": "D05",
+      "reason": "Optional prompt: its palette key in the repository ~/starship.toml follows the theme; Fish uses that file only when the user has no Starship configuration",
+      "theme": {
+        "support": "partial",
+        "units": [],
+        "note": "Repository starship.toml palette follows the theme only when the user has no Starship configuration"
+      }
+    }
+  },
+  "evidence": {
+    "E-D05-001": {
+      "kind": "argv",
+      "source": "tests/shell/terminal_workspace.sh",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 hermetic test userland (uid 1000), tests/run.sh isolation",
+      "command": "term_exec.sh --app-id/--title [--cwd DIR] -- cmd for kitty, alacritty, ghostty, konsole and foot doubles",
+      "result": "Legacy argv byte-identical without --cwd; --cwd adds --directory, --working-directory, --working-directory=, --workdir respectively; child cwd observed; missing/non-directory/inaccessible DIR exits 2 without launching"
+    },
+    "E-D05-002": {
+      "kind": "real-effect",
+      "source": "kitty 0.49.2",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME, headless sway with private D-Bus where noted",
+      "command": "kitty.conf with inline colours then a region `include …/theme.conf`; kitty @ get-colors; edit include; pkill -USR1 -x kitty",
+      "result": "Include placed last overrides inline colours (#1e1e2e/#89b4fa); SIGUSR1 reload switched to #eff1f5/#1e66f5; auto_reload_config did not pick up an edited include"
+    },
+    "E-D05-003": {
+      "kind": "real-effect",
+      "source": "kitty 0.49.2, alacritty 0.17.0",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME, headless sway with private D-Bus where noted",
+      "command": "~/.config/kitty and ~/.config/alacritty as Stow directory symlinks with relative ../hss-theme includes",
+      "result": "Relative includes resolve through the symlink target and are ignored; ~/.config/hss-theme/... and absolute paths work"
+    },
+    "E-D05-004": {
+      "kind": "argv",
+      "source": "kitty 0.49.2 --help and real launches",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME, headless sway with private D-Bus where noted",
+      "command": "kitty --class X -d DIR; kitty -e sh -c …; kitty sh -c …",
+      "result": "--class sets the Wayland app ID; -d/--directory sets cwd; both -e and plain trailing argv run the command"
+    },
+    "E-D05-005": {
+      "kind": "real-effect",
+      "source": "kitty 0.49.2",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME, headless sway with private D-Bus where noted",
+      "command": "font_family JetBrainsMono Nerd Font (plain name)",
+      "result": "Regular resolved to JetBrainsMonoNerdFont-Regular.ttf; font_size untouched"
+    },
+    "E-D05-006": {
+      "kind": "real-effect",
+      "source": "alacritty 0.17.0, man 5 alacritty",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME, headless sway with private D-Bus where noted",
+      "command": "[general] import of a generated theme; -vv log; alacritty msg get-config; edit the imported file",
+      "result": "Imports load first and the importing file last (its inline colours win); edited import applied live within 2 s; a deprecated top-level import replaces general.import entirely"
+    },
+    "E-D05-007": {
+      "kind": "real-effect",
+      "source": "alacritty 0.17.0",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME, headless sway with private D-Bus where noted",
+      "command": "[font.normal] family without size; --working-directory /tmp; --class",
+      "result": "Default size 11.25 kept; pwd /tmp; class applied"
+    },
+    "E-D05-008": {
+      "kind": "real-effect",
+      "source": "foot 1.28.0 (CHANGELOG, man 5 foot.ini, foot --check-config)",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME, headless sway with private D-Bus where noted",
+      "command": "prepended include=<abs>/theme.ini with [colors-dark] or [colors-light] and initial-color-theme; foot --check-config on generated files for both variants",
+      "result": "Both variants exit 0; [colors] is rejected (removed in 1.28); include must be absolute or ~/ and must be in [main]"
+    },
+    "E-D05-009": {
+      "kind": "real-effect",
+      "source": "foot 1.28.0",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME, headless sway with private D-Bus where noted",
+      "command": "OSC 11 / OSC 4;4 queries inside foot; SIGUSR1/SIGUSR2; font= without size; -D /tmp",
+      "result": "Mocha and Latte backgrounds read back; signals only switch between sections loaded at start (no reload); size stays 8pt default; cwd /tmp"
+    },
+    "E-D05-010": {
+      "kind": "documentation",
+      "source": "ghostty.org/docs/config, /docs/config/reference, release notes 1.2.0/1.3.0; ghostty v1.3.1 src/config/{Config.zig,path.zig}; Arch extra ghostty 1.3.1-2",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME, headless sway with private D-Bus where noted",
+      "command": "n/a (not installable in the research userland)",
+      "result": "config.ghostty and legacy config both load; config-file = ?path is optional, expands ~/, and included files apply after the including file; palette = N=#rrggbb, font-family reset with \"\"; SIGUSR2 reloads configuration; --working-directory=, --class=, --title=, -e"
+    },
+    "E-D05-011": {
+      "kind": "documentation",
+      "source": "invent.kde.org/utilities/konsole tag v26.08.2 (Application.cpp, Profile.cpp, ProfileManager.cpp, data/color-schemes/Breeze.colorscheme); Arch extra konsole 26.08.2-1",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME, headless sway with private D-Bus where noted",
+      "command": "n/a (not installed)",
+      "result": "~/.local/share/konsole/<name>.colorscheme ([Background], [Foreground], [ColorN], [ColorNIntense], [ColorNFaint]; Color=r,g,b); profile [Appearance] ColorScheme, [Cursor Options]; DefaultProfile in konsolerc [Desktop Entry]; --workdir, --separate, -p tabtitle=; Font needs a size so it is left to the global fixed font; no file watching (next launch)"
+    },
+    "E-D05-012": {
+      "kind": "real-effect",
+      "source": "kitty 0.49.2, alacritty 0.17.0, foot 1.28.0",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME, headless sway with private D-Bus where noted",
+      "command": "launch with a missing working directory",
+      "result": "kitty and alacritty silently start in the inherited directory; foot exits 230; term_exec.sh therefore validates DIR itself"
+    },
+    "E-D05-013": {
+      "kind": "real-effect",
+      "source": "tmux 3.8, man tmux",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME, headless sway with private D-Bus where noted",
+      "command": "source-file -q/-n; ~/.config/tmux/tmux.conf region sourcing the generated file; show -g status-style; edit and re-source",
+      "result": "Missing file quiet with -q; parse ok; readback fg=#cdd6f4,bg=#181825 then fg=#4c4f69,bg=#e6e9ef after re-sourcing (live)"
+    },
+    "E-D05-014": {
+      "kind": "real-effect",
+      "source": "tmux 3.8",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME, headless sway with private D-Bus where noted",
+      "command": "tmux -L probe new-session -d -s S -c 'DIR with space'; split-window -c; list-panes; script -qfc 'tmux attach'; detach-client",
+      "result": "Session and split pane start in the spaced directory; attach needs a TTY (pty client works); detach keeps the session"
+    },
+    "E-D05-015": {
+      "kind": "real-effect",
+      "source": "tmux 3.8",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME, headless sway with private D-Bus where noted",
+      "command": "cat /proc/<server pid>/comm; pgrep -x 'tmux: server'",
+      "result": "Server process name is `tmux: server`; pgrep -x tmux does not match"
+    },
+    "E-D05-016": {
+      "kind": "real-effect",
+      "source": "zellij 0.45.1",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME, headless sway with private D-Bus where noted",
+      "command": "zellij --config-dir … setup --check with generated themes/hss.kdl and the theme region, both variants",
+      "result": "[CONFIG FILE]: Well defined for Mocha and Latte; component format (text_unselected, ribbon_selected, frame_selected …) with R G B values"
+    },
+    "E-D05-017": {
+      "kind": "real-effect",
+      "source": "zellij 0.45.1",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME, headless sway with private D-Bus where noted",
+      "command": "pty render with two theme nodes; prepended region theme \"hss\" before theme \"catppuccin-frappe\"",
+      "result": "The first theme node wins; the prepended region applies the generated theme"
+    },
+    "E-D05-018": {
+      "kind": "real-effect",
+      "source": "zellij 0.45.1",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME, headless sway with private D-Bus where noted",
+      "command": "edit themes/hss.kdl and config.kdl in a running session",
+      "result": "New colours appear within 10 s without restart (live)"
+    },
+    "E-D05-019": {
+      "kind": "real-effect",
+      "source": "zellij 0.45.1",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME, headless sway with private D-Bus where noted",
+      "command": "attach --create-background; --session S action new-pane --cwd DIR; list-sessions; pty attach; action detach; kill-session",
+      "result": "Background session created; pane cwd is the spaced directory; detach keeps the session; attach without a TTY fails (needs a terminal)"
+    },
+    "E-D05-020": {
+      "kind": "documentation",
+      "source": "herdr.dev/docs/configuration, /docs/config-reference, /docs/cli-reference (0.9.5); github.com/herdrdev/herdr src/config/theme.rs",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME, headless sway with private D-Bus where noted",
+      "command": "n/a (AUR herdr-bin not installed)",
+      "result": "[theme] name accepts catppuccin (alias catppuccin-mocha) and catppuccin-latte; `terminal` follows the ANSI palette; themes come from the client config (reattach may be needed); session list/attach/stop, workspace create --cwd, pane split --cwd, detach ctrl+b q"
+    },
+    "E-D05-021": {
+      "kind": "static",
+      "source": "dotfiles/.local/scripts/troubleshoot_with_agent.py",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME, headless sway with private D-Bus where noted",
+      "command": "read herdr dispatch",
+      "result": "Uses herdr --session default api snapshot, workspace create --cwd --label --no-focus, pane run, workspace focus; uncertain create/run raises DispatchUncertain (no retry)"
+    },
+    "E-D05-022": {
+      "kind": "real-effect",
+      "source": "fish 4.9.3",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME, headless sway with private D-Bus where noted; also tests/shell/terminal_shell_environment.sh",
+      "command": "config.fish region sourcing the generated theme with the shipped conf.d/fish_frozen_theme.fish; fish -i readback; fish -c true",
+      "result": "Generated globals win (fish_color_command 89b4fa / 1e66f5); conf.d/hss-* also wins, 00-* loses; noninteractive and login shells print nothing"
+    },
+    "E-D05-023": {
+      "kind": "documentation",
+      "source": "fish 4.9.3 fish_config --help, changelog 4.3/4.9",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME, headless sway with private D-Bus where noted",
+      "command": "n/a",
+      "result": "fish_frozen_theme.fish is written once on upgrade from <4.3; themes recommend config.fish; syntax and pager variable list"
+    },
+    "E-D05-024": {
+      "kind": "real-effect",
+      "source": "zsh 5.9.2",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME, headless sway with private D-Bus where noted",
+      "command": "ZDOTDIR=tmp zsh -i -c 'print -rP -- $PROMPT'; zsh -c true",
+      "result": "%F{4} renders \\e[34m (ANSI slot); %(?..) status works; noninteractive zsh reads no .zshrc"
+    },
+    "E-D05-025": {
+      "kind": "real-effect",
+      "source": "starship 1.27.0",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME, headless sway with private D-Bus where noted",
+      "command": "starship print-config / prompt with ~/starship.toml only, with STARSHIP_CONFIG, and palette mocha vs latte",
+      "result": "~/starship.toml alone is not read; STARSHIP_CONFIG or ~/.config/starship.toml are; palette switch changes the emitted RGB (Mocha 243;139;168 vs Latte 254;100;11); unknown palette warns every prompt"
+    },
+    "E-D05-026": {
+      "kind": "static",
+      "source": "dotfiles/starship.toml, hss_theme.py edit_kv",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME, headless sway with private D-Bus where noted",
+      "command": "inspect",
+      "result": "Lines inside the multi-line format string start with '['; the line-based TOML key editor would stop there, so palette is kept above format"
+    },
+    "E-D05-027": {
+      "kind": "real-effect",
+      "source": "bash 5.3.20",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 hermetic test userland (uid 1000), tests/run.sh isolation; research chroot for bash 5.3.20",
+      "command": "bash -c true; bash -lc true; ${PS1@P} after bash_prompt; git double with $(…) in the branch name",
+      "result": "No output from noninteractive or login shells; prompt uses ANSI slots 4/3/1 with a [status] cue; branch text stays literal"
+    },
+    "E-D05-028": {
+      "kind": "documentation",
+      "source": "pi.dev/docs/latest/themes",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME, headless sway with private D-Bus where noted",
+      "command": "n/a",
+      "result": "Default `system` theme derives colours from the terminal palette"
+    },
+    "E-D05-029": {
+      "kind": "documentation",
+      "source": "opencode.ai/docs/themes",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME, headless sway with private D-Bus where noted",
+      "command": "n/a",
+      "result": "`system` theme uses ANSI 0-15; the default theme is `opencode` (own colours)"
+    },
+    "E-D05-030": {
+      "kind": "documentation",
+      "source": "code.claude.com/docs/en/terminal-config",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME, headless sway with private D-Bus where noted",
+      "command": "n/a",
+      "result": "Presets dark/light/*-daltonized use RGB; only *-ansi presets use the terminal palette; auto detects light/dark"
+    },
+    "E-D05-031": {
+      "kind": "documentation",
+      "source": "developers.openai.com/codex/cli/features (via learn.chatgpt.com/docs/codex/cli)",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME, headless sway with private D-Bus where noted",
+      "command": "n/a",
+      "result": "tui.theme selects a syntax theme for code blocks/diffs; the rest uses terminal colours"
+    },
+    "E-D05-032": {
+      "kind": "documentation",
+      "source": "cursor.com/docs/cli/reference/configuration; Cursor forum thread 168102",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME, headless sway with private D-Bus where noted",
+      "command": "n/a",
+      "result": "No theme key; detects light/dark via OSC 11; accents not configurable"
+    },
+    "E-D05-033": {
+      "kind": "modeled-effect",
+      "source": "tests/shell/agent_triage.sh (dotfiles/.local/scripts/tests/test_troubleshoot_with_agent.py)",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 hermetic test userland (uid 1000), tests/run.sh isolation",
+      "command": "python3 test_troubleshoot_with_agent.py -v",
+      "result": "Existing click-only triage, executable resolution, multiplexer order and at-most-once tests unchanged (troubleshoot_with_agent.py not modified)"
+    },
+    "E-D05-034": {
+      "kind": "real-effect",
+      "source": "providers/theme.sh hss_theme_apply VARIANT --adopt (repository foundation)",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME, headless sway with private D-Bus where noted",
+      "command": "apply dark then light into a private HOME with every terminal, multiplexer, shell and agent selected",
+      "result": "kitty, alacritty, foot, ghostty, konsole, tmux, zellij, herdr, fish and zsh applied or unchanged in both variants; starship refused because ~/starship.toml is not yet an approved write path (integration request)"
+    },
+    "E-D05-035": {
+      "kind": "documentation",
+      "source": "man 5 kitty.conf (0.49.2), man 5 alacritty-bindings (0.17.0), man 5 foot.ini (1.28.0)",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, private HOME, headless sway with private D-Bus where noted",
+      "command": "man -P cat …",
+      "result": "Default copy/paste: kitty ctrl+shift+c/v (copy_to_clipboard, paste_from_clipboard); alacritty Control|Shift C/V; foot clipboard-copy/paste Control+Shift+c/v"
+    },
+    "E-D05-036": {
+      "kind": "modeled-effect",
+      "source": "tests/shell/terminal_workspace.sh",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 hermetic test userland (uid 1000), tests/run.sh isolation",
+      "command": "hss_theme.py plan for both variants with every member selected; kitty-only selection; existing kitty.conf without adoption; edited region",
+      "result": "All D05 units ready/unchanged with absolute includes and no font size; unselected members not-selected; no unit applies to agents; existing files not-adopted without consent; edited region skipped-conflict"
+    },
+    "E-D05-037": {
+      "kind": "modeled-effect",
+      "source": "tests/shell/terminal_shell_environment.sh",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 hermetic test userland (uid 1000), tests/run.sh isolation",
+      "command": "fish/bash in fixture homes with PATH stubs",
+      "result": "Inherited PATH entries kept after the listed fish PATH; Starship optional and falls back to ~/starship.toml only without user config; role-environment lines unchanged"
+    }
+  }
+}

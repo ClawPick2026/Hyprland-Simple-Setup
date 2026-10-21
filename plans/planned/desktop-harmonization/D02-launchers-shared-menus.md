@@ -1,6 +1,6 @@
 # D02 — Launchers and shared menus
 
-Status: product policy synchronized with the completed interview; implementation not started. Apply master section 9 and the [decision record](../desktop-harmonization-grill.md); native launcher conformance remains unverified.
+Status: product policy synchronized with the completed interview; implemented on branch `feat/harmonize-visual-design` (uncommitted, 2026-10-21); user-led VM acceptance pending, see [acceptance matrix](../../../Documents/desktop-harmonization-acceptance.md). Apply master section 9 and the [decision record](../desktop-harmonization-grill.md); native launcher conformance remains unverified.
 Master: [Desktop harmonization master](../desktop-harmonization-master.md).
 Source baseline: `610a18bac374e7e2ffd0bcb2d99b026131deedbc`, branch `feat/harmonize-visual-design`.
 
@@ -122,7 +122,7 @@ Foundation acceptance must not wait for completed D02 adapters that themselves r
 
 ## 6. Implementation work packages
 
-All packages are not started; prerequisites are future execution gates, not present authorization.
+All packages are implemented on the branch (VM acceptance pending); prerequisites are future execution gates, not present authorization.
 
 ### D02.1 — Freeze launcher evidence and semantic contributions
 Prerequisites: implementation/research authorization for new probes; F01 discovery and provisional F02/F04 contracts.
@@ -206,12 +206,12 @@ No silent approval, app removal, reduced parity or unsupported fallback may clos
 
 ## 9. Implementation checklist and confidence
 
-1. Not started — D02.1: reconcile evidence, option coverage and pre-foundation contract contributions.
-2. Not started — D02.2: implement five identity-safe selection and confirmation adapters.
-3. Not started — D02.3: prove desktop-entry parity while preserving executable discovery.
-4. Not started — D02.4: implement F03-driven app renderers and presentation evidence.
-5. Not started — D02.5: integrate approved consumers with preserved routing and ownership.
-6. Not started — D02.6: complete regression, accessibility, switching and recovery acceptance.
+1. Implemented (VM acceptance pending) — D02.1: reconcile evidence, option coverage and pre-foundation contract contributions.
+2. Implemented (VM acceptance pending) — D02.2: implement five identity-safe selection and confirmation adapters.
+3. Implemented (VM acceptance pending) — D02.3: prove desktop-entry parity while preserving executable discovery.
+4. Implemented (VM acceptance pending) — D02.4: implement F03-driven app renderers and presentation evidence.
+5. Implemented (VM acceptance pending) — D02.5: integrate approved consumers with preserved routing and ownership.
+6. Implemented (VM acceptance pending) — D02.6: complete regression, accessibility, switching and recovery acceptance.
 
 Planning confidence: **92/100** for source-grounded scope, ownership and identified hazards.
 Runtime feasibility remains unverified; concrete foundation APIs, native desktop-entry modes and provider identity/cancellation support still need evidence. P01-P07 product choices are resolved.

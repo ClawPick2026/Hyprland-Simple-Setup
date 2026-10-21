@@ -1,0 +1,1364 @@
+{
+  "schema_version": 1,
+  "owner": "D01",
+  "capabilities": {
+    "bar.outputs": {
+      "domain": "bar",
+      "requirement": "required",
+      "outcome": "A bar appears on every connected output, including outputs connected later",
+      "failure_states": [
+        "unsupported",
+        "unavailable",
+        "failed"
+      ],
+      "actions": []
+    },
+    "bar.power_screen": {
+      "domain": "bar",
+      "requirement": "required",
+      "outcome": "Left click on the power control opens the power screen",
+      "failure_states": [
+        "unsupported",
+        "unavailable",
+        "failed"
+      ],
+      "actions": []
+    },
+    "bar.power_menu": {
+      "domain": "bar",
+      "requirement": "required",
+      "outcome": "The power control's quick-action menu offers suspend, hibernate, shutdown, reboot and logout, each running its session action",
+      "failure_states": [
+        "unsupported",
+        "unavailable",
+        "failed"
+      ],
+      "actions": [
+        "session.suspend",
+        "session.hibernate",
+        "session.shutdown",
+        "session.reboot",
+        "session.logout"
+      ]
+    },
+    "bar.app_menu": {
+      "domain": "bar",
+      "requirement": "required",
+      "outcome": "Left click on the menu control toggles the selected application launcher",
+      "failure_states": [
+        "unsupported",
+        "unavailable",
+        "failed"
+      ],
+      "actions": []
+    },
+    "bar.tools_menu": {
+      "domain": "bar",
+      "requirement": "required",
+      "outcome": "The menu control's right-click menu offers Application Launcher, View Keybinds, Open Keybind Config and Take Snapshot",
+      "failure_states": [
+        "unsupported",
+        "unavailable",
+        "failed"
+      ],
+      "actions": []
+    },
+    "bar.tray": {
+      "domain": "bar",
+      "requirement": "required",
+      "outcome": "Status-notifier tray items are shown and receive their own clicks",
+      "failure_states": [
+        "unsupported",
+        "failed"
+      ],
+      "actions": []
+    },
+    "bar.workspaces": {
+      "domain": "bar",
+      "requirement": "required",
+      "outcome": "Hyprland workspaces are listed in numeric order and a click activates one",
+      "failure_states": [
+        "unsupported",
+        "unavailable",
+        "failed"
+      ],
+      "actions": []
+    },
+    "bar.submap": {
+      "domain": "bar",
+      "requirement": "required",
+      "outcome": "The active Hyprland submap is visible and hidden in the default map",
+      "failure_states": [
+        "unsupported",
+        "unavailable",
+        "failed"
+      ],
+      "actions": []
+    },
+    "bar.audio": {
+      "domain": "bar",
+      "requirement": "required",
+      "outcome": "Output and microphone volume/mute are shown; left click opens application volumes, right click the device mixer",
+      "failure_states": [
+        "unsupported",
+        "unavailable",
+        "failed"
+      ],
+      "actions": [
+        "audio.streams.open",
+        "audio.hardware.open"
+      ]
+    },
+    "bar.backlight": {
+      "domain": "bar",
+      "requirement": "required",
+      "outcome": "Screen brightness is shown and scrolling adjusts it; absent backlight is shown as unavailable",
+      "failure_states": [
+        "unsupported",
+        "unavailable",
+        "failed"
+      ],
+      "actions": []
+    },
+    "bar.backlight_presets": {
+      "domain": "bar",
+      "requirement": "required",
+      "outcome": "A right-click menu sets brightness to 100, 75, 50, 25 or 10 percent",
+      "failure_states": [
+        "unsupported",
+        "unavailable",
+        "failed"
+      ],
+      "actions": []
+    },
+    "bar.temperature": {
+      "domain": "bar",
+      "requirement": "required",
+      "outcome": "CPU temperature is shown with a critical state; left click opens the system monitor",
+      "failure_states": [
+        "unsupported",
+        "unavailable",
+        "failed"
+      ],
+      "actions": []
+    },
+    "bar.lock_keys": {
+      "domain": "bar",
+      "requirement": "required",
+      "outcome": "Num Lock state is shown",
+      "failure_states": [
+        "unsupported",
+        "unavailable",
+        "failed"
+      ],
+      "actions": []
+    },
+    "bar.battery": {
+      "domain": "bar",
+      "requirement": "required",
+      "outcome": "Battery capacity, charging and warning/critical states are shown; absent battery is shown as unavailable",
+      "failure_states": [
+        "unsupported",
+        "unavailable",
+        "failed"
+      ],
+      "actions": []
+    },
+    "bar.network": {
+      "domain": "bar",
+      "requirement": "required",
+      "outcome": "Network state is shown; left click chooses a network, right click edits connection profiles",
+      "failure_states": [
+        "unsupported",
+        "unavailable",
+        "failed"
+      ],
+      "actions": [
+        "network.connect.choose",
+        "network.profile.edit"
+      ]
+    },
+    "bar.bluetooth": {
+      "domain": "bar",
+      "requirement": "required",
+      "outcome": "Bluetooth controller, power and connection state are shown (no controller is distinct from off); left click opens devices, right click toggles the radio",
+      "failure_states": [
+        "unsupported",
+        "unavailable",
+        "failed"
+      ],
+      "actions": [
+        "bluetooth.open",
+        "bluetooth.radio.toggle"
+      ]
+    },
+    "bar.updates": {
+      "domain": "bar",
+      "requirement": "required",
+      "outcome": "The pending update count is shown and left click starts a confirmed system update",
+      "failure_states": [
+        "unsupported",
+        "unavailable",
+        "failed"
+      ],
+      "actions": []
+    },
+    "bar.updates_menu": {
+      "domain": "bar",
+      "requirement": "required",
+      "outcome": "A right-click menu offers check, update, update without AUR, firmware, pacnew review, cache cleaning and the update log",
+      "failure_states": [
+        "unsupported",
+        "unavailable",
+        "failed"
+      ],
+      "actions": []
+    },
+    "bar.notifications": {
+      "domain": "bar",
+      "requirement": "required",
+      "outcome": "Notification state (waiting count, do-not-disturb, inhibition, stopped, unavailable) is shown from observed status; left click runs the provider's primary notification gesture (SwayNC control center, otherwise dismiss all), right click toggles do-not-disturb",
+      "failure_states": [
+        "unsupported",
+        "unavailable",
+        "failed"
+      ],
+      "actions": [
+        "notifications.primary",
+        "notifications.dnd.toggle"
+      ]
+    },
+    "bar.theme_control": {
+      "domain": "bar",
+      "requirement": "required",
+      "outcome": "The current dark/light variant is shown and a click switches it",
+      "failure_states": [
+        "unsupported",
+        "unavailable",
+        "failed"
+      ],
+      "actions": [
+        "theme.toggle"
+      ]
+    },
+    "bar.clock": {
+      "domain": "bar",
+      "requirement": "required",
+      "outcome": "Date and time are shown with the configured format; left click opens the selected calendar",
+      "failure_states": [
+        "unsupported",
+        "unavailable",
+        "failed"
+      ],
+      "actions": []
+    },
+    "bar.unavailable_hardware": {
+      "domain": "bar",
+      "requirement": "required",
+      "outcome": "Absent battery, backlight, lock-key LEDs or Bluetooth controller stay visible as unavailable, distinct from off, error or stale",
+      "failure_states": [
+        "unsupported",
+        "unavailable",
+        "failed"
+      ],
+      "actions": []
+    },
+    "bar.appearance": {
+      "domain": "bar",
+      "requirement": "required",
+      "outcome": "The bar follows the dark/light theme (Catppuccin Mocha/Latte, Noto Sans, modest rounding, subtle translucency) with readable normal, hover, focus, warning, critical, muted and unavailable states",
+      "failure_states": [
+        "unsupported",
+        "conflict",
+        "failed"
+      ],
+      "actions": [
+        "theme.toggle",
+        "theme.set"
+      ]
+    },
+    "dock.appearance": {
+      "domain": "dock",
+      "requirement": "required",
+      "outcome": "The dock follows the dark/light theme with a readable focused-application indicator",
+      "failure_states": [
+        "unsupported",
+        "conflict",
+        "failed"
+      ],
+      "actions": [
+        "theme.toggle",
+        "theme.set"
+      ]
+    },
+    "dock.none": {
+      "domain": "dock",
+      "requirement": "required",
+      "outcome": "With dock None no dock process starts, dock launches succeed as no-ops and no pin or panel state is written",
+      "failure_states": [
+        "failed"
+      ],
+      "actions": []
+    },
+    "dock.pins": {
+      "domain": "dock",
+      "requirement": "required",
+      "outcome": "Pinned applications are shown; initial pins follow the primary terminal, browser, file manager and enabled GUI editor without overwriting existing pins",
+      "failure_states": [
+        "unsupported",
+        "unavailable",
+        "failed"
+      ],
+      "actions": []
+    },
+    "dock.running": {
+      "domain": "dock",
+      "requirement": "required",
+      "outcome": "Running applications are shown",
+      "failure_states": [
+        "unsupported",
+        "unavailable",
+        "failed"
+      ],
+      "actions": []
+    },
+    "dock.launch_focus": {
+      "domain": "dock",
+      "requirement": "required",
+      "outcome": "Activating an application launches it when it is not running and focuses its window when it is",
+      "failure_states": [
+        "unsupported",
+        "unavailable",
+        "failed"
+      ],
+      "actions": []
+    },
+    "dock.active_indicator": {
+      "domain": "dock",
+      "requirement": "required",
+      "outcome": "The focused application is indicated",
+      "failure_states": [
+        "unsupported",
+        "unavailable",
+        "failed"
+      ],
+      "actions": []
+    },
+    "dock.follow_focus": {
+      "domain": "dock",
+      "requirement": "required",
+      "outcome": "The dock follows the focused output (otherwise it stays on a fixed primary output and this capability is unsupported)",
+      "failure_states": [
+        "unsupported",
+        "unavailable",
+        "failed"
+      ],
+      "actions": []
+    }
+  },
+  "options": {
+    "bar/waybar": {
+      "support": "full",
+      "summary": "All bar controls, menus and status are native Waybar modules; dark/light control included.",
+      "limitations": [
+        "Lock-key state needs the input group; without it the bar shows an explicit 'cannot read' state",
+        "The update count needs waybar-module-pacman-updates (installed with Waybar)"
+      ],
+      "family": "gtk3",
+      "startup": "daemon",
+      "data_boundary": "Bar configuration and theme colors only; no notification content, SSIDs or addresses are stored.",
+      "capabilities": {
+        "bar.outputs": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-001",
+            "E-D01-004"
+          ],
+          "note": ""
+        },
+        "bar.power_screen": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-005"
+          ],
+          "note": ""
+        },
+        "bar.power_menu": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-005"
+          ],
+          "note": "Waybar menu; confirmations come from the session provider"
+        },
+        "bar.app_menu": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-005"
+          ],
+          "note": ""
+        },
+        "bar.tools_menu": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-005"
+          ],
+          "note": ""
+        },
+        "bar.tray": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-004"
+          ],
+          "note": ""
+        },
+        "bar.workspaces": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-004",
+            "E-D01-023"
+          ],
+          "note": "Real Hyprland activation is a VM check"
+        },
+        "bar.submap": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-004",
+            "E-D01-023"
+          ],
+          "note": "Real Hyprland submap is a VM check"
+        },
+        "bar.audio": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-005",
+            "E-D01-004"
+          ],
+          "note": ""
+        },
+        "bar.backlight": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-002",
+            "E-D01-004"
+          ],
+          "note": ""
+        },
+        "bar.backlight_presets": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-005"
+          ],
+          "note": ""
+        },
+        "bar.temperature": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-005"
+          ],
+          "note": ""
+        },
+        "bar.lock_keys": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-002"
+          ],
+          "note": "Needs read access to /dev/input (input group); otherwise the bar shows an explicit denied state"
+        },
+        "bar.battery": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-002"
+          ],
+          "note": ""
+        },
+        "bar.network": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-005",
+            "E-D01-004"
+          ],
+          "note": ""
+        },
+        "bar.bluetooth": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-005",
+            "E-D01-004"
+          ],
+          "note": "format-no-controller distinguishes a missing controller"
+        },
+        "bar.updates": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-005"
+          ],
+          "note": "Needs waybar-module-pacman-updates; hidden when it is not installed"
+        },
+        "bar.updates_menu": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-005"
+          ],
+          "note": ""
+        },
+        "bar.notifications": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-024",
+            "E-D01-003"
+          ],
+          "note": "Custom module adapter over status_read.sh notifications; SwayNC streams natively"
+        },
+        "bar.theme_control": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-003",
+            "E-D01-025"
+          ],
+          "note": ""
+        },
+        "bar.clock": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-005"
+          ],
+          "note": ""
+        },
+        "bar.unavailable_hardware": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-002",
+            "E-D01-003"
+          ],
+          "note": ""
+        },
+        "bar.appearance": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-003",
+            "E-D01-001",
+            "E-D01-006",
+            "E-D01-025"
+          ],
+          "note": "Colors imported from a generated file; SIGUSR2 reload"
+        }
+      },
+      "theme": {
+        "support": "supported",
+        "units": [
+          "waybar"
+        ],
+        "note": "Colors import from a generated file; Waybar reloads on SIGUSR2."
+      }
+    },
+    "bar/ironbar": {
+      "support": "limited",
+      "summary": "All controls and menus work (popups through Ironbar IPC); microphone level and a fixed time zone are missing.",
+      "limitations": [
+        "The microphone level is not shown on the bar",
+        "The clock follows the system time zone",
+        "With several outputs, a right-click menu opens on every bar"
+      ],
+      "family": "gtk4",
+      "startup": "daemon",
+      "data_boundary": "Bar configuration and theme colors only; no notification content, SSIDs or addresses are stored.",
+      "capabilities": {
+        "bar.outputs": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-007"
+          ],
+          "note": ""
+        },
+        "bar.power_screen": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-008",
+            "E-D01-005"
+          ],
+          "note": ""
+        },
+        "bar.power_menu": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D01-008"
+          ],
+          "note": "Custom popup opened through Ironbar IPC; with several outputs it opens on every bar"
+        },
+        "bar.app_menu": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-008"
+          ],
+          "note": ""
+        },
+        "bar.tools_menu": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D01-008"
+          ],
+          "note": "Custom popup through Ironbar IPC"
+        },
+        "bar.tray": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-007"
+          ],
+          "note": ""
+        },
+        "bar.workspaces": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-009",
+            "E-D01-011",
+            "E-D01-023"
+          ],
+          "note": "Click activation verified on sway; Hyprland is a VM check"
+        },
+        "bar.submap": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-009",
+            "E-D01-011"
+          ],
+          "note": "bindmode verified with sway modes; Hyprland submaps from source"
+        },
+        "bar.audio": {
+          "support": "partial",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-009",
+            "E-D01-011"
+          ],
+          "note": "Output volume and both gestures are native; the microphone level is not shown on the bar"
+        },
+        "bar.backlight": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-009",
+            "E-D01-002"
+          ],
+          "note": "Label from sysfs with scroll adjustment; absent backlight shows n/a"
+        },
+        "bar.backlight_presets": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D01-008"
+          ],
+          "note": ""
+        },
+        "bar.temperature": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-009"
+          ],
+          "note": ""
+        },
+        "bar.lock_keys": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-009"
+          ],
+          "note": "Label from the kernel LED class (no input group needed)"
+        },
+        "bar.battery": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-011",
+            "E-D01-007"
+          ],
+          "note": "UPower battery module with warning/critical profiles plus an n/a label when no battery exists"
+        },
+        "bar.network": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-009",
+            "E-D01-011"
+          ],
+          "note": "network_manager shows icons only"
+        },
+        "bar.bluetooth": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-009"
+          ],
+          "note": ""
+        },
+        "bar.updates": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-009"
+          ],
+          "note": "Watch-mode label over the existing update producer"
+        },
+        "bar.updates_menu": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D01-008"
+          ],
+          "note": ""
+        },
+        "bar.notifications": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-024",
+            "E-D01-010"
+          ],
+          "note": "Watch-mode script adapter; the native module is SwayNC-only and would D-Bus-activate SwayNC"
+        },
+        "bar.theme_control": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-007",
+            "E-D01-025"
+          ],
+          "note": ""
+        },
+        "bar.clock": {
+          "support": "partial",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-009",
+            "E-D01-011"
+          ],
+          "note": "Left click opens the selected calendar; the clock follows the system time zone (no time-zone option)"
+        },
+        "bar.unavailable_hardware": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-007",
+            "E-D01-009"
+          ],
+          "note": ""
+        },
+        "bar.appearance": {
+          "support": "supported",
+          "mechanism": "native-cli",
+          "evidence": [
+            "E-D01-007",
+            "E-D01-025"
+          ],
+          "note": "Generated GTK4 stylesheet; reloaded with ironbar style load-css"
+        }
+      },
+      "theme": {
+        "support": "supported",
+        "units": [
+          "ironbar"
+        ],
+        "note": "Theme switches reload the stylesheet with 'ironbar style load-css'."
+      }
+    },
+    "bar/nwg-panel": {
+      "support": "limited",
+      "summary": "Status, clicks and the theme control work; nwg-panel has no right-click menus.",
+      "limitations": [
+        "Power quick actions, the tools menu, brightness presets and update options are not available from the bar (no right-click menus)",
+        "The update count is not shown (executors cannot stream it)",
+        "Theme changes apply the next time the panel starts (no style reload)"
+      ],
+      "family": "gtk3",
+      "startup": "daemon",
+      "data_boundary": "Panel configuration, pinned desktop files and theme colors only.",
+      "capabilities": {
+        "bar.outputs": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-012",
+            "E-D01-014"
+          ],
+          "note": "output 'All' clones the bar; hotplug restarts the panel process"
+        },
+        "bar.power_screen": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-013",
+            "E-D01-012"
+          ],
+          "note": ""
+        },
+        "bar.power_menu": {
+          "support": "unsupported",
+          "mechanism": "none",
+          "evidence": [
+            "E-D01-013"
+          ],
+          "note": "nwg-panel buttons and executors have no right-click menus; the controls popup is not used because it adds a SwayNC widget"
+        },
+        "bar.app_menu": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-013"
+          ],
+          "note": ""
+        },
+        "bar.tools_menu": {
+          "support": "unsupported",
+          "mechanism": "none",
+          "evidence": [
+            "E-D01-013"
+          ],
+          "note": "No right-click menus in nwg-panel 0.12.1"
+        },
+        "bar.tray": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-013"
+          ],
+          "note": ""
+        },
+        "bar.workspaces": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-015",
+            "E-D01-023"
+          ],
+          "note": "Hyprland real effect is a VM check"
+        },
+        "bar.submap": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-015"
+          ],
+          "note": "Updates only because workspaces are in the same panel"
+        },
+        "bar.audio": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-012",
+            "E-D01-024"
+          ],
+          "note": "Executor over status_read.sh audio; refreshes every 3 s"
+        },
+        "bar.backlight": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-012"
+          ],
+          "note": "Executor from sysfs with scroll adjustment"
+        },
+        "bar.backlight_presets": {
+          "support": "unsupported",
+          "mechanism": "none",
+          "evidence": [
+            "E-D01-013"
+          ],
+          "note": "Executors have no menus"
+        },
+        "bar.temperature": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-012"
+          ],
+          "note": ""
+        },
+        "bar.lock_keys": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-012"
+          ],
+          "note": "Executor from the kernel LED class"
+        },
+        "bar.battery": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-012"
+          ],
+          "note": "Executor from sysfs; the controls battery is not used (it reports 0% and warns without a battery)"
+        },
+        "bar.network": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-012"
+          ],
+          "note": "Executor over status_read.sh network"
+        },
+        "bar.bluetooth": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-012"
+          ],
+          "note": "Executor over status_read.sh bluetooth"
+        },
+        "bar.updates": {
+          "support": "partial",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-013"
+          ],
+          "note": "Left click starts the confirmed update; the update count needs a streaming widget, which executors are not"
+        },
+        "bar.updates_menu": {
+          "support": "unsupported",
+          "mechanism": "none",
+          "evidence": [
+            "E-D01-013"
+          ],
+          "note": "Executors have no menus"
+        },
+        "bar.notifications": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-024",
+            "E-D01-012"
+          ],
+          "note": "Executor over status_read.sh notifications (3 s polling)"
+        },
+        "bar.theme_control": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-012",
+            "E-D01-025"
+          ],
+          "note": ""
+        },
+        "bar.clock": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-016"
+          ],
+          "note": "Executor clock: the native clock has no left-click command or time zone"
+        },
+        "bar.unavailable_hardware": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-012"
+          ],
+          "note": ""
+        },
+        "bar.appearance": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-012",
+            "E-D01-006",
+            "E-D01-025"
+          ],
+          "note": "Applies at the next panel start (no style reload)"
+        }
+      },
+      "theme": {
+        "support": "supported",
+        "units": [
+          "nwg-panel"
+        ],
+        "note": "Applies at the next panel start; the shared process is never restarted for a theme change."
+      }
+    },
+    "dock/nwg-dock-hyprland": {
+      "support": "limited",
+      "summary": "Pins, running apps, launch-or-focus and active indicator work; the dock stays on the output where it started.",
+      "limitations": [
+        "Does not follow the focused output",
+        "Theme changes apply the next time the dock starts; running-indicator images keep their upstream colors"
+      ],
+      "family": "gtk3",
+      "startup": "daemon",
+      "data_boundary": "Pinned window classes in $XDG_CACHE_HOME/nwg-dock-pinned; never imported from other tools.",
+      "capabilities": {
+        "dock.pins": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-017",
+            "E-D01-021",
+            "E-D01-022"
+          ],
+          "note": "Seeded once into $XDG_CACHE_HOME/nwg-dock-pinned as window classes"
+        },
+        "dock.running": {
+          "support": "supported",
+          "mechanism": "native-api",
+          "evidence": [
+            "E-D01-017"
+          ],
+          "note": ""
+        },
+        "dock.launch_focus": {
+          "support": "supported",
+          "mechanism": "native-api",
+          "evidence": [
+            "E-D01-017"
+          ],
+          "note": "Requires the pin to equal the window class; VS Code launches through desktop-file matching (VM check)"
+        },
+        "dock.active_indicator": {
+          "support": "supported",
+          "mechanism": "native-api",
+          "evidence": [
+            "E-D01-017"
+          ],
+          "note": ""
+        },
+        "dock.follow_focus": {
+          "support": "unsupported",
+          "mechanism": "none",
+          "evidence": [
+            "E-D01-018"
+          ],
+          "note": "The dock stays on the output where it started (fixed primary output)"
+        },
+        "dock.appearance": {
+          "support": "partial",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-019",
+            "E-D01-020",
+            "E-D01-006",
+            "E-D01-025"
+          ],
+          "note": "CSS is read only at startup; running-indicator images keep their upstream colors"
+        }
+      },
+      "theme": {
+        "support": "partial",
+        "units": [
+          "nwg-dock-hyprland"
+        ],
+        "note": "CSS is read only at startup; indicator images are not CSS."
+      }
+    },
+    "dock/nwg-panel": {
+      "support": "limited",
+      "summary": "Pinned apps and a taskbar with focus and active indicator; pins always launch new windows.",
+      "limitations": [
+        "A pinned app always starts a new instance; focus a running window with its taskbar button",
+        "Stays on the primary output (does not follow focus)",
+        "Theme changes apply the next time the panel starts"
+      ],
+      "family": "gtk3",
+      "startup": "daemon",
+      "data_boundary": "Pinned desktop files in $XDG_CACHE_HOME/nwg-pin-cache (shared with other nwg tools).",
+      "capabilities": {
+        "dock.pins": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-012",
+            "E-D01-015",
+            "E-D01-021"
+          ],
+          "note": "pinned module reads seeded $XDG_CACHE_HOME/nwg-pin-cache desktop files"
+        },
+        "dock.running": {
+          "support": "supported",
+          "mechanism": "native-api",
+          "evidence": [
+            "E-D01-015"
+          ],
+          "note": ""
+        },
+        "dock.launch_focus": {
+          "support": "partial",
+          "mechanism": "native-api",
+          "evidence": [
+            "E-D01-015"
+          ],
+          "note": "Pins always launch a new instance; a running window is focused through its taskbar button"
+        },
+        "dock.active_indicator": {
+          "support": "supported",
+          "mechanism": "native-api",
+          "evidence": [
+            "E-D01-015"
+          ],
+          "note": "#task-box-focused"
+        },
+        "dock.follow_focus": {
+          "support": "unsupported",
+          "mechanism": "none",
+          "evidence": [
+            "E-D01-012",
+            "E-D01-013"
+          ],
+          "note": "The dock panel stays on output 0 (fixed primary output)"
+        },
+        "dock.appearance": {
+          "support": "supported",
+          "mechanism": "native-config",
+          "evidence": [
+            "E-D01-012",
+            "E-D01-025"
+          ],
+          "note": "Shares the nwg-panel stylesheet; applies at the next panel start"
+        }
+      },
+      "theme": {
+        "support": "supported",
+        "units": [
+          "nwg-panel"
+        ],
+        "note": "Shares the nwg-panel unit with the bar."
+      }
+    }
+  },
+  "none_states": {
+    "dock": {
+      "behavior": "No dock starts: role_exec.sh dock and nwg_dock.sh exit 0 without writing pins or panel configuration; the bar and its toggle are unaffected.",
+      "theme": "no member units"
+    }
+  },
+  "generic_packages": {},
+  "evidence": {
+    "E-D01-001": {
+      "kind": "real-effect",
+      "source": "Waybar 0.15.0 (waybar 0.15.0-3), shipped config.jsonc and style.css with the rendered waybar unit",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway 1.12 (pixman), private D-Bus session, no system bus",
+      "command": "hss-headless: waybar -l debug with HOME fixture; swaymsg create_output",
+      "result": "Style with the absolute file:// theme import loaded without CSS errors; 'Bar configured ... for output: HEADLESS-1' and, after hotplug, '... HEADLESS-2'"
+    },
+    "E-D01-002": {
+      "kind": "real-effect",
+      "source": "Waybar 0.15.0 backlight, battery and keyboard-state modules",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway 1.12 (pixman), private D-Bus session, no system bus",
+      "command": "hss-headless: waybar with backlight/battery/keyboard-state and /sys/class/power_supply masked by tmpfs",
+      "result": "Logs 'Disabling module \"backlight\", No backlight found', 'No batteries.' and 'Disabling module \"keyboard-state\", Failed to find keyboard device'; the exec-if companion custom modules render instead"
+    },
+    "E-D01-003": {
+      "kind": "visual",
+      "source": "Waybar 0.15.0 dark and light renders of the shipped profile",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway 1.12 (pixman), private D-Bus session, no system bus",
+      "command": "hss-headless: render theme with hss_theme.py plan --units waybar for dark and light, run waybar, grim -g '0,0 1280x40'",
+      "result": "Mocha and Latte pills, accent menu/power controls, 'n/a' pills for absent backlight and lock-key LEDs, theme control moon/sun, notification count from observed status"
+    },
+    "E-D01-004": {
+      "kind": "documentation",
+      "source": "waybar(5) 0.15.0: output, on-sigusr2, reload_style_on_change; waybar-hyprland-workspaces(5); waybar-backlight(5); waybar-custom(5) exec-if",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway 1.12 (pixman), private D-Bus session, no system bus",
+      "command": "man -P cat 5 waybar; man 5 waybar-hyprland-workspaces",
+      "result": "No output key means every output; SIGUSR2 reloads by default; style reload also follows imported CSS; hyprland/workspaces documents click activation and sort-by number but no scroll option"
+    },
+    "E-D01-005": {
+      "kind": "argv",
+      "source": "tests/shell/bars_parity.sh",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 hermetic test chroot (uid 1000), stub programs",
+      "command": "bash tests/run.sh tests/shell/bars_parity.sh",
+      "result": "Every active Waybar gesture and menu entry runs exactly one intended program with literal argv; menu XML IDs equal configured actions"
+    },
+    "E-D01-006": {
+      "kind": "real-effect",
+      "source": "GTK 3.24.52 Gtk.CssProvider (python-gobject) as used by Waybar, nwg-panel and nwg-dock-hyprland",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway 1.12 (pixman), private D-Bus session, no system bus",
+      "command": "hss-headless: python3 probe loading stylesheets with @define-color fallbacks, @import url(\"file:///...\"), missing imports and a symlinked directory",
+      "result": "Imported definitions after fallbacks win without parse errors; imports after rules are accepted; a missing import raises a load error; relative imports resolve lexically through a symlinked directory"
+    },
+    "E-D01-007": {
+      "kind": "real-effect",
+      "source": "Ironbar 0.19.1 (ironbar 0.19.1-1, GTK4 4.24.1), shipped config.toml and rendered ironbar unit",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway 1.12 (pixman), private D-Bus session, no system bus",
+      "command": "hss-headless: ironbar -vv; ironbar; swaymsg create_output; ironbar style load-css ~/.config/ironbar/style.css",
+      "result": "Config validates (exit 0); 'Initializing bar main on HEADLESS-1' and on the hot-added HEADLESS-2; load-css answered ok; Latte theme rendered (grim)"
+    },
+    "E-D01-008": {
+      "kind": "real-effect",
+      "source": "Ironbar 0.19.1 custom module popups and IPC (docs/modules/Custom.md, docs/IPC.md at v0.19.1)",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway 1.12 (pixman), private D-Bus session, no system bus",
+      "command": "hss-headless with a virtual pointer: right click -> ironbar bar main toggle-popup power; click entry",
+      "result": "Popup opened, the entry ran its command and the popup closed; with two outputs the popup opened on both bars (shared bar name)"
+    },
+    "E-D01-009": {
+      "kind": "real-effect",
+      "source": "Ironbar 0.19.1 volume, bluetooth, workspaces, bindmode, clock, script/label modules",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway 1.12 (pixman), private D-Bus session, no system bus",
+      "command": "hss-headless with pipewire and bluetoothd (no adapter): left/right/scroll overrides; script watch mode; label {{N:cmd}}",
+      "result": "on_click_left/right ran their commands (on_click_left replaces the module popup); bluetooth rendered not_found; watch scripts streamed; workspaces activated on click (sway)"
+    },
+    "E-D01-010": {
+      "kind": "real-effect",
+      "source": "Ironbar 0.19.1 notifications module",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway 1.12 (pixman), private D-Bus session, no system bus",
+      "command": "hss-headless without swaync running",
+      "result": "Module tries to D-Bus-activate SwayNC ('Spawn.ChildExited'); it is SwayNC-only, so the profile uses a script widget"
+    },
+    "E-D01-011": {
+      "kind": "documentation",
+      "source": "Ironbar v0.19.1 docs: modules/Clock.md, Volume.md, Keyboard.md, Battery.md, Network-Manager.md; src/clients/compositor/hyprland",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway 1.12 (pixman), private D-Bus session, no system bus",
+      "command": "https://raw.githubusercontent.com/JakeStanger/ironbar/v0.19.1/docs/",
+      "result": "Clock has no time-zone option (local time); volume shows the default sink in the bar; keyboard reads /dev/input; Hyprland workspaces and submaps are supported through Hyprland IPC"
+    },
+    "E-D01-012": {
+      "kind": "real-effect",
+      "source": "nwg-panel 0.12.1 (python 3.14.8, gtk3 3.24.52) through nwg_panel.sh with shipped bar and dock profiles",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway 1.12 (pixman), private D-Bus session, no system bus",
+      "command": "hss-headless: two outputs; nwg_panel.sh bar (bar and dock selected); grim per output",
+      "result": "Bar with output 'All' on HEADLESS-1 and HEADLESS-2, dock on HEADLESS-1 only; seeded nwg-pin-cache pins shown; hss-style.css theme import applied; executors show audio, network, absent backlight/lock keys, DND with count"
+    },
+    "E-D01-013": {
+      "kind": "static",
+      "source": "nwg-panel 0.12.1 source: modules/custom_button.py, modules/executor.py:88-111,193-200, main.py:856-861,940-1010",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway 1.12 (pixman), private D-Bus session, no system bus",
+      "command": "grep/sed in /usr/lib/python3.14/site-packages/nwg_panel",
+      "result": "Buttons handle left click only; executors run a whitespace-split script (no shell, no streaming) and read icon/label/tooltip lines; output '' uses monitor 0 and 'All' clones per output; the controls widget auto-adds a SwayNC notifications widget when swaync is installed"
+    },
+    "E-D01-014": {
+      "kind": "real-effect",
+      "source": "nwg-panel 0.12.1 runtime behavior",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway 1.12 (pixman), private D-Bus session, no system bus",
+      "command": "hss-headless: pkill -RTMIN+n, SIGHUP/SIGUSR2, second instance start, hotplug with output 'All'",
+      "result": "RT signal toggles the bar; no CSS reload exists (restart only); a new instance terminates the old one; hotplug restarts and re-clones the bar per output"
+    },
+    "E-D01-015": {
+      "kind": "modeled-effect",
+      "source": "nwg-panel 0.12.1 Hyprland modules against an emulated Hyprland IPC socket",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway 1.12 (pixman), private D-Bus session, no system bus",
+      "command": "Python harness invoking hyprland-workspaces/taskbar/submap/pinned handlers with a fake .socket.sock/.socket2.sock",
+      "result": "Workspace click sends 'dispatch workspace N'; taskbar click sends 'focuswindow address:...'; submap updates only with workspaces in the same panel; pinned buttons always launch and never focus"
+    },
+    "E-D01-016": {
+      "kind": "real-effect",
+      "source": "nwg-panel 0.12.1 clock module",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway 1.12 (pixman), private D-Bus session, no system bus",
+      "command": "hss-headless: clock with on-left-click and %Z",
+      "result": "on-left-click is ignored (left click opens the built-in calendar); %Z prints nothing (no time zone); the profile uses an executor clock instead"
+    },
+    "E-D01-017": {
+      "kind": "modeled-effect",
+      "source": "nwg-dock-hyprland 0.4.11 (gtk3 3.24.52) with an emulated Hyprland IPC socket; source v0.4.11 main.go:542, tools.go:21-29,57-65,428-444,722-766,815-875",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway 1.12 (pixman), private D-Bus session, no system bus",
+      "command": "hss-headless + fake Hyprland IPC + virtual pointer; https://raw.githubusercontent.com/nwg-piotr/nwg-dock-hyprland/v0.4.11/",
+      "result": "Pins are read from $XDG_CACHE_HOME/nwg-dock-pinned (one window class per line, exact match); clicking a pinned app launches <class>.desktop once; clicking a running app focuses it (Lua hl.dsp.focus, legacy fallback); several windows open a chooser; the focused app gets #active"
+    },
+    "E-D01-018": {
+      "kind": "real-effect",
+      "source": "nwg-dock-hyprland 0.4.11 output placement (source main.go:585-599,784)",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway 1.12 (pixman), private D-Bus session, no system bus",
+      "command": "hss-headless: two outputs, focus moved to HEADLESS-2, events sent; hide/show via SIGRTMIN+3/+2",
+      "result": "Without -o the dock stays on the output where it was shown; only activewindowv2 events are handled, so following the focused output is not supported"
+    },
+    "E-D01-019": {
+      "kind": "real-effect",
+      "source": "nwg-dock-hyprland 0.4.11 styling and startup",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway 1.12 (pixman), private D-Bus session, no system bus",
+      "command": "hss-headless: -s absolute/relative paths, missing @import, edits after start, missing ~/.cache",
+      "result": "-s is joined to ~/.config/nwg-dock-hyprland; CSS is read only at startup; any CSS load error (including a missing import) exits 1; the dock panics without a cache directory; -r makes a second start exit 0"
+    },
+    "E-D01-020": {
+      "kind": "static",
+      "source": "nwg-dock-hyprland 0.4.11 /usr/share/nwg-dock-hyprland/images/task-*.svg",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway 1.12 (pixman), private D-Bus session, no system bus",
+      "command": "grep fill/stroke in task-single.svg task-multiple.svg task-empty.svg",
+      "result": "Running indicators are fixed SVG images (fill #00ffff, stroke #444444), not CSS"
+    },
+    "E-D01-021": {
+      "kind": "argv",
+      "source": "tests/shell/docks_behavior.sh",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 hermetic test chroot (uid 1000), stub programs",
+      "command": "bash tests/run.sh tests/shell/docks_behavior.sh",
+      "result": "All nine bar/dock combinations start each process once; dock None is a successful no-op; pins are seeded from the roles and existing pin files are preserved; the bar toggle never matches the dock"
+    },
+    "E-D01-022": {
+      "kind": "documentation",
+      "source": "Arch package file lists (pacman -Fl, aarch64 mirror) and local kitty/alacritty/foot packages",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway 1.12 (pixman), private D-Bus session, no system bus",
+      "command": "pacman -Fl dolphin thunar nautilus nemo pcmanfm-qt firefox chromium konsole kate mousepad",
+      "result": "Desktop IDs org.kde.dolphin, thunar, org.gnome.Nautilus, nemo, pcmanfm-qt, firefox, chromium, org.kde.konsole, org.kde.kate, org.xfce.mousepad; kitty, Alacritty, foot installed locally"
+    },
+    "E-D01-023": {
+      "kind": "static",
+      "source": "Hyprland 0.56.2 binary symbols and hyprctl --help",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 research chroot, headless sway 1.12 (pixman), private D-Bus session, no system bus",
+      "command": "strings /usr/bin/Hyprland | grep Legacy; hyprctl --help",
+      "result": "Config::Legacy::CDispatcherTranslator is present (legacy dispatcher strings sent by bar/dock IPC clients are translated); Hyprland could not start here (no DRM backend), so real dispatch is a VM check"
+    },
+    "E-D01-024": {
+      "kind": "modeled-effect",
+      "source": "notification_status.sh, theme_status.sh, hardware_state.sh and bar_status.sh adapters (tests/shell/bars_parity.sh)",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 hermetic test chroot (uid 1000), stub programs",
+      "command": "bash tests/run.sh tests/shell/bars_parity.sh",
+      "result": "Stateful status doubles: DND/count/inhibited/stopped/missing-dependency/unavailable/disabled/error map to distinct bar states; changing the observed state changes the output; SwayNC streams natively and falls back to observed status"
+    },
+    "E-D01-025": {
+      "kind": "modeled-effect",
+      "source": "D01 theme units (tests/shell/panel_themes.sh) with providers/theme.sh",
+      "date": "2026-10-20",
+      "environment": "Arch Linux ARM aarch64 hermetic test chroot (uid 1000), stub programs",
+      "command": "bash tests/run.sh tests/shell/panel_themes.sh",
+      "result": "Mocha and Latte render for Waybar, Ironbar, nwg-panel and nwg-dock-hyprland; reruns unchanged; user rules kept; edited regions conflict; theme.set signals Waybar USR2 and reports nwg-panel as next-launch"
+    }
+  }
+}

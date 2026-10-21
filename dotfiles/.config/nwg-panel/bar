@@ -1,18 +1,161 @@
 [
   {
     "name": "bar",
-    "output": "",
+    "output": "All",
     "position": "top",
     "layer": "top",
     "height": 32,
+    "css-name": "hss-bar",
+    "homogeneous": true,
+    "exclusive-zone": true,
+    "spacing": 6,
+    "padding-horizontal": 4,
+    "padding-vertical": 2,
+    "icons": "",
     "controls": "off",
     "controls-settings": {},
     "menu-start": "off",
-    "hyprland-workspaces": {},
-    "clock": {},
-    "tray": {},
-    "modules-left": ["hyprland-workspaces"],
-    "modules-center": ["clock"],
-    "modules-right": ["tray"]
+    "modules-left": [
+      "button-power",
+      "button-menu",
+      "tray",
+      "hyprland-workspaces",
+      "hyprland-submap"
+    ],
+    "modules-center": [],
+    "modules-right": [
+      "executor-audio",
+      "executor-backlight",
+      "executor-temperature",
+      "executor-locks",
+      "executor-battery",
+      "executor-network",
+      "executor-bluetooth",
+      "button-updates",
+      "executor-notifications",
+      "executor-theme",
+      "executor-clock"
+    ],
+    "button-power": {
+      "command": "{HOME}/.config/waybar/scripts/launch_power_screen.sh",
+      "icon": "system-shutdown-symbolic",
+      "label": "",
+      "css-name": "hss-button",
+      "tooltip": "Power screen: lock, logout, suspend, hibernate, reboot and shut down.\nThe right-click quick-action menu is not available: nwg-panel buttons have no right-click menus."
+    },
+    "button-menu": {
+      "command": "{HOME}/.config/hypr/scripts/menu_exec.sh --toggle",
+      "icon": "start-here-symbolic",
+      "label": "Menu",
+      "css-name": "hss-button",
+      "tooltip": "Applications.\nThe tools menu (View Keybinds, Open Keybind Config, Take Snapshot) is not available: nwg-panel buttons have no right-click menus.",
+      "label-position": "right"
+    },
+    "tray": {
+      "icon-size": 20,
+      "root-css-name": "hss-tray"
+    },
+    "hyprland-workspaces": {
+      "num-ws": 10,
+      "show-icon": false,
+      "show-name": false,
+      "show-empty": false,
+      "show-workspaces-from-all-outputs": false
+    },
+    "hyprland-submap": {
+      "show-icon": false,
+      "css-name": "hss-submap"
+    },
+    "executor-audio": {
+      "script": "{HOME}/.config/waybar/scripts/bar_status.sh --format nwg audio",
+      "interval": 3,
+      "root-css-name": "hss-module",
+      "css-name": "hss-label",
+      "icon-placement": "left",
+      "on-left-click": "{HOME}/.config/hypr/scripts/action_exec.sh audio.streams.open",
+      "on-right-click": "{HOME}/.config/hypr/scripts/action_exec.sh audio.hardware.open"
+    },
+    "executor-backlight": {
+      "script": "{HOME}/.config/waybar/scripts/bar_status.sh --format nwg backlight",
+      "interval": 5,
+      "root-css-name": "hss-module",
+      "css-name": "hss-label",
+      "icon-placement": "left",
+      "on-scroll-up": "{HOME}/.config/waybar/scripts/backlight.sh +5",
+      "on-scroll-down": "{HOME}/.config/waybar/scripts/backlight.sh -5",
+      "tooltip-text": "Brightness. Scroll to adjust; the preset menu is not available because nwg-panel executors have no menus."
+    },
+    "executor-temperature": {
+      "script": "{HOME}/.config/waybar/scripts/bar_status.sh --format nwg temperature",
+      "interval": 5,
+      "root-css-name": "hss-module",
+      "css-name": "hss-label",
+      "icon-placement": "left",
+      "on-left-click": "{HOME}/.config/waybar/scripts/sensor.sh"
+    },
+    "executor-locks": {
+      "script": "{HOME}/.config/waybar/scripts/bar_status.sh --format nwg locks",
+      "interval": 2,
+      "root-css-name": "hss-module",
+      "css-name": "hss-label",
+      "icon-placement": "left"
+    },
+    "executor-battery": {
+      "script": "{HOME}/.config/waybar/scripts/bar_status.sh --format nwg battery",
+      "interval": 30,
+      "root-css-name": "hss-module",
+      "css-name": "hss-label",
+      "icon-placement": "left"
+    },
+    "executor-network": {
+      "script": "{HOME}/.config/waybar/scripts/bar_status.sh --format nwg network",
+      "interval": 5,
+      "root-css-name": "hss-module",
+      "css-name": "hss-label",
+      "icon-placement": "left",
+      "on-left-click": "{HOME}/.config/hypr/scripts/action_exec.sh network.connect.choose",
+      "on-right-click": "{HOME}/.config/hypr/scripts/action_exec.sh network.profile.edit"
+    },
+    "executor-bluetooth": {
+      "script": "{HOME}/.config/waybar/scripts/bar_status.sh --format nwg bluetooth",
+      "interval": 5,
+      "root-css-name": "hss-module",
+      "css-name": "hss-label",
+      "icon-placement": "left",
+      "on-left-click": "{HOME}/.config/hypr/scripts/action_exec.sh bluetooth.open",
+      "on-right-click": "{HOME}/.config/hypr/scripts/action_exec.sh bluetooth.radio.toggle"
+    },
+    "button-updates": {
+      "command": "{HOME}/.config/waybar/scripts/confirm_system_update.sh",
+      "icon": "system-software-update-symbolic",
+      "label": "",
+      "css-name": "hss-button",
+      "tooltip": "Start a system update (asks for confirmation).\nThe update count and the right-click update menu are not available: nwg-panel executors cannot read the streaming update status and have no menus."
+    },
+    "executor-notifications": {
+      "script": "{HOME}/.config/waybar/scripts/notification_status.sh --once --format nwg",
+      "interval": 3,
+      "root-css-name": "hss-module",
+      "css-name": "hss-label",
+      "icon-placement": "left",
+      "on-left-click": "{HOME}/.config/hypr/scripts/action_exec.sh notifications.primary",
+      "on-right-click": "{HOME}/.config/hypr/scripts/action_exec.sh notifications.dnd.toggle"
+    },
+    "executor-theme": {
+      "script": "{HOME}/.config/waybar/scripts/theme_status.sh --format nwg",
+      "interval": 3,
+      "root-css-name": "hss-module",
+      "css-name": "hss-label",
+      "icon-placement": "left",
+      "on-left-click": "{HOME}/.config/hypr/scripts/action_exec.sh theme.toggle"
+    },
+    "executor-clock": {
+      "script": "{HOME}/.config/waybar/scripts/bar_status.sh --format nwg clock",
+      "interval": 10,
+      "root-css-name": "hss-module",
+      "css-name": "hss-label",
+      "icon-placement": "left",
+      "on-left-click": "{HOME}/.config/hypr/scripts/float_calendar.sh"
+    }
   }
 ]

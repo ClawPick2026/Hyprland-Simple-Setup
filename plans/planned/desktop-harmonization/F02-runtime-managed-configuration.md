@@ -1,6 +1,6 @@
 # F02 — Shared runtime and managed configuration
 
-Status: product policy synchronized with the completed interview; implementation not started. P01-P07 refer to resolved master section 9 and the [decision record](../desktop-harmonization-grill.md); native evidence and implementation gates remain pending.
+Status: product policy synchronized with the completed interview; implemented on branch `feat/harmonize-visual-design` (uncommitted, 2026-10-21); user-led VM acceptance pending, see [acceptance matrix](../../../Documents/desktop-harmonization-acceptance.md). P01-P07 refer to resolved master section 9 and the [decision record](../desktop-harmonization-grill.md); native evidence and implementation gates remain pending.
 Master: [Desktop harmonization master](../desktop-harmonization-master.md).
 Source baseline: `610a18bac374e7e2ffd0bcb2d99b026131deedbc`, branch `feat/harmonize-visual-design`.
 
@@ -92,7 +92,7 @@ Gate A must not wait for adapters whose implementation itself requires the found
 
 ## 4. Implementation work packages
 
-Every work package is **not started**. Prerequisites below govern future implementation, not authorization to begin it.
+Every work package is **implemented on the branch** (VM acceptance pending);. Prerequisites below govern future implementation, not authorization to begin it.
 
 ### F02.1 — Freeze contracts and compatibility fixtures
 
@@ -209,12 +209,12 @@ If a proposed prerequisite points back to later domain implementation, split out
 
 ## 8. Implementation checklist and confidence
 
-1. Not started — Approve F01/F02 contracts and preserve legacy routing fixtures (F02.1).
-2. Not started — Extract generic window helpers while retaining compatibility entry points (F02.2).
-3. Not started — Implement semantic action/status boundaries and their contract tests (F02.3).
-4. Not started — Verify singleton ownership, readiness and combined-panel behavior (F02.4).
-5. Not started — Prove managed-batch recovery, override preservation and consented activation (F02.5-F02.6).
-6. Not started — Complete representative foundation integration and hand off reviewed evidence to I01 (F02.7).
+1. Implemented (VM acceptance pending) — Approve F01/F02 contracts and preserve legacy routing fixtures (F02.1).
+2. Implemented (VM acceptance pending) — Extract generic window helpers while retaining compatibility entry points (F02.2).
+3. Implemented (VM acceptance pending) — Implement semantic action/status boundaries and their contract tests (F02.3).
+4. Implemented (VM acceptance pending) — Verify singleton ownership, readiness and combined-panel behavior (F02.4).
+5. Implemented (VM acceptance pending) — Prove managed-batch recovery, override preservation and consented activation (F02.5-F02.6).
+6. Implemented (VM acceptance pending) — Complete representative foundation integration and hand off reviewed evidence to I01 (F02.7).
 
 Planning confidence: **91/100** for scope, dependencies and repository-grounded work breakdown.
 Remaining uncertainty concerns concrete sibling APIs, dependency-unit isolation/partial-state recovery and untested native/session behavior; implementation feasibility is not certified.

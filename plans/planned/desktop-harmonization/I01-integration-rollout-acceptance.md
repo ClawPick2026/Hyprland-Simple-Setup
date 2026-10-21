@@ -1,6 +1,6 @@
 # I01: Installer integration and branch/VM acceptance
 
-Status: product policy synchronized with the completed interview; implementation not started. Apply master section 9 and the [decision record](../desktop-harmonization-grill.md); implementation and VM evidence remain pending.
+Status: product policy synchronized with the completed interview; implemented on branch `feat/harmonize-visual-design` (uncommitted, 2026-10-21); user-led VM acceptance pending, see [acceptance matrix](../../../Documents/desktop-harmonization-acceptance.md). Apply master section 9 and the [decision record](../desktop-harmonization-grill.md); implementation and VM evidence remain pending.
 Master: [Desktop harmonization master](../desktop-harmonization-master.md).
 Supplied baseline: `610a18bac374e7e2ffd0bcb2d99b026131deedbc`, branch `feat/harmonize-visual-design`.
 
@@ -121,7 +121,7 @@ Parent-reconciled planning boundaries and remaining technical gates:
 ## 6. Concrete work packages
 
 ### I01.1 — Establish the integration ledger and gate sequence
-Status: not started. Prerequisites: authorization and baseline recheck; specification intake may precede foundation implementation.
+Status: implemented; VM acceptance pending. Prerequisites: authorization and baseline recheck; specification intake may precede foundation implementation.
 Ownership: I01 integration records; parent canonical plans; producer owners retain contract definitions.
 Deliverables: shared-file queue, contract-revision matrix, decision/blocker register and reader-before-writer delivery sequence.
 Identify installed resource discovery beside resolved `setup.sh`, legacy wrappers and all shared destination collisions.
@@ -129,7 +129,7 @@ Intended validation: catalog/descriptor coverage review, dependency-cycle check 
 Done: every handoff has one accountable producer/consumer and landing owner; foundation evidence does not depend on completed domain adapters.
 
 ### I01.2 — Implement capability-aware chooser and preview
-Status: not started. Prerequisites: foundation gate, approved F01 definitions and applicable P01/P02/P05 policies.
+Status: implemented; VM acceptance pending. Prerequisites: foundation gate, approved F01 definitions and applicable P01/P02/P05 policies.
 Ownership: `src/main.rs` and its Rust UI tests; F01 approves metadata-reader contributions.
 Deliverables: concise capability details, dependency explanations, selected-member theme report and separate harmonization/activation blockers.
 Preserve all selection controls, defaults, None descriptions, generic-package filtering and existing environment export.
@@ -137,7 +137,7 @@ Intended validation: extend existing TestBackend cases at normal, short and tiny
 Done: every choice remains reachable; unknown support is honest, and neither viewing nor confirming a selection silently approves activation.
 
 ### I01.3 — Integrate dependency, delivery and setup hooks
-Status: not started. Prerequisites: foundation gate, I01.1 ordering and available approved domain contribution packets.
+Status: implemented; VM acceptance pending. Prerequisites: foundation gate, I01.1 ordering and available approved domain contribution packets.
 Ownership: I01 later integration of `setup.sh`, reliability hooks, managed-sync lists and shared Lua; F01 reviews catalog/Rust changes.
 Deliverables: deterministic closure preview, approved resource delivery and F02/F03 staging/validation hooks integrated into existing setup.
 Preserve required/generic/member package unions, official-agent allowlists and extras semantics; no package installation is triggered by rendering.
@@ -145,7 +145,7 @@ Intended validation: proposed `tests/shell/harmonization_installer.sh`, installe
 Done: preview and execution agree; failed validation prevents harmonization activation, while unchanged legacy selection/installer contracts remain covered.
 
 ### I01.4 — Prove transition, activation and recovery behavior
-Status: not started. Prerequisites: I01.3, F02 recovery proof, F03 activation descriptors and applicable P06 approval.
+Status: implemented; VM acceptance pending. Prerequisites: I01.3, F02 recovery proof, F03 activation descriptors and applicable P06 approval.
 Ownership: I01 transition tests and orchestration; F02 owns mutation mechanisms, F03 theme orchestration and domains provider effects.
 Deliverables: fresh/rerun/switch/upgrade matrix, consented activation ordering, partial-state reporting and operator recovery procedure.
 Separate theme-only application from existing setup's package, shell, service and administrative operations; no full setup rerun as a hidden theme action.
@@ -153,7 +153,7 @@ Intended validation: proposed `tests/shell/harmonization_transitions.sh`; inject
 Done: preserved files/routing and runtime effects are independently verified; declined consent leaves activation pending and recovery never silently overwrites newer edits.
 
 ### I01.5 — Execute final cross-role acceptance
-Status: not started. Prerequisites: required D01–D07 implementations/evidence, I01.2–I01.4, F04 infrastructure and applicable P01–P07 approvals.
+Status: implemented; VM acceptance pending. Prerequisites: required D01–D07 implementations/evidence, I01.2–I01.4, F04 infrastructure and applicable P01–P07 approvals.
 Ownership: I01 final matrix and execution schedule; domains own probes, F04 owns methodology/common fixtures.
 Deliverables: proposed `Documents/desktop-harmonization-acceptance.md`, referencing F04 descriptors and exact candidate/contract identities.
 Combine exhaustive option/member/None coverage with declared interaction sampling and explicit high-risk combinations; do not claim Cartesian coverage.
@@ -161,7 +161,7 @@ Intended validation: existing checks plus proposed integration suites, independe
 Done: each supported claim has sufficient passing evidence, native gaps remain selectable/limited, and unverified hardware is labeled accurately. Prepare branch delivery and the user VM checklist; do not require every selectable app to claim full parity.
 
 ### I01.6 — Complete branch delivery documentation and VM test handoff
-Status: not started. Prerequisites: I01.5 branch-level evidence and truthful limitation reporting; user-led VM sessions and any future activation/publication need their appropriate authorization.
+Status: implemented; VM acceptance pending. Prerequisites: I01.5 branch-level evidence and truthful limitation reporting; user-led VM sessions and any future activation/publication need their appropriate authorization.
 Ownership: I01 user documentation/rollout contributions; parent acceptance and canonical-plan lifecycle.
 Deliverables: updated `Documents/app-selections.md`, coordinated agent notes and proposed `Documents/desktop-harmonization-vm-testing.md`. Sequence VM checks through foundations, theme switching, every role/option, independent partial application and recovery; provide expected results and evidence fields.
 Document preview, preservation, consent, next-launch/relogin requirements, recovery, limitations and supported/tested environments.
@@ -234,12 +234,12 @@ A declined companion, unavailable test environment or failed spike does not auth
 
 ## 10. Not-started checklist and confidence
 
-1. Not started — I01.1: reconcile contracts, shared-file ownership and acyclic landing order.
-2. Not started — I01.2: implement capability-aware chooser and explicit preview.
-3. Not started — I01.3: integrate approved dependencies, delivery and setup hooks.
-4. Not started — I01.4: prove transitions, consented activation and recovery.
-5. Not started: I01.5, complete supported-workflow checks, manual VM visuals and honest limitation labels.
-6. Not started: I01.6, validate branch documentation and the step-by-step user VM test handoff.
+1. Implemented (VM acceptance pending) — I01.1: reconcile contracts, shared-file ownership and acyclic landing order.
+2. Implemented (VM acceptance pending) — I01.2: implement capability-aware chooser and explicit preview.
+3. Implemented (VM acceptance pending) — I01.3: integrate approved dependencies, delivery and setup hooks.
+4. Implemented (VM acceptance pending) — I01.4: prove transitions, consented activation and recovery.
+5. Implemented (VM acceptance pending): I01.5, complete supported-workflow checks, manual VM visuals and honest limitation labels.
+6. Implemented (VM acceptance pending): I01.6, validate branch documentation and the step-by-step user VM test handoff.
 
 Planning confidence: **93/100** for source-grounded integration scope and ordering.
 Implementation feasibility remains conditional on concrete contracts, native provider support and unperformed graphical/recovery checks. Product policy is resolved; physical hardware remains outside current verification scope.
